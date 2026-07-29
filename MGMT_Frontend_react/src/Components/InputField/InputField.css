@@ -1,0 +1,78 @@
+/* 🟣 Common base for all inputs */
+.input-field,
+.input-dropdown {
+  width: 100%;
+  background-color: #fff;
+  border: 1px solid #d1d5db; /* gray-300 */
+  border-radius: 8px;
+  padding: 10px 12px;
+  font-size: 14px;
+  color: #374151; /* gray-700 */
+  outline: none;
+  transition: all 0.2s ease-in-out;
+  box-sizing: border-box;
+}
+
+/* 🟣 Focus ring (like Tailwind focus:ring-violet-500) */
+.input-field:focus,
+.input-dropdown:focus {
+  border-color: #7c3aed; /* violet-600 */
+  box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.3);
+  background-color: #fff;
+}
+
+/* 🔴 Error state */
+.error-border {
+  border-color: #dc2626 !important; /* red-600 */
+}
+
+/* 🔒 Readonly/Disabled state */
+.input-field[readonly],
+.input-field:disabled {
+  background-color: #f9fafb;
+  cursor: not-allowed;
+}
+
+/* 🧭 Label styling */
+.input-label {
+  display: block;
+  font-weight: 600;
+  color: #1f2937; /* gray-800 */
+  margin-bottom: 6px;
+}
+
+/* 🔽 Dropdown Arrow */
+.dropdown-icon {
+  position: absolute;
+  top: 50%;
+  right: 12px;
+  transform: translateY(-50%);
+  color: #6b7280; /* gray-500 */
+  font-size: 16px;
+  pointer-events: none;
+}
+
+/* 💬 Placeholder styling */
+.input-field::placeholder {
+  color: #9ca3af; /* gray-400 */
+}
+
+/* 🪄 Password Eye Icon */
+.password-toggle-icon {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #6b7280;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+/* 📱 Responsive */
+@media (max-width: 768px) {
+  .input-field,
+  .input-dropdown {
+    font-size: 13px;
+    padding: 8px 10px;
+  }
+}

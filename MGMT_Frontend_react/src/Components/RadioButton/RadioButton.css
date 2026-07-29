@@ -1,0 +1,56 @@
+/* Base styles for the radio button */
+.radio-label {
+  position: relative;
+
+  cursor: pointer;
+  font-family: "Inter", sans-serif;
+  font-weight: 400;
+  font-size: 14px; /* Use relative units like 'em' or 'rem' for scalability */
+  line-height: 1.2;
+  color: #555555;
+  display: flex;
+  align-items: center;
+  width: 100%; /* Ensure the label takes up full width */
+  box-sizing: border-box; /* Include padding and border in element's total width and height */
+}
+
+/* Hide the default radio input */
+.radio-input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+}
+
+/* Custom radio button styling */
+.custom-radio {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 1em; /* Use relative units for scalability */
+  height: 1em;
+  border: 1.5px solid #555555;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: border-color 0.3s ease; /* Smooth transition for border color */
+}
+
+/* Inner circle when radio is checked */
+.radio-input:checked ~ .custom-radio::before {
+  content: "";
+  width: 0.75em; /* Use relative units for scalability */
+  height: 0.75em;
+  background-color: #2f6eff;
+  border-radius: 50%;
+}
+
+/* Hover effect */
+.radio-label:hover .custom-radio {
+  border-color: #2f6eff;
+}
+
+/* Focus effect */
+.radio-input:focus-visible ~ .custom-radio {
+  outline: 2px solid #2f6eff;
+}

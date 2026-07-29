@@ -1,0 +1,93 @@
+/* Main container if needed globally */
+.accordion-container {
+  width: 100%;
+
+  margin: 20px auto;
+}
+
+/* Single accordion item with border & rounding */
+.accordionItem {
+  border: 1px solid #888;
+  border-radius: 16px;
+  margin-bottom: 16px;
+  background-color: #fff;
+  overflow: hidden;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+}
+
+/* Header bar for accordion */
+.accordion-header {
+  padding: 12px 20px;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #f8f8f8;
+  transition: background-color 0.3s ease;
+}
+
+.accordion-header:hover {
+  background-color: #e6e6e6;
+}
+
+/* Inside header, spacing between title and arrow */
+.accordion-header-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+/* Arrow styling */
+.arrow {
+  border: solid #333;
+  border-width: 0 2px 2px 0;
+  display: inline-block;
+  padding: 4px;
+  transition: transform 0.3s ease;
+}
+
+.arrow.down {
+  transform: rotate(45deg);
+}
+
+.arrow.up {
+  transform: rotate(-135deg);
+}
+
+/* Wrapper for collapsible content */
+.accordion-content-wrapper {
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  transition: max-height 0.4s ease-out, opacity 0.4s ease-out;
+}
+
+/* Shown state (animated open) */
+.accordion-content-wrapper.show {
+  max-height: 1500px; /* Large enough for expected content */
+  opacity: 1;
+}
+
+/* Inner content with padding */
+.accordion-content-inner {
+  padding: 16px 24px;
+  background-color: #fff;
+  color: #444;
+  line-height: 1.6;
+}
+
+/* Optional styling for text inside */
+.accordion-content-inner p {
+  margin-bottom: 10px;
+}
+
+.accordion-content-inner p:last-child {
+  margin-bottom: 0;
+}
+.accordionItem.disabled .accordion-header {
+  background-color: #f0f0f0;
+  cursor: not-allowed;
+  pointer-events: none; /* Prevents click */
+  opacity: 0.6;
+}

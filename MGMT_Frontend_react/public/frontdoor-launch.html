@@ -1,0 +1,21 @@
+ <!-- MGMT_Frontend_react/public/frontdoor-launch.html -->
+<!doctype html>
+<meta charset="utf-8">
+<title>Frontdoor Launcher</title>
+<script>
+  const qs = new URLSearchParams(location.search);
+  const in_UserId = qs.get('in_UserId') || qs.get('userName') || '';
+  const in_password = qs.get('in_password') || qs.get('password') || '';
+  if (!in_UserId || !in_password) {
+    document.write('Missing ?in_UserId= & ?in_password=');
+  } else {
+    document.write(`
+      <form id="f" method="POST" action="/frontdoor" enctype="multipart/form-data">
+        <input type="hidden" name="in_UserId" value="${in_UserId}">
+        <input type="hidden" name="in_password" value="${in_password}">
+      </form>
+      Posting…
+    `);
+    window.onload = () => document.getElementById('f').submit();
+  }
+</script>

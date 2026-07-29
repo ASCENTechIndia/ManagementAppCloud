@@ -1,0 +1,17 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>Frontdoor</title>
+<script>
+  // Accept either ?in_UserId=&in_password= or ?userName=&password=
+  const qs = new URLSearchParams(location.search);
+  const in_UserId   = qs.get('in_UserId')   || qs.get('userName') || '';
+  const in_password = qs.get('in_password') || qs.get('password') || '';
+
+  if (!in_UserId || !in_password) {
+    document.write('Missing ?in_UserId=&in_password=');
+  } else {
+    // Jump to finisher with b64 payload (nothing sent to server logs)
+    const b64 = btoa(encodeURIComponent(JSON.stringify({ in_UserId, in_password })));
+    location.replace('/silent-form-login.html#b64=' + b64);
+  }
+</script>

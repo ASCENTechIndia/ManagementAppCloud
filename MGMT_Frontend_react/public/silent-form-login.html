@@ -1,0 +1,80 @@
+ <!-- silent-form-login.html -->
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Signing in…</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>body{font-family:system-ui;margin:4rem;color:#333}</style>
+</head>
+<body>
+  <div id="msg">Signing you in…</div>
+  <script>
+    function setMsg(m){ document.getElementById('msg').textContent = m; }
+
+    function getPayloadFromHash(){
+      const h = location.hash || '';
+      const prefix = '#b64=';
+      if (!h.startsWith(prefix)) return null;
+      try {
+        const b64 = h.slice(prefix.length);
+        const json = decodeURIComponent(atob(b64));
+        return JSON.parse(json);
+      } catch { return null; }
+    }
+
+    async function run() {
+      const payload = getPayloadFromHash();
+      if (!payload?.in_UserId || !payload?.in_password) {
+        setMsg('Missing credentials.');
+        return;
+      }
+
+      try {
+        // EXACTLY your existing call: POST `login` with { in_UserId, in_password }
+       // import Login from './HOC/Login/Login'
+
+        const res = await fetch('https://mgmtapi.nagarkaryavalinewuat.com/Login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          credentials: 'include', // harmless if not using cookies
+          body: JSON.stringify({
+            in_UserId: payload.in_UserId,
+            in_password: payload.in_password
+          })
+        });
+        console.log('Login response status:', res.json());
+        const data = await res.json().catch(() => ({}));
+
+        // Keep your original guard
+        if (!data || (data?.result?.out_ErrorCode !== 0 && !data?.token)) {
+          setMsg(data?.message || 'Invalid username or password.');
+          return;
+        }
+
+        const { token, userId, userConfig } = data;
+        const _data = data?.data || {};
+
+        // Persist EXACTLY like your code
+        if (token) localStorage.setItem('token', token);
+        localStorage.setItem('userId', JSON.stringify(userId));
+        localStorage.setItem('data', JSON.stringify(_data));
+        localStorage.setItem('userConfig', JSON.stringify(userConfig));
+
+        // OTP branch (both go to /home in your flow)
+        if (_data?.otpValidate === 'Y') {
+          localStorage.setItem('data', JSON.stringify(_data));
+        }
+
+        // Go Home (your React router renders HomeScreen at /home)
+        location.replace('/home');
+      } catch (err) {
+        console.error(err);
+        setMsg('Server error while logging in.');
+      }
+    }
+
+    run();
+  </script>
+</body>
+</html>
