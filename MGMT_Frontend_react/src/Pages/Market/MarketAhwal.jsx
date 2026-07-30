@@ -1,36 +1,48 @@
-import React, { useRef, useState } from "react";
+import React, { useState } from "react";
 import { Formik, Form } from "formik";
 import { Repeat } from "lucide-react";
-import CalenderComponent from "../../../Components/CalenderComponent";
-import { formatDateForAPI } from "../../../utils/dateUtils";
-import { useLoader } from "../../../Context/LoaderContext";
-import { useAuth } from "../../../Context/AuthContext";
-import apiService from "../../../../apiService";
-import Table from "../../../Components/Table/Table";
+import CalenderComponent from "../../Components/CalenderComponent";
+import { formatDateForAPI } from "../../utils/dateUtils";
+import { useLoader } from "../../Context/LoaderContext";
+import { useAuth } from "../../Context/AuthContext";
+import apiService from "../../../apiService";
+import Table from "../../Components/Table/Table";
 import { useNavigate } from "react-router-dom";
 import {
   PageHeader,
   FormLayoutCard,
   CalendarInput,
   SubHeaderCard,
-} from "../../../Components/NewLayout";
+} from "../../Components/NewLayout";
 
-const WardWiseMrgRegistration = () => {
+const MarketAhwal = () => {
   const { setLoading } = useLoader();
   const { user } = useAuth();
   const navigate = useNavigate();
   const userId = user?.userId;
   const ulbid = user?.data?.OrgId;
-  const tableRef = useRef(null);
+
   const [tableData, setTableData] = useState([]);
   const [selectedFrom, setSelectedFrom] = useState(new Date());
   const [selectedTo, setSelectedTo] = useState(new Date());
 
-  const tableHeaders = ["झोनाचे नाव", "अर्ज", "नोंदणी"];
+  const tableHeaders = [
+    "एकूण अर्ज",
+    "मंजूर",
+    "प्रलंबित",
+    "नाकारलेले",
+    "पेमेंट प्रलंबित",
+    "पेमेंट झाले",
+    "वितरित",
+  ];
   const tableKeyMapping = {
-    "झोनाचे नाव": "zoneName",
-    अर्ज: "application",
-    नोंदणी: "registration",
+    "एकूण अर्ज": "total_application",
+    मंजूर: "approve",
+    प्रलंबित: "pending",
+    नाकारलेले: "reject",
+    "पेमेंट प्रलंबित": "payment_pending",
+    "पेमेंट झाले": "payment_done",
+    वितरित: "delivered",
   };
 
   const initialValues = {
@@ -48,7 +60,7 @@ const WardWiseMrgRegistration = () => {
 
   const handleSubmit = async (values) => {
     if (!userId || !ulbid) {
-      alert("User ID or Ulb Id not found");
+      alert("User ID or Ulb ID not found");
       return;
     }
     setSelectedFrom(values.from);
@@ -57,7 +69,7 @@ const WardWiseMrgRegistration = () => {
     try {
       setLoading(true);
       const payload = {
-        Request1: `${import.meta.env.VITE_FLAG}$Mrrg_ZoneSummary$${userId}$${ulbid}~${formatDateForAPI(values.from)}~${formatDateForAPI(values.to)}`,
+        Request1: `${import.meta.env.VITE_FLAG}$mkt_applicationssummary$${userId}$${ulbid}~${formatDateForAPI(values.from)}~${formatDateForAPI(values.to)}`,
         Request2: "",
         Request3: "",
         Request4: "",
@@ -69,43 +81,28 @@ const WardWiseMrgRegistration = () => {
 
       if (
         res?.data?.Success &&
-        Array.isArray(res?.data?.data?.jsondata) &&
+        res?.data?.data?.jsondata &&
+        Array.isArray(res.data.data.jsondata) &&
         res.data.data.jsondata.length > 0
       ) {
-        const rows = res.data.data.jsondata.map((item) => ({
-          zoneName: item.zonename || "",
-          application: Number(item.app_count || 0),
-          registration: Number(item.auth_count || 0),
-        }));
-
-        const totalApplication = rows.reduce(
-          (sum, row) => sum + row.application,
-          0,
-        );
-        const totalRegistration = rows.reduce(
-          (sum, row) => sum + row.registration,
-          0,
-        );
-
-        const totalRow = {
-          zoneName: "एकूण",
-          application: totalApplication,
-          registration: totalRegistration,
+        // Take the first (and only) object from jsondata
+        const item = res.data.data.jsondata[0];
+        const row = {
+          total_application: item.total_application || 0,
+          approve: item.approve || 0,
+          pending: item.pending || 0,
+          reject: item.reject || 0,
+          payment_pending: item.payment_pending || 0,
+          payment_done: item.payment_done || 0,
+          delivered: item.delivered || 0,
         };
-
-        setTableData([...rows, totalRow]);
-        setTimeout(() => {
-          tableRef.current.scrollIntoView({
-            behavior: "smooth",
-            block: "center"
-          });
-        }, 100);
+        setTableData([row]); // Only one row, no total row
       } else {
         setTableData([]);
         alert("No data found for the selected dates");
       }
     } catch (error) {
-      console.error("Error fetching ward-wise registration data:", error);
+      console.error("Error fetching market ahwal data:", error);
       setTableData([]);
       alert(error.message || "Failed to fetch data");
     } finally {
@@ -114,14 +111,14 @@ const WardWiseMrgRegistration = () => {
   };
 
   const handleGoBack = () => {
-    navigate("/Marriage");
+    navigate("/Market");
   };
 
   return (
     <div className="min-h-screen bg-[#eef4ff] font-sans pb-6">
       <PageHeader
-        title="Ward Wise Marriage Registration"
-        subtitle="Marriage"
+        title="Market Ahwal"
+        subtitle="Market Department"
         onBack={handleGoBack}
       />
 
@@ -164,19 +161,19 @@ const WardWiseMrgRegistration = () => {
       {tableData.length > 0 && (
         <>
           <SubHeaderCard
-            subtitle="Marriage"
-            title="Ward Wise Registration"
+            subtitle="Market Department"
+            title="Market Ahwal"
             infoText={`From ${formatDateDisplay(selectedFrom)} To ${formatDateDisplay(selectedTo)}`}
             className="mt-4"
           />
 
-          <section className="container mx-auto mt-4 mb-5 px-4" ref={tableRef}>
+          <section className="container mx-auto mt-4 mb-5 px-4">
             <div className="rounded-3xl bg-white p-4 sm:p-6 shadow-[0_12px_30px_rgba(0,0,0,0.12)]">
               <Table
                 data={tableData}
                 headers={tableHeaders}
                 keyMapping={tableKeyMapping}
-                pagination={true}
+                pagination={false}
                 rowsPerPage={10}
               />
             </div>
@@ -187,4 +184,4 @@ const WardWiseMrgRegistration = () => {
   );
 };
 
-export default WardWiseMrgRegistration;
+export default MarketAhwal;

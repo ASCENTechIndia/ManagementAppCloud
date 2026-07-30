@@ -26,10 +26,36 @@ const ComplaintType2 = () => {
   const [selectedFrom, setSelectedFrom] = useState(new Date());
   const [selectedTo, setSelectedTo] = useState(new Date());
 
-  const tableHeaders = ["प्रकार", "संख्या"];
+  const tableHeaders = [
+    "Application No.",
+    "Application Date",
+    "Applicant Name",
+    "Total Applications",
+    "New",
+    "Renewal",
+    "Verification Pending",
+    "Authorization Pending",
+    "Payment Pending",
+    "Rejected",
+    "Visit Pending",
+    "New Issued",
+    "Renewal Issued",
+  ];
+
   const tableKeyMapping = {
-    प्रकार: "type",
-    संख्या: "count",
+    "Application No.": "appno",
+    "Application Date": "appdate",
+    "Applicant Name": "appname",
+    "Total Applications": "applications",
+    New: "new",
+    Renewal: "renewal",
+    "Verification Pending": "verifypending",
+    "Authorization Pending": "authpending",
+    "Payment Pending": "paymentpending",
+    Rejected: "reject",
+    "Visit Pending": "visitpending",
+    "New Issued": "newissued",
+    "Renewal Issued": "renewissued",
   };
 
   const initialValues = {
@@ -56,40 +82,47 @@ const ComplaintType2 = () => {
     try {
       setLoading(true);
       const payload = {
-        Request1: `PropMAMC$$${userId}$${ulbid}~${formatDateForAPI(values.from)}~${formatDateForAPI(values.to)}`,
-        Request2: "a",
-        Request3: "a",
-        Request4: "a",
-        Request5: "a",
-        Request6: "a",
-        Request7: "a",
+        Request1: `${import.meta.env.VITE_FLAG}$fire_applicationdetails$${userId}$${ulbid}~${formatDateForAPI(values.from)}~${formatDateForAPI(values.to)}`,
+        Request2: "",
+        Request3: "",
+        Request4: "",
+        Request5: "",
+        Request6: "",
+        Request7: "",
       };
       const res = await apiService.post("WTgeneric-call", payload);
 
       if (
         res?.data?.Success &&
-        Array.isArray(res?.data?.data) &&
-        res.data.data.length > 0
+        res?.data?.data?.jsondata &&
+        Array.isArray(res.data.data.jsondata) &&
+        res.data.data.jsondata.length > 0
       ) {
-        const rows = res.data.data.map((item) => ({
-          type: item.type || item.Type || "",
-          count: Number(item.count || item.Count || 0),
+        const rawData = res.data.data.jsondata;
+
+        const rows = rawData.map((item) => ({
+          appno: item.appno || "",
+          appdate: item.appdate || "",
+          appname: item.appname || "",
+          applications: Number(item.applications) || 0,
+          new: Number(item.new) || 0,
+          renewal: Number(item.renewal) || 0,
+          verifypending: Number(item.verifypending) || 0,
+          authpending: Number(item.authpending) || 0,
+          paymentpending: Number(item.paymentpending) || 0,
+          reject: Number(item.reject) || 0,
+          visitpending: Number(item.visitpending) || 0,
+          newissued: Number(item.newissued) || 0,
+          renewissued: Number(item.renewissued) || 0,
         }));
 
-        const totalCount = rows.reduce((sum, row) => sum + row.count, 0);
-
-        const totalRow = {
-          type: "एकूण",
-          count: totalCount,
-        };
-
-        setTableData([...rows, totalRow]);
+        setTableData(rows);
       } else {
         setTableData([]);
         alert("No data found for the selected dates");
       }
     } catch (error) {
-      console.error("Error fetching miscellaneous information:", error);
+      console.error("Error fetching complaint data:", error);
       setTableData([]);
       alert(error.message || "Failed to fetch data");
     } finally {
@@ -155,7 +188,7 @@ const ComplaintType2 = () => {
           />
 
           <section className="container mx-auto mt-4 mb-5 px-4">
-            <div className="rounded-[24px] bg-white p-4 sm:p-6 shadow-[0_12px_30px_rgba(0,0,0,0.12)]">
+            <div className="rounded-3xl bg-white p-4 sm:p-6 shadow-[0_12px_30px_rgba(0,0,0,0.12)]">
               <Table
                 data={tableData}
                 headers={tableHeaders}

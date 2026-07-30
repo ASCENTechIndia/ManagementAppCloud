@@ -66,7 +66,7 @@ const SearchInformation = () => {
     try {
       setLoading(true);
       const payload = {
-        Request1: `PropMAMC$Mrrg_Search$${userId}$${ulbid}~${formatDateForAPI(values.from)}~${appNo}`,
+        Request1: `${import.meta.env.VITE_FLAG}$Mrrg_Search$${userId}$${ulbid}~${formatDateForAPI(values.from)}~${appNo}`,
         Request2: "",
         Request3: "",
         Request4: "",

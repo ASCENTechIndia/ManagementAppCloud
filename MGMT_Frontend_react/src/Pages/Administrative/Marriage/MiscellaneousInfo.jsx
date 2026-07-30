@@ -58,7 +58,7 @@ const MiscellaneousInfo = () => {
     try {
       setLoading(true);
       const payload = {
-        Request1: `PropMAMC$Mrrg_Summary$${userId}$${ulbid}~${formatDateForAPI(values.from)}~${formatDateForAPI(values.to)}`,
+        Request1: `${import.meta.env.VITE_FLAG}$Mrrg_Summary$${userId}$${ulbid}~${formatDateForAPI(values.from)}~${formatDateForAPI(values.to)}`,
         Request2: "",
         Request3: "",
         Request4: "",
@@ -172,7 +172,7 @@ const MiscellaneousInfo = () => {
           />
 
           <section className="container mx-auto mt-4 mb-5 px-4" ref={tableRef}>
-            <div className="rounded-[24px] bg-white p-4 sm:p-6 shadow-[0_12px_30px_rgba(0,0,0,0.12)]">
+            <div className="rounded-3xl bg-white p-4 sm:p-6 shadow-[0_12px_30px_rgba(0,0,0,0.12)]">
               <Table
                 data={tableData}
                 headers={tableHeaders}
