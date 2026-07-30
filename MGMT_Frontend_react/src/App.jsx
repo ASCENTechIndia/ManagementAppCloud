@@ -98,6 +98,8 @@ import MarketAhwal from './Pages/Market/MarketAhwal.jsx';
 import Estate from './Pages/Estate/Estate.jsx';
 import ZoneWise from './Pages/Estate/ZoneWise.jsx';
 import ZoneWiseMarket from './Pages/Estate/ZoneWiseMarket.jsx';
+import Rts from './Pages/RTS/Rts.jsx';
+import Department from './Pages/RTS/Department.jsx';
 
 function App() {
   return (
@@ -240,6 +242,11 @@ function App() {
             <Route path="/Estate" element={<Estate />} />
             <Route path="/ZoneWise" element={<ZoneWise />} />
             <Route path="/ZoneWiseMarket" element={<ZoneWiseMarket />} />
+
+            {/* RTS */}
+            <Route path="/Rts" element={<Rts />} />
+            <Route path="/Department" element={<Department />} />
+
 
 
 

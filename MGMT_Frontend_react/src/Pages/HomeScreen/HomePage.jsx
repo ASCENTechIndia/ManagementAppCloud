@@ -98,6 +98,14 @@ const departments = [
     iconBg: "bg-gradient-to-br from-purple-700 to-purple-400",
     route: "estate",
   },
+  {
+    name: "RTS",
+    subtitle: "RTS Department",
+    icon: BsCassetteFill,
+    border: "border-l-purple-700",
+    iconBg: "bg-gradient-to-br from-purple-700 to-purple-400",
+    route: "rts",
+  },
 ];
 
 const HomeScreen = () => {
@@ -140,6 +148,8 @@ const HomeScreen = () => {
         navigate("/market");
       } else if (route === "estate") {
         navigate("/Estate");
+      } else if(route === "rts"){
+        navigate("/Rts")
       } else {
         navigate(`/${route}`); // fallback if you want dynamic routes
       }
