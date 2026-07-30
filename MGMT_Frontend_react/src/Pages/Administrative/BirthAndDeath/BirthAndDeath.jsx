@@ -25,7 +25,7 @@ export default function BirthAndDeath() {
   const navigate = useNavigate();
   const [query, setQuery] = useState("");
   const handleGoBack = () => {
-    navigate("/Administrative");
+    navigate("/home");
   };
 
   const filteredTiles = tilesData.filter((t) =>

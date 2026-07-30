@@ -1,0 +1,130 @@
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { useLoader } from "../../Context/LoaderContext";
+import { useAuth } from "../../Context/AuthContext";
+import apiService from "../../../apiService";
+import Table from "../../Components/Table/Table";
+import { PageHeader, SubHeaderCard } from "../../Components/NewLayout";
+
+const ZoneWiseMarket = () => {
+  const { setLoading } = useLoader();
+  const { user } = useAuth();
+  const navigate = useNavigate();
+  const userId = user?.userId;
+  const ulbid = user?.data?.OrgId;
+
+  const [tableData, setTableData] = useState([]);
+
+  const tableHeaders = [
+    "प्रभागाचे नाव",
+    "एकूण",
+    "दुकाने",
+    "भाडे",
+    "रिकामे",
+    "एकूण मागणी",
+    "एकूण वसुली",
+    "वसुली टक्केवारी",
+  ];
+  const tableKeyMapping = {
+    "प्रभागाचे नाव": "zone_name",
+    एकूण: "total",
+    दुकाने: "shop",
+    भाडे: "rent",
+    रिकामे: "empty",
+    "एकूण मागणी": "total_demand",
+    "एकूण वसुली": "total_collection",
+    "वसुली टक्केवारी": "recovery_percentage",
+  };
+
+  const fetchData = async () => {
+    if (!userId || !ulbid) {
+      alert("User ID or Ulb ID not found");
+      return;
+    }
+
+    try {
+      setLoading(true);
+      const payload = {
+        Request1: `${import.meta.env.VITE_FLAG}$estatetype_summary$${userId}$${ulbid}`,
+        Request2: "",
+        Request3: "",
+        Request4: "",
+        Request5: "",
+        Request6: "",
+        Request7: "",
+      };
+      const res = await apiService.post("WTgeneric-call", payload);
+
+      if (
+        res?.data?.Success &&
+        res?.data?.data?.jsondata &&
+        Array.isArray(res.data.data.jsondata) &&
+        res.data.data.jsondata.length > 0
+      ) {
+        const rows = res.data.data.jsondata.map((item) => ({
+          zone_name: item.zone_name || "",
+          total: item.total || 0,
+          shop: item.shop || 0,
+          rent: item.rent || 0,
+          empty: item.empty || 0,
+          total_demand: item.total_demand || 0,
+          total_collection: item.total_collection || 0,
+          recovery_percentage: item.recovery_percentage || 0,
+        }));
+        setTableData(rows);
+      } else {
+        setTableData([]);
+      }
+    } catch (error) {
+      console.error("Error fetching zone-wise market data:", error);
+      setTableData([]);
+      alert(error.message || "Failed to fetch data");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    if (userId && ulbid) {
+      fetchData();
+    }
+  }, [userId, ulbid]);
+
+  const handleGoBack = () => {
+    navigate("/Estate");
+  };
+
+  return (
+    <div className="min-h-screen bg-[#eef4ff] font-sans pb-6">
+      <PageHeader
+        title="Zone Wise Market"
+        subtitle="Estate Department"
+        onBack={handleGoBack}
+      />
+
+      {tableData.length > 0 && (
+        <>
+          <SubHeaderCard
+            subtitle="Estate Department"
+            title="Zone Wise Market Summary"
+            className="mt-4"
+          />
+
+          <section className="container mx-auto mt-4 mb-5 px-4">
+            <div className="rounded-3xl bg-white p-4 sm:p-6 shadow-[0_12px_30px_rgba(0,0,0,0.12)]">
+              <Table
+                data={tableData}
+                headers={tableHeaders}
+                keyMapping={tableKeyMapping}
+                pagination={true}
+                rowsPerPage={10}
+              />
+            </div>
+          </section>
+        </>
+      )}
+    </div>
+  );
+};
+
+export default ZoneWiseMarket;

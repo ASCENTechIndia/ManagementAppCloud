@@ -9,9 +9,18 @@ import {
   BsExclamationCircleFill,
   BsBuildingFill,
   BsCashCoin,
-  BsBoxArrowRight
+  BsBoxArrowRight,
+  BsCassetteFill,
 } from "react-icons/bs";
-import { FaUserCircle, FaHome, FaTint, FaExclamationCircle, FaChevronRight } from "react-icons/fa";
+import {
+  FaUserCircle,
+  FaHome,
+  FaTint,
+  FaExclamationCircle,
+  FaChevronRight,
+  FaRing,
+  FaNotesMedical,
+} from "react-icons/fa";
 import "./NewHomeScreenstyles.css";
 import { useAuth } from "../../Context/AuthContext";
 import HeaderUserButton from "../../Components/NewLayout/HeaderUserButton";
@@ -23,7 +32,7 @@ const departments = [
     icon: BsFillHouseFill,
     border: "border-l-blue-500",
     iconBg: "bg-gradient-to-br from-blue-500 to-cyan-400",
-    route: "property_tax"
+    route: "property_tax",
   },
   {
     name: "पाणीपट्टी विभाग",
@@ -31,7 +40,7 @@ const departments = [
     icon: FaTint,
     border: "border-l-emerald-500",
     iconBg: "bg-gradient-to-br from-emerald-500 to-emerald-300",
-    route: "water_tax"
+    route: "water_tax",
   },
   {
     name: "तक्रारी व सूचना",
@@ -39,7 +48,23 @@ const departments = [
     icon: BsExclamationCircleFill,
     border: "border-l-orange-500",
     iconBg: "bg-gradient-to-br from-orange-500 to-amber-400",
-    route: "complaints"
+    route: "complaints",
+  },
+  {
+    name: "Marriage",
+    subtitle: "Marriage Department",
+    icon: FaRing, 
+    border: "border-l-orange-500",
+    iconBg: "bg-gradient-to-br from-orange-500 to-amber-400",
+    route: "marriage",
+  },
+  {
+    name: "Birth & Death",
+    subtitle: "Birth & Death Department",
+    icon: FaNotesMedical, 
+    border: "border-l-orange-500",
+    iconBg: "bg-gradient-to-br from-orange-500 to-amber-400",
+    route: "brithDeath",
   },
   {
     name: "प्रशासकीय विभाग",
@@ -47,7 +72,7 @@ const departments = [
     icon: BsBuildingFill,
     border: "border-l-green-700",
     iconBg: "bg-gradient-to-br from-green-700 to-green-400",
-    route: "admin"
+    route: "admin",
   },
   {
     name: "सी.फ.सी विभाग",
@@ -55,7 +80,23 @@ const departments = [
     icon: BsCashCoin,
     border: "border-l-purple-700",
     iconBg: "bg-gradient-to-br from-purple-700 to-purple-400",
-    route: "cfc"
+    route: "cfc",
+  },
+  {
+    name: "Market",
+    subtitle: "Market Department",
+    icon: BsCashStack,
+    border: "border-l-purple-700",
+    iconBg: "bg-gradient-to-br from-purple-700 to-purple-400",
+    route: "market",
+  },
+  {
+    name: "Estate",
+    subtitle: "Estate Department",
+    icon: BsCassetteFill,
+    border: "border-l-purple-700",
+    iconBg: "bg-gradient-to-br from-purple-700 to-purple-400",
+    route: "estate",
   },
 ];
 
@@ -68,10 +109,9 @@ const HomeScreen = () => {
 
   const handleLogout = () => {
     logout();
-  }
+  };
 
   const onTap = (route) => {
-
     const payload = { type: "navigate", route };
 
     // ✅ If running inside Flutter (hybrid app)
@@ -85,28 +125,30 @@ const HomeScreen = () => {
       } else if (route === "water_tax") {
         navigate("/waterdashboard");
       } else if (route === "complaints") {
-        // navigate("/CrmDashBoardOut");
         navigate("/CADDashboard");
+      } else if (route === "marriage") {
+        navigate("/Marriage");
+      } else if (route === "brithDeath") {
+        navigate("/BirthAndDeath");
       } else if (route === "admin") {
         navigate("/Administrative");
-        // navigate("/AdminDashboard");
       } else if (route === "cfc") {
         navigate("/CfcDashBoard");
       } else if (route === "death") {
         navigate("/Death");
+      } else if (route === "market") {
+        navigate("/market");
+      } else if (route === "estate") {
+        navigate("/Estate");
       } else {
         navigate(`/${route}`); // fallback if you want dynamic routes
       }
     }
   };
 
-
   useEffect(() => {
     const handleClickOutside = (event) => {
-      if (
-        dropdownRef.current &&
-        !dropdownRef.current.contains(event.target)
-      ) {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
         setShowDropdown(false);
       }
     };
@@ -118,21 +160,26 @@ const HomeScreen = () => {
     };
   }, []);
   return (
-
     <div className="min-h-screen bg-[#eef4ff]">
       <header className="bg-gradient-to-br from-[#0F3FAE] to-[#3D71F5] rounded-b-[30px] text-white shadow-[0_12px_30px_rgba(0,0,0,0.12)] header-section">
         <div className="flex items-center justify-between">
           <div>
-            <small className="text-white/50" style={{
-              fontFamily: "sans-serif",
-              fontSize: "0.9rem"
-            }}>
+            <small
+              className="text-white/50"
+              style={{
+                fontFamily: "sans-serif",
+                fontSize: "0.9rem",
+              }}
+            >
               Welcome
             </small>
 
-            <h2 className="font-bold mt-1 md:mt-2" style={{
-              fontFamily: "sans-serif"
-            }}>
+            <h2
+              className="font-bold mt-1 md:mt-2"
+              style={{
+                fontFamily: "sans-serif",
+              }}
+            >
               Management App
             </h2>
           </div>
@@ -144,18 +191,24 @@ const HomeScreen = () => {
       </header>
       <div className="mx-auto card-div">
         <section className="mx-auto mt-[-25px] rounded-[20px] bg-white shadow-lg card-section">
-          <h5 className="mb-1" style={{
-            fontFamily: "sans-serif",
-            fontWeight: 600,
-            fontSize: '1.2rem'
-          }}>
+          <h5
+            className="mb-1"
+            style={{
+              fontFamily: "sans-serif",
+              fontWeight: 600,
+              fontSize: "1.2rem",
+            }}
+          >
             Choose Department
           </h5>
 
-          <p className="text-sm text-gray-500" style={{
-            fontFamily: "sans-serif",
-            marginBottom: "1.2rem"
-          }}>
+          <p
+            className="text-sm text-gray-500"
+            style={{
+              fontFamily: "sans-serif",
+              marginBottom: "1.2rem",
+            }}
+          >
             Select any service to continue
           </p>
 
@@ -168,7 +221,7 @@ const HomeScreen = () => {
                   key={dept.name}
                   className={`group flex items-center justify-between rounded-[18px] border-l-[5px] ${dept.border} text-black bg-white px-3 py-3.5 shadow-md transition duration-200 hover:-translate-y-1 tile-section`}
                   style={{
-                    textDecoration: "none"
+                    textDecoration: "none",
                   }}
                   onClick={() => onTap(dept.route)}
                 >
@@ -181,10 +234,13 @@ const HomeScreen = () => {
 
                     <div>
                       <h4 className="tile-title">{dept.name}</h4>
-                      <span className="block text-sm text-gray-500 tile-subtitle" style={{
-                        fontFamily: "sans-serif",
-                        fontSize: "0.75rem"
-                      }}>
+                      <span
+                        className="block text-sm text-gray-500 tile-subtitle"
+                        style={{
+                          fontFamily: "sans-serif",
+                          fontSize: "0.75rem",
+                        }}
+                      >
                         {dept.subtitle}
                       </span>
                     </div>
@@ -199,7 +255,6 @@ const HomeScreen = () => {
           </div>
         </section>
       </div>
-
     </div>
   );
 };

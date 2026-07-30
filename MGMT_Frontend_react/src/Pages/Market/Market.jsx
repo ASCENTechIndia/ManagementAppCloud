@@ -1,34 +1,41 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { PageHeader } from "../../../Components/NewLayout";
-import { FaFileAlt, FaRing, FaSearch } from "react-icons/fa";
-import DashboardCard from "../../../Components/NewDashboardCard";
+import { PageHeader } from "../../Components/NewLayout";
+import {
+  FaChartBar,
+  FaFileAlt,
+  FaFileInvoice,
+  FaRing,
+  FaSearch,
+  FaSearchLocation,
+} from "react-icons/fa";
+import DashboardCard from "../../Components/NewDashboardCard";
 
 const tilesData = [
   {
     id: 1,
-    title: "Miscellaneous Information",
-    icon: FaFileAlt,
-    route: "MiscellaneousInfo",
+    title: "Applications Details",
+    icon: FaFileInvoice,
+    route: "ApplicationDetails",
     iconBg: "bg-gradient-to-br from-blue-500 to-cyan-400",
   },
   {
     id: 2,
-    title: "Ward Wise Marriage Registration",
-    icon: FaRing,
-    route: "WardWiseMrgRegistration",
-    iconBg: "bg-gradient-to-br from-purple-500 to-violet-400",
+    title: "Track Application",
+    icon: FaSearchLocation,
+    route: "TrackApplication",
+    iconBg: "bg-gradient-to-br from-blue-500 to-cyan-400",
   },
   {
     id: 3,
-    title: "Search Information",
-    icon: FaSearch,
-    route: "SearchInformation", // null data in jsondata 
-    iconBg: "bg-gradient-to-br from-emerald-500 to-green-400",
+    title: "Market Ahwal",
+    icon: FaChartBar,
+    route: "MarketAhwal",
+    iconBg: "bg-gradient-to-br from-blue-500 to-cyan-400",
   },
 ];
 
-export default function Marriage() {
+export default function Market() {
   const navigate = useNavigate();
   const [query, setQuery] = useState("");
   const handleGoBack = () => {
@@ -36,7 +43,7 @@ export default function Marriage() {
   };
 
   const filteredTiles = tilesData.filter((t) =>
-    t.title.toLowerCase().includes(query.toLowerCase())
+    t.title.toLowerCase().includes(query.toLowerCase()),
   );
 
   const openFeature = (route) => {
@@ -52,7 +59,7 @@ export default function Marriage() {
   return (
     <div className="min-h-screen bg-[#eef4ff] font-sans pb-6">
       <PageHeader
-        title="Marriage Department"
+        title="Market Department"
         subtitle="Welcome"
         onBack={handleGoBack}
       />
