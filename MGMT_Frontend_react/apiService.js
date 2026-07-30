@@ -2,8 +2,8 @@
 import CryptoJS from 'crypto-js';
 
 const API_SECRET = 'your-secret-key'; // Must match backend
-// const BASE_API_URL = 'http://localhost:5001';
- const BASE_API_URL = 'https://mgmtappapi.nagarkaryavalinew.com/'; 
+const BASE_API_URL = 'http://localhost:5001';
+//  const BASE_API_URL = 'https://mgmtappapi.nagarkaryavalinew.com/'; 
 
 const encryptParams = (params) => {
   const jsonString = JSON.stringify(params);
@@ -33,17 +33,17 @@ const decryptResponse = (payload) => {
 
 const apiService = {
   post: async (endpoint, data) => {
-  const response = await fetch(`${BASE_API_URL}/${endpoint}`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(data),
-  });
+    const response = await fetch(`${BASE_API_URL}/${endpoint}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    });
 
-  const json = await response.json();
-  return { data: json };
-},
+    const json = await response.json();
+    return { data: json };
+  },
 
   get: async (endpoint, params = {}) => {
     const encryptedData = encryptParams(params);
