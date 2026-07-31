@@ -61,7 +61,7 @@ export default function Rts() {
   return (
     <div className="min-h-screen bg-[#eef4ff] font-sans pb-6">
       <PageHeader
-        title="Market Department"
+        title="RTS Department"
         subtitle="Welcome"
         onBack={handleGoBack}
       />
