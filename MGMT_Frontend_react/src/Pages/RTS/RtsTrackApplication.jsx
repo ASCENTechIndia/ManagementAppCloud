@@ -49,7 +49,7 @@ const RtsTrackApplication = () => {
     try {
       setLoading(true);
       const payload = {
-        Request1: `PropMAMC$rts_applicationtrack_details$${userId}$${ulbid}~${appNo}`,
+        Request1: `${import.meta.env.VITE_FLAG}$rts_applicationtrack_details$${userId}$${ulbid}~${appNo}`,
         Request2: "",
         Request3: "",
         Request4: "",
