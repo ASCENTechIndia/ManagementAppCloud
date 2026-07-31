@@ -1,11 +1,11 @@
-// import { FaLock, FaUser, FaEye, FaEyeSlash } from 'react-icons/fa';
 import { BsFillBuildingsFill, BsPersonFill, BsLockFill } from 'react-icons/bs';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useAuth } from '../../Context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import apiService from '../../../apiService';
 import { useLoader } from '../../Context/LoaderContext';
-import './loginnew.css'
+import './loginnew.css';
+import Cookies from '../../utils/cookieUtils';
 
 const LoginNew = () => {
     const [error, setError] = useState(null);
@@ -15,6 +15,7 @@ const LoginNew = () => {
     const [displayPassword, setDisplayPassword] = useState("");
     const [showPassword, setShowPassword] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
+    const [rememberMe, setRememberMe] = useState(false);
 
     const [formData, setFormData] = useState({
         in_UserId: "",
@@ -22,6 +23,22 @@ const LoginNew = () => {
     });
 
     const { login } = useAuth();
+
+    useEffect(() => {
+        const savedUser = Cookies.get('remember_username');
+        const savedPass = Cookies.get('remember_password');
+        const savedRemember = Cookies.get('remember_me');
+
+        if (savedUser && savedPass) {
+            setFormData({
+                in_UserId: savedUser,
+                in_password: savedPass,
+            });
+            setRealPassword(savedPass);
+            setDisplayPassword(savedPass);
+            setRememberMe(savedRemember === 'true' || true);
+        }
+    }, []);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -78,6 +95,16 @@ const LoginNew = () => {
 
             const { token, userId, data, userConfig } = res.data;
             console.log("Login Successful! Proceeding...");
+
+            if (rememberMe) {
+                Cookies.set('remember_username', formData.in_UserId, { expires: 30, path: '/' });
+                Cookies.set('remember_password', formData.in_password, { expires: 30, path: '/' });
+                Cookies.set('remember_me', 'true', { expires: 30, path: '/' });
+            } else {
+                Cookies.remove('remember_username', { path: '/' });
+                Cookies.remove('remember_password', { path: '/' });
+                Cookies.remove('remember_me', { path: '/' });
+            }
 
             localStorage.setItem("token", token);
             localStorage.setItem("userId", JSON.stringify(userId));
@@ -182,6 +209,20 @@ const LoginNew = () => {
                                     className="h-[55px] w-full rounded-[30px] border border-[#d7d7d7] pl-[50px] focus:border-[#2155CD] focus:outline-none focus:shadow-[0_0_0_.15rem_rgba(33,85,205,.25)]"
                                 />
                             </div>
+                        </div>
+
+                        <div className="flex items-center justify-between mb-4 px-2">
+                            <label className="flex items-center gap-3 cursor-pointer text-sm text-gray-700 font-medium select-none">
+                                <input
+                                    type="checkbox"
+                                    id="rememberMeNew"
+                                    name="rememberMe"
+                                    checked={rememberMe}
+                                    onChange={(e) => setRememberMe(e.target.checked)}
+                                    className="w-4 h-4 text-[#2155CD] rounded border-gray-300 focus:ring-[#2155CD] cursor-pointer"
+                                />
+                                <span className="ml-1.5">Remember Me</span>
+                            </label>
                         </div>
 
                         <div className="mt-3 flex items-center justify-between gap-1">
