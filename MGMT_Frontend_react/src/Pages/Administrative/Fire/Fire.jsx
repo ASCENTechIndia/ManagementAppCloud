@@ -7,14 +7,14 @@ import DashboardCard from "../../../Components/NewDashboardCard";
 const tilesData = [
   {
     id: 1,
-    title: "Types Of Complaint",
+    title: "Zonewise Collection",
     icon: FaExclamationTriangle,
     route: "TypesOfComplaint",
     iconBg: "bg-gradient-to-br from-red-500 to-orange-400",
   },
   {
     id: 2,
-    title: "By Types Of Complaint",
+    title: "List of Applications",
     icon: FaChartBar,
     route: "ComplaintType2",
     iconBg: "bg-gradient-to-br from-orange-500 to-amber-400",
@@ -25,7 +25,7 @@ export default function Fire() {
   const navigate = useNavigate();
   const [query, setQuery] = useState("");
   const handleGoBack = () => {
-    navigate("/Administrative");
+    navigate("/home");
   };
 
   const filteredTiles = tilesData.filter((t) =>

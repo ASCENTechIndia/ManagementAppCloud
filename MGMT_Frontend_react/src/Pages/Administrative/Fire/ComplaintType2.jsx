@@ -137,7 +137,7 @@ const ComplaintType2 = () => {
   return (
     <div className="min-h-screen bg-[#eef4ff] font-sans pb-6">
       <PageHeader
-        title="By Type of Complaint"
+        title="List of Applications"
         subtitle="Fire Department"
         onBack={handleGoBack}
       />
@@ -182,7 +182,7 @@ const ComplaintType2 = () => {
         <>
           <SubHeaderCard
             subtitle="Fire Department"
-            title="By Type of Complaint"
+            title="List of Applications"
             infoText={`From ${formatDateDisplay(selectedFrom)} To ${formatDateDisplay(selectedTo)}`}
             className="mt-4"
           />

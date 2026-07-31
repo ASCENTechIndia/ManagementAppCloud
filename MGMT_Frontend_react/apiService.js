@@ -2,8 +2,8 @@
 import CryptoJS from 'crypto-js';
 
 const API_SECRET = 'your-secret-key'; // Must match backend
-const BASE_API_URL = 'http://localhost:5001';
-//  const BASE_API_URL = 'https://mgmtappapi.nagarkaryavalinew.com/'; 
+// const BASE_API_URL = 'http://localhost:5001';
+const BASE_API_URL = 'https://mgmtapi.nagarkaryavalinewuat.com/';
 
 const encryptParams = (params) => {
   const jsonString = JSON.stringify(params);

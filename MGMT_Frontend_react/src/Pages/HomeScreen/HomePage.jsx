@@ -11,6 +11,7 @@ import {
   BsCashCoin,
   BsBoxArrowRight,
   BsCassetteFill,
+  BsFire
 } from "react-icons/bs";
 import {
   FaUserCircle,
@@ -26,22 +27,22 @@ import { useAuth } from "../../Context/AuthContext";
 import HeaderUserButton from "../../Components/NewLayout/HeaderUserButton";
 
 const departments = [
-  {
-    name: "मालमत्ता कर विभाग",
-    subtitle: "Property Tax",
-    icon: BsFillHouseFill,
-    border: "border-l-blue-500",
-    iconBg: "bg-gradient-to-br from-blue-500 to-cyan-400",
-    route: "property_tax",
-  },
-  {
-    name: "पाणीपट्टी विभाग",
-    subtitle: "Water Tax",
-    icon: FaTint,
-    border: "border-l-emerald-500",
-    iconBg: "bg-gradient-to-br from-emerald-500 to-emerald-300",
-    route: "water_tax",
-  },
+  // {
+  //   name: "मालमत्ता कर विभाग",
+  //   subtitle: "Property Tax",
+  //   icon: BsFillHouseFill,
+  //   border: "border-l-blue-500",
+  //   iconBg: "bg-gradient-to-br from-blue-500 to-cyan-400",
+  //   route: "property_tax",
+  // },
+  // {
+  //   name: "पाणीपट्टी विभाग",
+  //   subtitle: "Water Tax",
+  //   icon: FaTint,
+  //   border: "border-l-emerald-500",
+  //   iconBg: "bg-gradient-to-br from-emerald-500 to-emerald-300",
+  //   route: "water_tax",
+  // },
   {
     name: "तक्रारी व सूचना",
     subtitle: "Complaint & Suggestion",
@@ -51,17 +52,17 @@ const departments = [
     route: "complaints",
   },
   {
-    name: "Marriage",
+    name: "विवाह नोंदणी",
     subtitle: "Marriage Department",
-    icon: FaRing, 
+    icon: FaRing,
     border: "border-l-orange-500",
     iconBg: "bg-gradient-to-br from-orange-500 to-amber-400",
     route: "marriage",
   },
   {
-    name: "Birth & Death",
+    name: "जन्म व मृत्यू नोंदणी",
     subtitle: "Birth & Death Department",
-    icon: FaNotesMedical, 
+    icon: FaNotesMedical,
     border: "border-l-orange-500",
     iconBg: "bg-gradient-to-br from-orange-500 to-amber-400",
     route: "brithDeath",
@@ -83,7 +84,7 @@ const departments = [
     route: "cfc",
   },
   {
-    name: "Market",
+    name: "मार्केट विभाग",
     subtitle: "Market Department",
     icon: BsCashStack,
     border: "border-l-purple-700",
@@ -91,12 +92,20 @@ const departments = [
     route: "market",
   },
   {
-    name: "Estate",
+    name: "इस्टेट विभाग",
     subtitle: "Estate Department",
     icon: BsCassetteFill,
     border: "border-l-purple-700",
     iconBg: "bg-gradient-to-br from-purple-700 to-purple-400",
     route: "estate",
+  },
+  {
+    name: "फायर विभाग",
+    subtitle: "Fire Department",
+    icon: BsFire,
+    border: "border-l-orange-700",
+    iconBg: "bg-gradient-to-br from-orange-700 to-orange-400",
+    route: "Fire",
   },
 ];
 

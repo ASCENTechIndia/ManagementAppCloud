@@ -10,13 +10,13 @@ import {
 import DashboardCard from "../../Components/NewDashboardCard";
 
 const tilesData = [
-  {
-    id: 1,
-    title: "Marriage Registration Department",
-    icon: FaUniversity,
-    route: "Marriage",
-    iconBg: "bg-gradient-to-br from-blue-500 to-cyan-400",
-  },
+  // {
+  //   id: 1,
+  //   title: "Marriage Registration Department",
+  //   icon: FaUniversity,
+  //   route: "Marriage",
+  //   iconBg: "bg-gradient-to-br from-blue-500 to-cyan-400",
+  // },
   {
     id: 2,
     title: "Inward Outward Department",
@@ -24,20 +24,20 @@ const tilesData = [
     route: "IncomeOutgoing",
     iconBg: "bg-gradient-to-br from-emerald-500 to-green-400",
   },
-  {
-    id: 3,
-    title: "Birth Death Department",
-    icon: FaBuilding,
-    route: "BirthAndDeath",
-    iconBg: "bg-gradient-to-br from-purple-500 to-violet-400",
-  },
-  {
-    id: 4,
-    title: "Fire Department",
-    icon: FaFire,
-    route: "Fire",
-    iconBg: "bg-gradient-to-br from-orange-500 to-amber-400",
-  },
+  // {
+  //   id: 3,
+  //   title: "Birth Death Department",
+  //   icon: FaBuilding,
+  //   route: "BirthAndDeath",
+  //   iconBg: "bg-gradient-to-br from-purple-500 to-violet-400",
+  // },
+  // {
+  //   id: 4,
+  //   title: "Fire Department",
+  //   icon: FaFire,
+  //   route: "Fire",
+  //   iconBg: "bg-gradient-to-br from-orange-500 to-amber-400",
+  // },
 ];
 
 export default function Administrative() {

@@ -101,9 +101,9 @@ const Login = () => {
       if (data.otpValidate === "Y") {
         console.log("OTP Validated. Redirecting to Dashboard...");
         localStorage.setItem("data", JSON.stringify(data));
-        window.location.href = "/home";
+        navigate("/home");
       } else {
-        window.location.href = "/home";
+        navigate("/home");
       }
 
     } catch (err) {
@@ -273,7 +273,7 @@ const Login = () => {
             Welcome Back
           </p>
 
-          <form onSubmit={handleSubmit}>
+          <form onSubmit={handleSubmit} autoComplete="on">
             <div className="mb-3">
               <label className="mb-2 block text-sm sm:text-base font-semibold">
                 Username
@@ -290,6 +290,8 @@ const Login = () => {
                 <input
                   type="text"
                   name="in_UserId"
+                  id="in_UserId"
+                  autoComplete="username"
                   value={formData.in_UserId}
                   onChange={handleChange}
                   placeholder="Enter Username"
@@ -309,6 +311,8 @@ const Login = () => {
                 <input
                   type="password"
                   name="in_password"
+                  id="in_password"
+                  autoComplete="current-password"
                   value={formData.in_password}
                   onChange={handleChange}
                   placeholder="Enter Password"
