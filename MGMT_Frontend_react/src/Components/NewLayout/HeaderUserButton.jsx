@@ -16,16 +16,16 @@ const menuOptions = [
         icon: BsFillHouseFill,
         link: "/home"
     },
-    {
-        name: "मालमत्ता कर विभाग",
-        icon: BsFillHouseFill,
-        link: "/propertydashboard"
-    },
-    {
-        name: "पाणीपट्टी विभाग",
-        icon: FaTint,
-        link: "/waterdashboard"
-    },
+    // {
+    //     name: "मालमत्ता कर विभाग",
+    //     icon: BsFillHouseFill,
+    //     link: "/propertydashboard"
+    // },
+    // {
+    //     name: "पाणीपट्टी विभाग",
+    //     icon: FaTint,
+    //     link: "/waterdashboard"
+    // },
     {
         name: "तक्रारी व सूचना",
         icon: BsExclamationCircleFill,
