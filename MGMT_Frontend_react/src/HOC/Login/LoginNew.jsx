@@ -70,11 +70,11 @@ const LoginNew = () => {
             console.log("Form Data:", formData);
             console.log("API Response:", res);
 
-          if (!res.data?.token) {
-    setError(res.data?.message || "Invalid username or password.");
-    setIsLoading(false);
-    return;
-}
+            if (!res.data?.token) {
+                setError(res.data?.message || "Invalid username or password.");
+                setIsLoading(false);
+                return;
+            }
 
             const { token, userId, data, userConfig } = res.data;
             console.log("Login Successful! Proceeding...");
