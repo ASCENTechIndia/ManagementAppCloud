@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { Formik, Form } from "formik";
 import { Repeat } from "lucide-react";
 import CalenderComponent from "../../Components/CalenderComponent";
@@ -19,8 +19,9 @@ const ServiceWiseDetails = () => {
   const { setLoading } = useLoader();
   const { user } = useAuth();
   const navigate = useNavigate();
+  const tableRef = useRef(null);
   const userId = user?.userId;
-  const ulbid = user?.data?.OrgId || "930";
+  const ulbid = user?.data?.OrgId;
 
   const [tableData, setTableData] = useState([]);
   const [selectedFrom, setSelectedFrom] = useState(new Date());
@@ -122,6 +123,13 @@ const ServiceWiseDetails = () => {
           authorisation_accpt: item.authorisation_accpt || 0,
         }));
         setTableData(rows);
+
+        setTimeout(() => {
+          tableRef.current.scrollIntoView({
+            behavior: "smooth",
+            block: "start",
+          });
+        }, 100);
       } else {
         setTableData([]);
         alert("No data found for the selected dates");
@@ -192,7 +200,7 @@ const ServiceWiseDetails = () => {
             className="mt-4"
           />
 
-          <section className="container mx-auto mt-4 mb-5 px-4">
+          <section className="container mx-auto mt-4 mb-5 px-4" ref={tableRef}>
             <div className="rounded-3xl bg-white p-4 sm:p-6 shadow-[0_12px_30px_rgba(0,0,0,0.12)]">
               <Table
                 data={tableData}

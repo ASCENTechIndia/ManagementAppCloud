@@ -1,20 +1,18 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { useLoader } from "../../Context/LoaderContext";
 import { useAuth } from "../../Context/AuthContext";
 import apiService from "../../../apiService";
 import Table from "../../Components/Table/Table";
-import {
-  PageHeader,
-  SubHeaderCard,
-} from "../../Components/NewLayout";
+import { PageHeader, SubHeaderCard } from "../../Components/NewLayout";
 
 const Department = () => {
   const { setLoading } = useLoader();
   const { user } = useAuth();
+  const tableRef = useRef(null);
   const navigate = useNavigate();
   const userId = user?.userId;
-  const ulbid = user?.data?.OrgId || "930";
+  const ulbid = user?.data?.OrgId;
 
   const [tableData, setTableData] = useState([]);
 
@@ -27,10 +25,10 @@ const Department = () => {
   ];
   const tableKeyMapping = {
     "विभागाचे नाव": "department_name",
-    "पूर्ण": "completed",
-    "प्रलंबित": "pending",
-    "नाकारलेले": "reject",
-    "एकूण": "total",
+    पूर्ण: "completed",
+    प्रलंबित: "pending",
+    नाकारलेले: "reject",
+    एकूण: "total",
   };
 
   const fetchData = async () => {
@@ -66,6 +64,12 @@ const Department = () => {
           total: item.total || 0,
         }));
         setTableData(rows);
+        setTimeout(() => {
+          tableRef.current.scrollIntoView({
+            behavior: "smooth",
+            block: "start",
+          });
+        }, 100);
       } else {
         setTableData([]);
       }
@@ -104,7 +108,7 @@ const Department = () => {
             className="mt-4"
           />
 
-          <section className="container mx-auto mt-4 mb-5 px-4">
+          <section className="container mx-auto mt-4 mb-5 px-4" ref={tableRef}>
             <div className="rounded-3xl bg-white p-4 sm:p-6 shadow-[0_12px_30px_rgba(0,0,0,0.12)]">
               <Table
                 data={tableData}
