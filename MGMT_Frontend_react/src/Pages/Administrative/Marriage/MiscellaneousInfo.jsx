@@ -67,14 +67,14 @@ const MiscellaneousInfo = () => {
         Request7: "",
       };
       const res = await apiService.post("WTgeneric-call", payload);
-
+      // console.log("REs", res)
       if (
         res?.data?.Success &&
         Array.isArray(res?.data?.data?.jsondata) &&
         res.data.data.jsondata.length > 0
       ) {
         const rows = res.data.data.jsondata.map((item) => ({
-          date: item.applictndt || "",
+          date: item.applictndt?.split(" ")[0] || "",
           application: Number(item.mrgappcount || 0),
           registration: Number(item.mrgcount || 0),
         }));

@@ -4,6 +4,7 @@ import { useAuth } from '../../Context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import apiService from '../../../apiService';
 import { useLoader } from '../../Context/LoaderContext';
+import jcmcLogo from "../../../public/assets/Images/JCMC.png";
 import { BsFillBuildingsFill, BsPersonFill, BsLockFill } from 'react-icons/bs';
 
 const Login = () => {
@@ -257,10 +258,14 @@ const Login = () => {
     }}>
       <div className="w-[90%] sm:w-[430px] md:p-5">
         <div className="bg-white rounded-[30px] px-[30px] py-10 shadow-[0_20px_40px_rgba(0,0,0,0.18)] animate-fadeUp">
-          <div className="w-[90px] h-[90px] mx-auto rounded-full bg-gradient-to-br from-[#2155CD] to-[#4C6FFF] flex items-center justify-center text-white text-[42px] shadow-[0_15px_25px_rgba(0,0,0,0.18)]" style={{
+          <div className="w-[90px] h-[90px] mx-auto  flex items-center justify-center text-white text-[50px] " style={{
             marginBottom: "20px"
           }}>
-            <BsFillBuildingsFill />
+            <img
+              src={jcmcLogo}
+              alt="JCMC Logo"
+              className="w-[90px] h-[90px] object-contain"
+            />
           </div>
           <h2 className='text-center mb-1 sm:mb-[55px]' style={{
             fontWeight: 700
