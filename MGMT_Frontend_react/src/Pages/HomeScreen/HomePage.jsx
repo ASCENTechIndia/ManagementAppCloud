@@ -11,7 +11,9 @@ import {
   BsCashCoin,
   BsBoxArrowRight,
   BsCassetteFill,
-  BsFire
+  BsFire,
+  BsCurrencyRupee,
+  BsServer
 } from "react-icons/bs";
 import {
   FaUserCircle,
@@ -108,12 +110,20 @@ const departments = [
     route: "Fire",
   },
   {
-    name: "RTS",
+    name: "RTS विभाग",
     subtitle: "RTS Department",
-    icon: BsCassetteFill,
+    icon: BsServer,
     border: "border-l-purple-700",
     iconBg: "bg-gradient-to-br from-purple-700 to-purple-400",
     route: "rts",
+  },
+  {
+    name: "Accounts विभाग",
+    subtitle: "Accounts Department",
+    icon: BsCurrencyRupee,
+    border: "border-l-purple-700",
+    iconBg: "bg-gradient-to-br from-purple-700 to-purple-400",
+    route: "Accounts",
   },
 ];
 
