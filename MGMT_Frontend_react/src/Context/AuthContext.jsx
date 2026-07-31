@@ -12,9 +12,9 @@ export const AuthProvider = ({ children }) => {
   const startInactivityTimer = () => {
     clearTimeout(inactivityTimer);
     inactivityTimer = setTimeout(() => {
-      alert("Session expired due to inactivity.");
+      console.warn("Session expired due to inactivity.");
       logout();
-    }, 30 * 60 * 1000); // 30 minutes
+    }, 15 * 60 * 1000); // 15 minutes
   };
 
   const resetInactivityTimer = () => startInactivityTimer();
@@ -92,9 +92,23 @@ export const AuthProvider = ({ children }) => {
   const logout = () => {
     clearTimeout(inactivityTimer);
     localStorage.removeItem("user");
-    localStorage.removeItem("userId"); // ✅ remove userId also
+    localStorage.removeItem("userId");
+    localStorage.removeItem("token");
+    localStorage.removeItem("data");
+    localStorage.removeItem("userConfig");
     setUser(null);
     setLoading(false);
+
+    // Notify Flutter if running inside hybrid app WebView
+    if (window.ToFlutter && window.ToFlutter.postMessage) {
+      try {
+        window.ToFlutter.postMessage(JSON.stringify({ type: "logout" }));
+        window.ToFlutter.postMessage(JSON.stringify({ type: "navigate", route: "logout" }));
+      } catch (err) {
+        console.error("Error posting logout message to Flutter:", err);
+      }
+    }
+
     window.location.replace("/"); // Redirect to login
   };
 

@@ -232,8 +232,19 @@ function logout() {
   localStorage.removeItem("token");
   localStorage.removeItem("data");
   localStorage.removeItem("userConfig");
-  alert("Session expired or logged out.");
-  window.location.replace("/login");
+
+  // Notify Flutter if running inside hybrid app WebView
+  if (window.ToFlutter && window.ToFlutter.postMessage) {
+    try {
+      window.ToFlutter.postMessage(JSON.stringify({ type: "logout" }));
+      window.ToFlutter.postMessage(JSON.stringify({ type: "navigate", route: "logout" }));
+    } catch (err) {
+      console.error("Error posting logout message to Flutter:", err);
+    }
+  }
+
+  console.warn("Session expired or logged out.");
+  window.location.replace("/");
 }
 
 // 🕒 Inactivity handling
@@ -488,7 +499,7 @@ export default function FrontdoorLogin() {
       <div style={{ maxWidth: 520 }}>
         <h2>Frontdoor</h2>
         <p>{msg}</p>
-        {done && <a href="/login">Go to Login</a>}
+        {done && <a href="/">Go to Login</a>}
       </div>
     </div>
   );
