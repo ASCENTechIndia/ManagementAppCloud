@@ -2,9 +2,11 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { PageHeader } from "../../Components/NewLayout";
 import {
+  FaBuilding,
   FaChartBar,
   FaFileAlt,
   FaFileInvoice,
+  FaListAlt,
   FaRing,
   FaSearch,
   FaSearchLocation,
@@ -15,9 +17,23 @@ const tilesData = [
   {
     id: 1,
     title: "Department",
-    icon: FaFileInvoice,
+    icon: FaBuilding,
     route: "Department",
     iconBg: "bg-gradient-to-br from-blue-500 to-cyan-400",
+  },
+  {
+    id: 2,
+    title: "Service Wise Details",
+    icon: FaListAlt,
+    route: "ServiceWiseDetails",
+    iconBg: "bg-gradient-to-br from-green-500 to-teal-400",
+  },
+  {
+    id: 3,
+    title: "Track Application",
+    icon: FaSearchLocation,
+    route: "RtsTrackApplication",
+    iconBg: "bg-gradient-to-br from-purple-500 to-violet-400",
   },
 ];
 

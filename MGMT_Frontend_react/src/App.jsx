@@ -100,6 +100,8 @@ import ZoneWise from './Pages/Estate/ZoneWise.jsx';
 import ZoneWiseMarket from './Pages/Estate/ZoneWiseMarket.jsx';
 import Rts from './Pages/RTS/Rts.jsx';
 import Department from './Pages/RTS/Department.jsx';
+import ServiceWiseDetails from './Pages/RTS/ServiceWiseDetails.jsx';
+import RtsTrackApplication from './Pages/RTS/RtsTrackApplication.jsx';
 
 function App() {
   return (
@@ -246,6 +248,8 @@ function App() {
             {/* RTS */}
             <Route path="/Rts" element={<Rts />} />
             <Route path="/Department" element={<Department />} />
+            <Route path="/ServiceWiseDetails" element={<ServiceWiseDetails />} />
+            <Route path="/RtsTrackApplication" element={<RtsTrackApplication />} />
 
 
 
