@@ -106,6 +106,8 @@ const departments = [
     border: "border-l-orange-700",
     iconBg: "bg-gradient-to-br from-orange-700 to-orange-400",
     route: "Fire",
+  },
+  {
     name: "RTS",
     subtitle: "RTS Department",
     icon: BsCassetteFill,
