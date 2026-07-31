@@ -6,7 +6,12 @@ import {
     BsExclamationCircleFill,
     BsBuildingFill,
     BsCashCoin,
-    BsBoxArrowRight
+    BsBoxArrowRight,
+    BsPerson,
+    BsSignDeadEnd,
+    BsArrowBarUp,
+    BsFire,
+    BsServer
 } from "react-icons/bs";
 import { FaUserCircle, FaHome, FaTint, FaExclamationCircle, FaChevronRight } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
@@ -31,16 +36,50 @@ const menuOptions = [
         icon: BsExclamationCircleFill,
         link: "/CADDashboard"
     },
+     {
+        name: "विवाह नोंदणी",
+        icon: BsPerson,
+        link: "/Marriage"
+    },
+     {
+        name: "जन्म व मृत्यू नोंदणी",
+        icon: BsSignDeadEnd,
+        link: "/BirthAndDeath"
+    },
     {
-        name: "प्रशासकीय विभाग",
-        icon: BsBuildingFill,
-        link: "/Administrative"
+        name: "आवक जावक विभाग",
+        icon: BsArrowBarUp,
+        link: "/IncomeOutgoing"
     },
     {
         name: "सी.फ.सी विभाग",
         icon: BsCashCoin,
         link: "/CfcDashBoard"
-    }
+    },
+   {
+        name: "मार्केट विभाग",
+        icon: BsCashStack,
+        link: "/market"
+    },
+    {
+        name: "इस्टेट विभाग",
+        icon: BsBuildingFill,
+        link: "/Estate"
+    },{
+        name: "फायर विभाग",
+        icon: BsFire,
+        link: "/Fire"
+    },
+     {
+        name: "RTS विभाग",
+        icon: BsServer,
+        link: "/Rts"
+    },
+    //  {
+    //     name: "Accounts विभाग",
+    //     icon: BsCashCoin,
+    //     link: "/CfcDashBoard"
+    // },
 ];
 const HeaderUserButton = ({ logOut }) => {
     const navigate = useNavigate();

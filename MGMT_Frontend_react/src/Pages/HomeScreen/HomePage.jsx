@@ -70,12 +70,12 @@ const departments = [
     route: "brithDeath",
   },
   {
-    name: "प्रशासकीय विभाग",
-    subtitle: "Administration",
+    name: "आवक जावक विभाग",
+    subtitle: "Inward Outward Department",
     icon: BsBuildingFill,
     border: "border-l-green-700",
     iconBg: "bg-gradient-to-br from-green-700 to-green-400",
-    route: "admin",
+    route: "AvakJavak",
   },
   {
     name: "सी.फ.सी विभाग",
@@ -169,6 +169,10 @@ const HomeScreen = () => {
         navigate("/Estate");
       } else if (route === "rts") {
         navigate("/Rts")
+      } else if (route === "AvakJavak") {
+        navigate("/IncomeOutgoing")
+      } else if (route === "Fire") {
+        navigate("/Fire")
       } else {
         navigate(`/${route}`); // fallback if you want dynamic routes
       }
