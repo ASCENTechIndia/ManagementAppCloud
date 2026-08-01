@@ -16,7 +16,7 @@ import DashboardCard from "../../Components/NewDashboardCard";
 const tilesData = [
   {
     id: 1,
-    title: "Department",
+    title: "Department Wise Summary",
     icon: FaBuilding,
     route: "Department",
     iconBg: "bg-gradient-to-br from-blue-500 to-cyan-400",

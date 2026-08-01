@@ -62,7 +62,7 @@ export default function CFCDashboard() {
   return (
     <div className="min-h-screen bg-[#eef4ff] font-sans pb-6">
       <PageHeader
-        title="CFC Dashboard"
+        title="CFC Department"
         subtitle="Welcome"
         onBack={handleGoBack}
       />

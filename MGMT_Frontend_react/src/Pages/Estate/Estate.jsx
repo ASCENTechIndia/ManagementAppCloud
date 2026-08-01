@@ -6,6 +6,7 @@ import {
   FaFileAlt,
   FaFileInvoice,
   FaRing,
+  FaRupeeSign,
   FaSearch,
   FaSearchLocation,
 } from "react-icons/fa";
@@ -14,8 +15,8 @@ import DashboardCard from "../../Components/NewDashboardCard";
 const tilesData = [
   {
     id: 1,
-    title: "Zone Wise",
-    icon: FaFileInvoice,
+    title: "Zone Wise Collection",
+    icon: FaRupeeSign,
     route: "ZoneWise",
     iconBg: "bg-gradient-to-br from-blue-500 to-cyan-400",
   },
