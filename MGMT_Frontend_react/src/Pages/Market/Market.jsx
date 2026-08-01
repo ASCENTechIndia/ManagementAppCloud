@@ -2,16 +2,20 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { PageHeader } from "../../Components/NewLayout";
 import {
-  FaChartBar,
-  FaFileAlt,
+  FaListAlt,
   FaFileInvoice,
-  FaRing,
-  FaSearch,
-  FaSearchLocation,
+  FaChartLine,
 } from "react-icons/fa";
 import DashboardCard from "../../Components/NewDashboardCard";
 
 const tilesData = [
+   {
+    id: 3,
+    title: "Market Summary",
+    icon: FaListAlt,
+    route: "MarketAhwal",
+    iconBg: "bg-gradient-to-br from-blue-500 to-cyan-400",
+  },
   {
     id: 1,
     title: "Applications Details",
@@ -22,17 +26,11 @@ const tilesData = [
   {
     id: 2,
     title: "Track Application",
-    icon: FaSearchLocation,
+    icon: FaChartLine,
     route: "TrackApplication",
     iconBg: "bg-gradient-to-br from-blue-500 to-cyan-400",
   },
-  {
-    id: 3,
-    title: "Market Ahwal",
-    icon: FaChartBar,
-    route: "MarketAhwal",
-    iconBg: "bg-gradient-to-br from-blue-500 to-cyan-400",
-  },
+ 
 ];
 
 export default function Market() {

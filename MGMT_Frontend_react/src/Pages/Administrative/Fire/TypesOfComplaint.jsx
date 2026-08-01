@@ -147,12 +147,12 @@ const TypesOfComplaint = () => {
 
       {tableData.length > 0 && (
         <>
-          <SubHeaderCard
+          {/* <SubHeaderCard
             subtitle="Fire Department"
             title="Types of Complaint"
             infoText={`From ${formatDateDisplay(selectedFrom)} To ${formatDateDisplay(selectedTo)}`}
             className="mt-4"
-          />
+          /> */}
 
           <section className="container mx-auto mt-4 mb-5 px-4">
             <div className="rounded-[24px] bg-white p-4 sm:p-6 shadow-[0_12px_30px_rgba(0,0,0,0.12)]">

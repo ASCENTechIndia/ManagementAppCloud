@@ -163,12 +163,12 @@ const DeathRegistrationByWard = () => {
 
       {tableData.length > 0 && (
         <>
-          <SubHeaderCard
+          {/* <SubHeaderCard
             subtitle="Death Department"
             title="Death Registration By Ward"
             infoText={`From ${formatDateDisplay(selectedFrom)} To ${formatDateDisplay(selectedTo)}`}
             className="mt-4"
-          />
+          /> */}
 
           <section className="container mx-auto mt-4 mb-5 px-4" ref={tableRef}>
             <div className="rounded-[24px] bg-white p-4 sm:p-6 shadow-[0_12px_30px_rgba(0,0,0,0.12)]">

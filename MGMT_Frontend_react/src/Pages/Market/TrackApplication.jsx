@@ -130,12 +130,12 @@ const TrackApplication = () => {
 
       {tableData.length > 0 && (
         <>
-          <SubHeaderCard
+          {/* <SubHeaderCard
             subtitle="Market Department"
             title="Track Application"
             infoText={`अर्ज क्रमांक: ${submittedApp}`}
             className="mt-4"
-          />
+          /> */}
 
           <section className="container mx-auto mt-4 mb-5 px-4" ref={tableRef}>
             <div className="rounded-3xl bg-white p-4 sm:p-6 shadow-[0_12px_30px_rgba(0,0,0,0.12)]">
