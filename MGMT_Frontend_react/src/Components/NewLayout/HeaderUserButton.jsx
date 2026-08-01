@@ -41,16 +41,16 @@ const menuOptions = [
         icon: BsPerson,
         link: "/Marriage"
     },
-     {
-        name: "जन्म व मृत्यू नोंदणी",
-        icon: BsSignDeadEnd,
-        link: "/BirthAndDeath"
-    },
-    {
-        name: "आवक जावक विभाग",
-        icon: BsArrowBarUp,
-        link: "/IncomeOutgoing"
-    },
+    //  {
+    //     name: "जन्म व मृत्यू नोंदणी",
+    //     icon: BsSignDeadEnd,
+    //     link: "/BirthAndDeath"
+    // },
+    // {
+    //     name: "आवक जावक विभाग",
+    //     icon: BsArrowBarUp,
+    //     link: "/IncomeOutgoing"
+    // },
     {
         name: "सी.फ.सी विभाग",
         icon: BsCashCoin,

@@ -5,13 +5,13 @@ import { FaRupeeSign , FaListAlt } from "react-icons/fa";
 import DashboardCard from "../../../Components/NewDashboardCard";
 
 const tilesData = [
-  // {
-  //   id: 1,
-  //   title: "Zonewise Collection",
-  //   icon: FaRupeeSign,
-  //   route: "TypesOfComplaint",
-  //   iconBg: "bg-gradient-to-br from-red-500 to-orange-400",
-  // },
+  {
+    id: 1,
+    title: "Zonewise Collection",
+    icon: FaRupeeSign,
+    route: "TypesOfComplaint",
+    iconBg: "bg-gradient-to-br from-red-500 to-orange-400",
+  },
   {
     id: 2,
     title: "List of Applications",

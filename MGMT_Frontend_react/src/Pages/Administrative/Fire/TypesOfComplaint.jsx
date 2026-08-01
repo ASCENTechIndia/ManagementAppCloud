@@ -26,10 +26,11 @@ const TypesOfComplaint = () => {
   const [selectedFrom, setSelectedFrom] = useState(new Date());
   const [selectedTo, setSelectedTo] = useState(new Date());
 
-  const tableHeaders = ["प्रकार", "संख्या"];
+  const tableHeaders = ["झोन", "पावती संख्या", "रक्कम"];
   const tableKeyMapping = {
-    प्रकार: "type",
-    संख्या: "count",
+    झोन: "zone_name",
+    "पावती संख्या": "receipt_count",
+    रक्कम: "amount",
   };
 
   const initialValues = {
@@ -56,31 +57,37 @@ const TypesOfComplaint = () => {
     try {
       setLoading(true);
       const payload = {
-        Request1: `PropMAMC$$${userId}$${ulbid}~${formatDateForAPI(values.from)}~${formatDateForAPI(values.to)}`,
-        Request2: "a",
-        Request3: "a",
-        Request4: "a",
-        Request5: "a",
-        Request6: "a",
-        Request7: "a",
+        Request1: `${import.meta.env.VITE_FLAG || "PropMAMC"}$fire_zonewisecollection$${userId}$${ulbid}~${formatDateForAPI(values.from)}~${formatDateForAPI(values.to)}`,
+        Request2: "",
+        Request3: "",
+        Request4: "",
+        Request5: "",
+        Request6: "",
+        Request7: "",
       };
       const res = await apiService.post("WTgeneric-call", payload);
 
       if (
         res?.data?.Success &&
-        Array.isArray(res?.data?.data) &&
-        res.data.data.length > 0
+        res?.data?.data?.jsondata &&
+        Array.isArray(res.data.data.jsondata) &&
+        res.data.data.jsondata.length > 0
       ) {
-        const rows = res.data.data.map((item) => ({
-          type: item.type || item.Type || "",
-          count: Number(item.count || item.Count || 0),
+        const rawData = res.data.data.jsondata;
+
+        const rows = rawData.map((item) => ({
+          zone_name: item.zone_name || "",
+          receipt_count: Number(item.receipt_count || 0),
+          amount: Number(item.amount || 0),
         }));
 
-        const totalCount = rows.reduce((sum, row) => sum + row.count, 0);
+        const totalReceipts = rows.reduce((sum, row) => sum + row.receipt_count, 0);
+        const totalAmount = rows.reduce((sum, row) => sum + row.amount, 0);
 
         const totalRow = {
-          type: "एकूण",
-          count: totalCount,
+          zone_name: "एकूण",
+          receipt_count: totalReceipts,
+          amount: totalAmount,
         };
 
         setTableData([...rows, totalRow]);
@@ -89,7 +96,7 @@ const TypesOfComplaint = () => {
         alert("No data found for the selected dates");
       }
     } catch (error) {
-      console.error("Error fetching miscellaneous information:", error);
+      console.error("Error fetching zonewise collection data:", error);
       setTableData([]);
       alert(error.message || "Failed to fetch data");
     } finally {
@@ -104,7 +111,7 @@ const TypesOfComplaint = () => {
   return (
     <div className="min-h-screen bg-[#eef4ff] font-sans pb-6">
       <PageHeader
-        title="Types of Complaint"
+        title="Zonewise Collection"
         subtitle="Fire Department"
         onBack={handleGoBack}
       />
