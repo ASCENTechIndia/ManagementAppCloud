@@ -149,7 +149,7 @@ const departments = [
     subtitle: "तक्रारी व सूचना",
     icon: BsExclamationCircleFill,
     border: "border-l-orange-500",
-    iconBg: "bg-gradient-to-br from-orange-500 to-amber-400",
+    iconBg: "bg-gradient-to-br from-red-500 to-amber-400",
     route: "complaints",
   },
   {
@@ -157,7 +157,7 @@ const departments = [
     subtitle: "विवाह नोंदणी",
     icon: FaRing,
     border: "border-l-orange-500",
-    iconBg: "bg-gradient-to-br from-orange-500 to-amber-400",
+    iconBg: "bg-gradient-to-br from-purple-500 to-red-400",
     route: "marriage",
   },
   // {
@@ -189,15 +189,15 @@ const departments = [
     subtitle: "मार्केट विभाग",
     icon: BsCashStack,
     border: "border-l-purple-700",
-    iconBg: "bg-gradient-to-br from-purple-700 to-purple-400",
+    iconBg: "bg-gradient-to-br from-green-700 to-purple-400",
     route: "market",
   },
   {
     name: "Estate Department",
     subtitle: "इस्टेट विभाग",
     icon: BsCassetteFill,
-    border: "border-l-purple-700",
-    iconBg: "bg-gradient-to-br from-purple-700 to-purple-400",
+    border: "border-l-green-700",
+    iconBg: "bg-gradient-to-br from-green-700 to-yellow-400",
     route: "estate",
   },
   {
@@ -213,7 +213,7 @@ const departments = [
     subtitle: "RTS विभाग",
     icon: BsServer,
     border: "border-l-purple-700",
-    iconBg: "bg-gradient-to-br from-purple-700 to-purple-400",
+    iconBg: "bg-gradient-to-br from-blue-700 to-purple-400",
     route: "rts",
   },
   {
@@ -221,7 +221,7 @@ const departments = [
     subtitle: "Accounts विभाग",
     icon: BsCurrencyRupee,
     border: "border-l-purple-700",
-    iconBg: "bg-gradient-to-br from-purple-700 to-purple-400",
+    iconBg: "bg-gradient-to-br from-yellow-700 to-purple-400",
     route: "Accounts",
   },
 ];

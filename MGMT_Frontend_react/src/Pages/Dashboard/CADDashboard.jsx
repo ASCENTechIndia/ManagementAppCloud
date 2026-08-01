@@ -108,7 +108,7 @@ export default function CADDashboard() {
   return (
     <div className="min-h-screen bg-[#eef4ff] font-sans pb-6">
       <PageHeader
-        title="CRM Dashboard"
+        title="Complaint & Suggestion"
         subtitle="Welcome"
         onBack={handleGoBack}
       />
