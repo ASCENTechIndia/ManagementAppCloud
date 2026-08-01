@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { Formik, Form } from "formik";
 import { Repeat } from "lucide-react";
 import CalenderComponent from "../../Components/CalenderComponent";
@@ -18,6 +18,7 @@ import {
 const MarketAhwal = () => {
   const { setLoading } = useLoader();
   const { user } = useAuth();
+  const tableRef = useRef(null);
   const navigate = useNavigate();
   const userId = user?.userId;
   const ulbid = user?.data?.OrgId;
@@ -85,9 +86,7 @@ const MarketAhwal = () => {
         Array.isArray(res.data.data.jsondata) &&
         res.data.data.jsondata.length > 0
       ) {
-        // Take the first (and only) object from jsondata
-        const item = res.data.data.jsondata[0];
-        const row = {
+        const item = res.data.data.jsondata.map((item) => ({
           total_application: item.total_application || 0,
           approve: item.approve || 0,
           pending: item.pending || 0,
@@ -95,8 +94,14 @@ const MarketAhwal = () => {
           payment_pending: item.payment_pending || 0,
           payment_done: item.payment_done || 0,
           delivered: item.delivered || 0,
-        };
-        setTableData([row]); // Only one row, no total row
+        }));
+        setTableData(item);
+        setTimeout(() => {
+          tableRef.current.scrollIntoView({
+            behavior: "smooth",
+            block: "start",
+          });
+        }, 100);
       } else {
         setTableData([]);
         alert("No data found for the selected dates");
@@ -167,7 +172,7 @@ const MarketAhwal = () => {
             className="mt-4"
           />
 
-          <section className="container mx-auto mt-4 mb-5 px-4">
+          <section className="container mx-auto mt-4 mb-5 px-4" ref={tableRef}>
             <div className="rounded-3xl bg-white p-4 sm:p-6 shadow-[0_12px_30px_rgba(0,0,0,0.12)]">
               <Table
                 data={tableData}
