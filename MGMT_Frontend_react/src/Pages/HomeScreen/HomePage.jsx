@@ -246,11 +246,12 @@ const HomeScreen = () => {
     }
     // ✅ Otherwise, navigate using React Router (web case)
     else {
-      if (route === "property_tax") {
-        navigate("/propertydashboard"); // 👈 go to Dashboard page
-      } else if (route === "water_tax") {
-        navigate("/waterdashboard");
-      } else if (route === "complaints") {
+      // if (route === "property_tax") {
+      //   navigate("/propertydashboard"); // 👈 go to Dashboard page
+      // } else if (route === "water_tax") {
+      //   navigate("/waterdashboard");
+      // } else
+       if (route === "complaints") {
         navigate("/CADDashboard");
       } else if (route === "marriage") {
         navigate("/Marriage");
@@ -291,6 +292,23 @@ const HomeScreen = () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
+
+  useEffect(() => {
+    // Push an initial state to the history stack
+    window.history.pushState(null, null, window.location.href);
+
+    const handlePopState = (event) => {
+      // Re-push the state to keep the user on the home page
+      window.history.pushState(null, null, window.location.href);
+      console.log("Browser back button click prevented on Home Page.");
+    };
+
+    window.addEventListener("popstate", handlePopState);
+    return () => {
+      window.removeEventListener("popstate", handlePopState);
+    };
+  }, []);
+
   return (
     <div className="min-h-screen bg-[#eef4ff]">
       <header className="bg-gradient-to-br from-[#0F3FAE] to-[#3D71F5] rounded-b-[30px] text-white shadow-[0_12px_30px_rgba(0,0,0,0.12)] header-section">

@@ -4,9 +4,26 @@ import { useAuth } from '../../Context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import apiService from '../../../apiService';
 import { useLoader } from '../../Context/LoaderContext';
-import jcmcLogo from "../../../public/assets/Images/JCMC.png";
+const jcmcLogo = "/assets/Images/JCMC.png";
 import { BsFillBuildingsFill, BsPersonFill, BsLockFill } from 'react-icons/bs';
 import Cookies from '../../utils/cookieUtils';
+
+// Decode JWT payload locally to avoid duplicate bundle/import side-effects in Vite
+const decodeToken = (token) => {
+  try {
+    const base64Url = token.split(".")[1];
+    const base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
+    const jsonPayload = decodeURIComponent(
+      window.atob(base64)
+        .split("")
+        .map((c) => "%" + ("00" + c.charCodeAt(0).toString(16)).slice(-2))
+        .join("")
+    );
+    return JSON.parse(jsonPayload);
+  } catch (err) {
+    return null;
+  }
+};
 
 const Login = () => {
   const [error, setError] = useState(null);
@@ -40,6 +57,19 @@ const Login = () => {
       setRememberMe(savedRemember === 'true' || true);
     }
   }, []);
+
+    useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      const decoded = decodeToken(token);
+      if (decoded) {
+        const isExpired = decoded.exp * 1000 < Date.now();
+        if (!isExpired) {
+          navigate("/home", { replace: true });
+        }
+      }
+    }
+  }, [navigate]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;

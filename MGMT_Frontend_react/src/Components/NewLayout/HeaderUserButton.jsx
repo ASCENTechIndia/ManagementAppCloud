@@ -15,6 +15,7 @@ import {
 } from "react-icons/bs";
 import { FaUserCircle, FaHome, FaTint, FaExclamationCircle, FaChevronRight } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../Context/AuthContext";
 const menuOptions = [
     {
         name: "Home",
@@ -83,6 +84,7 @@ const menuOptions = [
 ];
 const HeaderUserButton = ({ logOut }) => {
     const navigate = useNavigate();
+    const { user } = useAuth();
 
     const [showDropdown, setShowDropdown] = useState(false);
     const dropdownRef = useRef(null);
@@ -125,7 +127,10 @@ const HeaderUserButton = ({ logOut }) => {
 
             {showDropdown && (
                 <div className="absolute right-0 top-full mt-2 w-60 rounded-xl border border-gray-200 bg-white shadow-xl z-50 overflow-hidden">
-
+                    <div className="px-4 py-3 bg-gradient-to-br from-blue-700 to-purple-400 text-white">
+                        <div className="font-semibold text-sm truncate">{user?.data?.UserName || ""}</div>
+                        <div className="text-xs text-white/80 truncate mt-0.5">{user?.data?.UlbName || ""}</div>
+                    </div>
                     {menuOptions.map((item) => {
                         const Icon = item.icon;
 
