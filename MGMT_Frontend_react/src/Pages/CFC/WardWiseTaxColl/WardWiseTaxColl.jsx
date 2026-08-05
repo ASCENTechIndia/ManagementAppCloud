@@ -141,14 +141,17 @@ const WardWiseTaxColl = () => {
             }
           ];
           setTableData(tableDataWithTotal);
-
-          const bothChartData = data.map((data) => ({
-            value: Number(data.total),
-            label: data.zone,
+          const pieData =  data.map((data) => ({
+            y: Number(data.total),
+            name: data.zone || data.wardName,
           }));
+          const barData = data.map((data) => ({
+            total: Number(data.total),
+            name: data.zone || data.wardName
+          }))
 
-          setBarGraphData(bothChartData);
-          setPieChartData(bothChartData);
+          setBarGraphData(barData);
+          setPieChartData(pieData);
           setTimeout(() => {
             tableRef.current.scrollIntoView({
               behavior: "smooth",
