@@ -102,6 +102,8 @@ import Rts from './Pages/RTS/Rts.jsx';
 import Department from './Pages/RTS/Department.jsx';
 import ServiceWiseDetails from './Pages/RTS/ServiceWiseDetails.jsx';
 import RtsTrackApplication from './Pages/RTS/RtsTrackApplication.jsx';
+import Accounts from './Pages/Accounts/Accounts.jsx';
+import ZonewiseReceiptDetails from './Pages/Accounts/ZonewiseReceiptDetails.jsx';
 
 function App() {
   return (
