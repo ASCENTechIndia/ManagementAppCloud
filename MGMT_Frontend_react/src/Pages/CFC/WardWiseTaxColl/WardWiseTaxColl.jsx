@@ -58,7 +58,7 @@ const WardWiseTaxColl = () => {
           Request6: "",
           Request7: "",
         };
-
+        
         const response = await apiService.post("WTgeneric-call", payload);
         const resData = response.data?.data;
 
@@ -119,12 +119,12 @@ const WardWiseTaxColl = () => {
         } else if (Array.isArray(resData.jsondata) && resData.jsondata.length > 0) {
           const data = selectedZone === null ? resData.jsondata.map((data) => ({
             id: data.prabhag,
-            zone: data.prabhagname || data.zone || "",
-            total: data.rec_amount || data.collec,
+            zone: data.prabhagname,
+            total: (Number(data.rec_amount)/100000).toFixed(2),
           })) : resData.jsondata.map((data) => ({
             id: data.zoneid,
             wardName: data.zone,
-            total: data.collec
+            total: (Number(data.collec)/100000).toFixed(2)
           }))
           const totalSum = data.reduce((acc, item) => acc + Number(item.total || 0), 0);
           const tableDataWithTotal = selectedZone === null ? [
@@ -141,14 +141,17 @@ const WardWiseTaxColl = () => {
             }
           ];
           setTableData(tableDataWithTotal);
-
-          const bothChartData = data.map((data) => ({
-            value: Number(data.total),
-            label: data.zone,
+          const pieData =  data.map((data) => ({
+            y: Number(data.total),
+            name: data.zone || data.wardName,
           }));
+          const barData = data.map((data) => ({
+            total: Number(data.total),
+            name: data.zone || data.wardName
+          }))
 
-          setBarGraphData(bothChartData);
-          setPieChartData(bothChartData);
+          setBarGraphData(barData);
+          setPieChartData(pieData);
           setTimeout(() => {
             tableRef.current.scrollIntoView({
               behavior: "smooth",
