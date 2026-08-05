@@ -184,7 +184,7 @@ const TotalCollPercent = () => {
             arrears: data.outstnd,
             percentage: data.perc
           }))
-
+          // console.log(data);
           // const totalSum = data.reduce((acc, item) => acc + Number(item.total || 0), 0);
           // const tableDataWithTotal = selectedZone === null ? [
           //   ...data,
@@ -199,6 +199,39 @@ const TotalCollPercent = () => {
           //     total: totalSum.toFixed(2),
           //   }
           // ];
+          const hasTotalRow = data.some(
+            (item) => item.zone === "Total" || item.wardName === "Total"
+          );
+
+          if (!hasTotalRow) {
+              const totalDemand = data.reduce((acc, item) => acc + Number(item.demand || 0), 0);
+              const totalCollection = data.reduce((acc, item) => acc + Number(item.collection || 0), 0);
+              const totalArrears = data.reduce((acc, item) => acc + Number(item.arrears || 0), 0);
+              const totalPercentage = totalDemand > 0 ? (totalCollection / totalDemand) * 100 : 0;
+
+              const totalRow = selectedZone === null
+                ? {
+                  zone: "Total",
+                  demand: totalDemand.toFixed(2),
+                  collection: totalCollection.toFixed(2),
+                  arrears: totalArrears.toFixed(2),
+                  percentage: totalPercentage.toFixed(2),
+                }
+                : {
+                  wardName: "Total",
+                  demand: totalDemand,
+                  collection: totalCollection,
+                  arrears: totalArrears,
+                  percentage: totalPercentage.toFixed(2),
+                };
+              data.push(totalRow);
+            }
+
+
+          const chartDataItems = data.filter(
+            (item) => item.zone !== "Total" && item.wardName !== "Total"
+          );
+          // console.log(chartDataItems);
           setTableData(data);
 
           // const bothChartData = data.map((data) => ({
@@ -206,12 +239,12 @@ const TotalCollPercent = () => {
           //   label: data.zone,
           // }));
 
-          const pieData = data.map(data => ({
+          const pieData = chartDataItems.map(data => ({
             name: selectedZone === null ? data.zone : data.wardName,
             y: Number(data.collection) || 0,
           }))
 
-          const stackedBarData = data.map((item) => ({
+          const stackedBarData = chartDataItems.map((item) => ({
             category: selectedZone === null ? item.zone : item.wardName,
             demand: Number(item.demand) || 0,
             collection: Number(item.collection) || 0,
