@@ -29,13 +29,13 @@ const ComplaintType = () => {
 
   const tableHeaders = [
     "दिनांक",
-    "ग्राहक क्र.",
+    "मोबाईल क्र.",
     "विभागाचे नाव",
     "तक्रार तपशील",
   ];
   const tableKeyMapping = {
     "दिनांक": "compdt",
-    "ग्राहक क्र.": "custno",
+    "मोबाईल क्र.": "custno",
     "विभागाचे नाव": "comptype",
     "तक्रार तपशील": "compdtl",
   };
@@ -57,7 +57,7 @@ const ComplaintType = () => {
         Request7: "",
       };
       const res = await apiService.post("WTgeneric-call", payload);
-
+      console.log(res);
       if (
         res?.data?.Success &&
         Array.isArray(res?.data?.data?.jsondata) &&
