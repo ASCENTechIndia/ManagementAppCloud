@@ -119,8 +119,8 @@ const WardWiseTaxColl = () => {
         } else if (Array.isArray(resData.jsondata) && resData.jsondata.length > 0) {
           const data = selectedZone === null ? resData.jsondata.map((data) => ({
             id: data.prabhag,
-            zone: data.prabhagname || data.zone || "",
-            total: (Number(data.rec_amount)/100000).toFixed(2) || data.collec,
+            zone: data.prabhagname,
+            total: (Number(data.rec_amount)/100000).toFixed(2),
           })) : resData.jsondata.map((data) => ({
             id: data.zoneid,
             wardName: data.zone,
