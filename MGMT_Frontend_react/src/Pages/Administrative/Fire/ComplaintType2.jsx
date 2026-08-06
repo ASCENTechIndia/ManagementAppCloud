@@ -30,32 +30,36 @@ const ComplaintType2 = () => {
     "Application No.",
     "Application Date",
     "Applicant Name",
-    "Total Applications",
-    "New",
-    "Renewal",
-    "Verification Pending",
-    "Authorization Pending",
-    "Payment Pending",
-    "Rejected",
-    "Visit Pending",
-    "New Issued",
-    "Renewal Issued",
+    "Mobile Number",
+    "Property"
+    // "Total Applications",
+    // "New",
+    // "Renewal",
+    // "Verification Pending",
+    // "Authorization Pending",
+    // "Payment Pending",
+    // "Rejected",
+    // "Visit Pending",
+    // "New Issued",
+    // "Renewal Issued",
   ];
 
   const tableKeyMapping = {
     "Application No.": "appno",
     "Application Date": "appdate",
     "Applicant Name": "appname",
-    "Total Applications": "applications",
-    New: "new",
-    Renewal: "renewal",
-    "Verification Pending": "verifypending",
-    "Authorization Pending": "authpending",
-    "Payment Pending": "paymentpending",
-    Rejected: "reject",
-    "Visit Pending": "visitpending",
-    "New Issued": "newissued",
-    "Renewal Issued": "renewissued",
+    "Mobile Number": "mobile",
+    "Property": "property"
+    // "Total Applications": "applications",
+    // New: "new",
+    // Renewal: "renewal",
+    // "Verification Pending": "verifypending",
+    // "Authorization Pending": "authpending",
+    // "Payment Pending": "paymentpending",
+    // Rejected: "reject",
+    // "Visit Pending": "visitpending",
+    // "New Issued": "newissued",
+    // "Renewal Issued": "renewissued",
   };
 
   const initialValues = {
@@ -117,9 +121,32 @@ const ComplaintType2 = () => {
         }));
 
         setTableData(rows);
-      } else {
+      } else if (res?.data?.Success && res?.data?.errorcode === 9999 && typeof res.data.data === "string") {
+        const fixedString = res.data.data.replace(/\r?\n/g, "\\n");
+        const parsed = JSON.parse(fixedString);
+
+        const jsonData = parsed.jsondata;
+
+        if (jsonData.length > 0) {
+          const rows = jsonData.map((item) => ({
+            appno: item.appno || "",
+            appdate: item.insdate || "",
+            appname: item.appname || "",
+            mobile: item.mobile || "",
+            property: item.purpose || ""
+          }));
+
+          setTableData(rows);
+        } else {
+          setTableData([]);
+          alert("No data found");
+        }
+      }
+
+
+      else {
         setTableData([]);
-        alert("No data found for the selected dates");
+        alert("No data found");
       }
     } catch (error) {
       console.error("Error fetching complaint data:", error);
