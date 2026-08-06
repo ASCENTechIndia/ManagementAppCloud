@@ -81,20 +81,7 @@ import ProtectedRoute from './HOC/ProtectedRoute.jsx';
 import ComplaintReportByPeriod from './Pages/Complaint/ComplaintReportByPeriod.jsx';
 import ComplaintGrvRpt from './Pages/Complaint/ComplaintGrvRpt.jsx';
 import ReOpen from './Pages/Complaint/ReOpen.jsx';
-import Market from './Pages/Market/Market.jsx';
-import ApplicationDetails from './Pages/Market/ApplicationDetails.jsx';
-import TrackApplication from './Pages/Market/TrackApplication.jsx';
-import MarketAhwal from './Pages/Market/MarketAhwal.jsx';
-import Estate from './Pages/Estate/Estate.jsx';
-import ZoneWise from './Pages/Estate/ZoneWise.jsx';
-import ZoneWiseMarket from './Pages/Estate/ZoneWiseMarket.jsx';
-import Rts from './Pages/RTS/Rts.jsx';
-import Department from './Pages/RTS/Department.jsx';
-import ServiceWiseDetails from './Pages/RTS/ServiceWiseDetails.jsx';
-import RtsTrackApplication from './Pages/RTS/RtsTrackApplication.jsx';
-import Accounts from './Pages/Accounts/Accounts.jsx';
-import ZonewiseReceiptDetails from './Pages/Accounts/ZonewiseReceiptDetails.jsx';
-import AllZonesDetails from './Pages/Accounts/AllZonesDetails.jsx';
+import "bootstrap/dist/css/bootstrap.min.css";
 
 function App() {
   return (
@@ -170,7 +157,8 @@ function App() {
             <Route path='/SingleRecoveryPrabhag' element={<SingleRecoveryPrabhag />} />
             <Route path='/SingleRecoveryBlock' element={<SingleRecoveryBlock />} />
 
-            {/* Complaint and suggestions */}
+            {/* CRM */}
+            {/* Takrar */}
             <Route path='/ComplaintSummary2' element={<ComplaintSummary2 />} />
             <Route path='/ComplaintType' element={<ComplaintType />} />
             <Route path='/ComplaintDepartmentWise' element={<ComplaintDepartmentWise />} />
@@ -190,13 +178,14 @@ function App() {
             <Route path="/TotalCollPercent" element={<TotalCollPercent />} />
             <Route path="/ZoneWiseTaxColl" element={<ZoneWiseTaxColl />} />
 
-            {/* Marriage */}
+            {/* Administrative */}
             <Route path="/Marriage" element={<Marriage />} />
             <Route path="/MiscellaneousInfo" element={<MiscellaneousInfo />} />
             <Route path="/WardWiseMrgRegistration" element={<WardWiseMrgRegistration />} />
             <Route path="/SearchInformation" element={<SearchInformation />} />
-
-            {/* Birth & Death */}
+            <Route path="/IncomeOutgoing" element={<IncomeOutgoing />} />
+            <Route path="/MiscellaneousInformation" element={<MiscellaneousInformation />} />
+            <Route path="/OutwardInformation" element={<OutwardInformation />} />
             <Route path="/BirthAndDeath" element={<BirthAndDeath />} />
             <Route path="/Birth" element={<Birth />} />
             <Route path="/BirthRegistrationByDate" element={<BirthRegistrationByDate />} />
@@ -206,36 +195,9 @@ function App() {
             <Route path="/DeathRegistrationByDate" element={<DeathRegistrationByDate />} />
             <Route path="/DeathRegistrationByWard" element={<DeathRegistrationByWard />} />
             <Route path="/DeathSearchInfo" element={<DeathSearchInfo />} />
-
-            {/* Administrative */}
-            <Route path="/IncomeOutgoing" element={<IncomeOutgoing />} />
-            <Route path="/MiscellaneousInformation" element={<MiscellaneousInformation />} />
-            <Route path="/OutwardInformation" element={<OutwardInformation />} />
             <Route path="/Fire" element={<Fire />} />
             <Route path="/TypesOfComplaint" element={<TypesOfComplaint />} />
             <Route path="/ComplaintType2" element={<ComplaintType2 />} />
-
-            {/* Market */}
-            <Route path="/Market" element={<Market />} />
-            <Route path="/ApplicationDetails" element={<ApplicationDetails />} />
-            <Route path="/TrackApplication" element={<TrackApplication />} />
-            <Route path="/MarketAhwal" element={<MarketAhwal />} />
-
-            {/* Estate */}
-            <Route path="/Estate" element={<Estate />} />
-            <Route path="/ZoneWise" element={<ZoneWise />} />
-            <Route path="/ZoneWiseMarket" element={<ZoneWiseMarket />} />
-
-            {/* Accounts */}
-            <Route path="/Accounts" element={<Accounts />} />
-            <Route path="/ZonewiseReceiptDetails" element={<ZonewiseReceiptDetails />} />
-            <Route path="/AllZonesDetails" element={<AllZonesDetails />} />
-
-            {/* RTS */}
-            <Route path="/Rts" element={<Rts />} />
-            <Route path="/Department" element={<Department />} />
-            <Route path="/ServiceWiseDetails" element={<ServiceWiseDetails />} />
-            <Route path="/RtsTrackApplication" element={<RtsTrackApplication />} />
 
           </Routes>
         </ProtectedRoute>

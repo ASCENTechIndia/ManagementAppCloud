@@ -7,6 +7,7 @@ body,
   height: 100%;
   font-family: "Poppins", sans-serif;
 }
+
 body {
   @apply bg-gray-200;
 }
@@ -14,12 +15,15 @@ body {
 #report .react-datepicker-wrapper {
   width: 100%;
 }
+
 .date-container {
   z-index: 999;
 }
+
 .form-input-box {
   @apply border border-gray-300 rounded-md p-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-500 mt-2 mb-1;
 }
+
 .report .react-datepicker-wrapper {
   width: 100%;
 }
