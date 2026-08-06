@@ -45,13 +45,12 @@ const ComplaintGrvRpt = () => {
         `${import.meta.env.VITE_CRM_BASE_URL}/getComplaintDepartmentStats?ulbId=${ulbId}`,
       );
       let data = response.data;
-      console.log(data);
       if (data.length > 0) {
-        const rows = data.map((item) => ({
-          srNo: item.ROWNUM || "",
-          deptName: item.DEPTNAME || "",
+        const rows = data.map((item, index) => ({
+          srNo: Number(index + 1) || "",
+          deptName: item.TYPENAME || "",
           total: item.TOTAL_CNT || 0,
-          pending: item.PENDING_FOR_ASSIGN || 0,
+          pending: item.WIP || 0,
           assigned: item.ASSIGNED || 0,
           closed: item.CLOSED || 0,
         }));
