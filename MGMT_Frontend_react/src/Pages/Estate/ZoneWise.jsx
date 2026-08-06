@@ -72,7 +72,23 @@ const ZoneWise = () => {
           total_collection: item.total_collection || 0,
           recovery_percentage: item.recovery_percentage || 0,
         }));
-        setTableData(rows);
+        const totalArrearsDemand = rows.reduce((sum, item) => sum += item.arrears_demand, 0);
+        const totalCurrentDemand = rows.reduce((sum, item) => sum += item.current_demand, 0);
+        const totalArrearsCollection = rows.reduce((sum, item) => sum += item.arrears_collection, 0);
+        const totalCurrentCollection = rows.reduce((sum, item) => sum += item.current_collection, 0);
+        const totalTotalDemand = rows.reduce((sum, item) => sum += item.total_demand, 0);
+        const totalTotalCollection = rows.reduce((sum, item) => sum += item.total_collection, 0);
+        const totalRow = {
+          zone_name: "Total",
+          arrears_demand : totalArrearsDemand,
+          current_demand: totalCurrentDemand,
+          arrears_collection: totalArrearsCollection,
+          current_collection: totalCurrentCollection,
+          total_demand: totalTotalDemand,
+          total_collection: totalTotalCollection,
+          recovery_percentage: ((totalTotalCollection / totalTotalDemand) * 100).toFixed(2) 
+        }
+        setTableData([...rows, totalRow]);
         setTimeout(() => {
           tableRef.current.scrollIntoView({
             behavior: "smooth",
