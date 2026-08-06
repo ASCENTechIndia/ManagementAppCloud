@@ -70,14 +70,29 @@ const Department = () => {
       ) {
         const rows = res.data.data.jsondata.map((item) => ({
           department_name: item.department_name || "",
-          completed: item.completed || 0,
-          pending: item.pending || 0,
-          reject: item.reject || 0,
-          total: item.total || 0,
+          completed: Number(item.completed) || 0,
+          pending: Number(item.pending) || 0,
+          reject: Number(item.reject) || 0,
+          total: Number(item.total) || 0,
         }));
-        setTableData(rows);
+
+        // Calculate Totals Row
+        const totalCompleted = rows.reduce((acc, cur) => acc + cur.completed, 0);
+        const totalPending = rows.reduce((acc, cur) => acc + cur.pending, 0);
+        const totalReject = rows.reduce((acc, cur) => acc + cur.reject, 0);
+        const totalTotal = rows.reduce((acc, cur) => acc + cur.total, 0);
+
+        const totalRow = {
+          department_name: "एकूण",
+          completed: totalCompleted,
+          pending: totalPending,
+          reject: totalReject,
+          total: totalTotal,
+        };
+
+        setTableData([...rows, totalRow]);
         setTimeout(() => {
-          tableRef.current.scrollIntoView({
+          tableRef.current?.scrollIntoView({
             behavior: "smooth",
             block: "start",
           });
@@ -92,6 +107,15 @@ const Department = () => {
     } finally {
       setLoading(false);
     }
+  };
+
+  const customCellRenderer = {
+    department_name: (value) => {
+      if (value === "एकूण" || value === "Total") {
+        return <span className="font-bold text-gray-900">{value}</span>;
+      }
+      return <span>{value}</span>;
+    },
   };
 
   // useEffect(() => {
@@ -163,6 +187,7 @@ const Department = () => {
                 keyMapping={tableKeyMapping}
                 pagination={true}
                 rowsPerPage={10}
+                customCellRenderer={customCellRenderer}
               />
             </div>
           </section>

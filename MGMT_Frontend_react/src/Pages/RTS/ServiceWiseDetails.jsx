@@ -106,26 +106,47 @@ const ServiceWiseDetails = () => {
       ) {
         const rows = res.data.data.jsondata.map((item) => ({
           service_name: item.service_name || "",
-          new: item.new || 0,
-          approved: item.approved || 0,
-          delivered: item.delivered || 0,
-          application_received: item.application_received || 0,
-          authorisation_pending: item.authorisation_pending || 0,
-          authorisation_reject: item.authorisation_reject || 0,
-          authorisation_accpt_pending: item.authorisation_accpt_pending || 0,
-          payment_pending: item.payment_pending || 0,
-          total: item.total || 0,
-          certificate_iss_upload: item.certificate_iss_upload || 0,
-          certificate_iss_pending: item.certificate_iss_pending || 0,
-          ulb_pending: item.ulb_pending || 0,
-          citizen_payment_reciept: item.citizen_payment_reciept || 0,
-          payment_generate: item.payment_generate || 0,
-          authorisation_accpt: item.authorisation_accpt || 0,
+          new: Number(item.new) || 0,
+          approved: Number(item.approved) || 0,
+          delivered: Number(item.delivered) || 0,
+          application_received: Number(item.application_received) || 0,
+          authorisation_pending: Number(item.authorisation_pending) || 0,
+          authorisation_reject: Number(item.authorisation_reject) || 0,
+          authorisation_accpt_pending: Number(item.authorisation_accpt_pending) || 0,
+          payment_pending: Number(item.payment_pending) || 0,
+          total: Number(item.total) || 0,
+          certificate_iss_upload: Number(item.certificate_iss_upload) || 0,
+          certificate_iss_pending: Number(item.certificate_iss_pending) || 0,
+          ulb_pending: Number(item.ulb_pending) || 0,
+          citizen_payment_reciept: Number(item.citizen_payment_reciept) || 0,
+          payment_generate: Number(item.payment_generate) || 0,
+          authorisation_accpt: Number(item.authorisation_accpt) || 0,
         }));
-        setTableData(rows);
+
+        // Calculate Totals Row
+        const totalRow = {
+          service_name: "एकूण",
+          new: rows.reduce((acc, cur) => acc + cur.new, 0),
+          approved: rows.reduce((acc, cur) => acc + cur.approved, 0),
+          delivered: rows.reduce((acc, cur) => acc + cur.delivered, 0),
+          application_received: rows.reduce((acc, cur) => acc + cur.application_received, 0),
+          authorisation_pending: rows.reduce((acc, cur) => acc + cur.authorisation_pending, 0),
+          authorisation_reject: rows.reduce((acc, cur) => acc + cur.authorisation_reject, 0),
+          authorisation_accpt_pending: rows.reduce((acc, cur) => acc + cur.authorisation_accpt_pending, 0),
+          payment_pending: rows.reduce((acc, cur) => acc + cur.payment_pending, 0),
+          total: rows.reduce((acc, cur) => acc + cur.total, 0),
+          certificate_iss_upload: rows.reduce((acc, cur) => acc + cur.certificate_iss_upload, 0),
+          certificate_iss_pending: rows.reduce((acc, cur) => acc + cur.certificate_iss_pending, 0),
+          ulb_pending: rows.reduce((acc, cur) => acc + cur.ulb_pending, 0),
+          citizen_payment_reciept: rows.reduce((acc, cur) => acc + cur.citizen_payment_reciept, 0),
+          payment_generate: rows.reduce((acc, cur) => acc + cur.payment_generate, 0),
+          authorisation_accpt: rows.reduce((acc, cur) => acc + cur.authorisation_accpt, 0),
+        };
+
+        setTableData([...rows, totalRow]);
 
         setTimeout(() => {
-          tableRef.current.scrollIntoView({
+          tableRef.current?.scrollIntoView({
             behavior: "smooth",
             block: "start",
           });
@@ -141,6 +162,15 @@ const ServiceWiseDetails = () => {
     } finally {
       setLoading(false);
     }
+  };
+
+  const customCellRenderer = {
+    service_name: (value) => {
+      if (value === "एकूण" || value === "Total") {
+        return <span className="font-bold text-gray-900">{value}</span>;
+      }
+      return <span>{value}</span>;
+    },
   };
 
   const handleGoBack = () => {
@@ -208,6 +238,7 @@ const ServiceWiseDetails = () => {
                 keyMapping={tableKeyMapping}
                 pagination={true}
                 rowsPerPage={10}
+                customCellRenderer={customCellRenderer}
               />
             </div>
           </section>

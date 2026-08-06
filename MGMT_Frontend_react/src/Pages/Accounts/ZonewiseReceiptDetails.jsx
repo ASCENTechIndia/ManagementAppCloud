@@ -62,7 +62,7 @@ const ZonewiseReceiptDetails = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const [tableHeader] = useState([
-    "Prabhag / Zone",
+    "Zone",
     "Authorized Receipts",
     "Pending Receipts",
     "Authorized Amount (₹)",
@@ -71,7 +71,7 @@ const ZonewiseReceiptDetails = () => {
   ]);
 
   const [tableKeyMapping] = useState({
-    "Prabhag / Zone": "prabhagname",
+    "Zone": "prabhagname",
     "Authorized Receipts": "authorized_receipts",
     "Pending Receipts": "pending_receipts",
     "Authorized Amount (₹)": "auth_amount_formatted",
@@ -247,11 +247,16 @@ const ZonewiseReceiptDetails = () => {
 
   const handleLinkClick = (row, formValues) => {
     const pName = (row.prabhagname || "").toUpperCase();
-    if (pName === "ALL" || pName === "ALL ZONES") {
-      navigate("/allzonedetails", {
+    if (pName === "ALL" || pName === "ALL ZONES" || pName === "TOTAL") {
+      const fromDateStr = formatDateForAPI(formValues?.from || initialValues.from);
+      const toDateStr = formatDateForAPI(formValues?.to || initialValues.to);
+
+      navigate("/AllZonesDetails", {
         state: {
           from: formValues?.from || initialValues.from,
           to: formValues?.to || initialValues.to,
+          fromDateStr,
+          toDateStr,
         },
       });
     } else {
@@ -363,16 +368,6 @@ const ZonewiseReceiptDetails = () => {
                   {/* Table Section */}
                   <section className="container mx-auto mt-4 mb-5 px-4" ref={tableRef}>
                     <div className="rounded-[24px] bg-white p-4 sm:p-6 shadow-[0_12px_30px_rgba(0,0,0,0.12)]">
-                      <div className="flex items-center justify-between mb-4">
-                        <h3 className="text-lg font-bold text-gray-800 flex items-center gap-2">
-                          <Receipt className="w-5 h-5 text-blue-600" />
-                          Zonewise Receipt Summary Grid
-                        </h3>
-                        <span className="text-xs bg-blue-50 text-blue-700 px-3 py-1 rounded-full font-medium border border-blue-200">
-                          Flag: ACC_RECDATA
-                        </span>
-                      </div>
-
                       <Table
                         headers={tableHeader}
                         data={tableData}
@@ -396,7 +391,6 @@ const ZonewiseReceiptDetails = () => {
                                 title={`Click to view details for ${value}`}
                               >
                                 {value}
-                                <ExternalLink className="w-3.5 h-3.5" />
                               </button>
                             );
                           },
@@ -408,14 +402,9 @@ const ZonewiseReceiptDetails = () => {
                   {/* Pie Chart Section */}
                   <section className="container mx-auto mt-4 mb-5 px-4" ref={pieRef}>
                     <div className="rounded-[24px] bg-white p-4 sm:p-6 shadow-[0_12px_30px_rgba(0,0,0,0.12)]">
-                      <h3 className="text-lg font-bold text-gray-800 mb-2 flex items-center gap-2">
-                        <PieChart className="w-5 h-5 text-indigo-600" />
-                        Receipt Distribution Analysis
-                      </h3>
                       <PieChartComponent
                         data={chartData}
                         title="Authorized vs Pending Receipts Amount"
-                        description="Breakdown of receipt amounts for selected date range"
                       />
                     </div>
                   </section>
@@ -423,10 +412,6 @@ const ZonewiseReceiptDetails = () => {
                   {/* Bar Chart Section */}
                   <section className="container mx-auto mt-4 mb-5 px-4" ref={barRef}>
                     <div className="rounded-[24px] bg-white p-4 sm:p-6 shadow-[0_12px_30px_rgba(0,0,0,0.12)]">
-                      <h3 className="text-lg font-bold text-gray-800 mb-2 flex items-center gap-2">
-                        <BarChart3 className="w-5 h-5 text-emerald-600" />
-                        Comparative Receipt Breakdown
-                      </h3>
                       <StackedBarGraph
                         data={barGraphData}
                         title="Authorized vs Pending Receipts by Zone"

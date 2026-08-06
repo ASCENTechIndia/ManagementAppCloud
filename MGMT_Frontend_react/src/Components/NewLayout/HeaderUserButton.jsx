@@ -11,7 +11,8 @@ import {
     BsSignDeadEnd,
     BsArrowBarUp,
     BsFire,
-    BsServer
+    BsServer,
+    BsCurrencyRupee
 } from "react-icons/bs";
 import { FaUserCircle, FaHome, FaTint, FaExclamationCircle, FaChevronRight } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
@@ -37,7 +38,7 @@ const menuOptions = [
         icon: BsExclamationCircleFill,
         link: "/CADDashboard"
     },
-     {
+    {
         name: "विवाह नोंदणी",
         icon: BsPerson,
         link: "/Marriage"
@@ -57,7 +58,7 @@ const menuOptions = [
         icon: BsCashCoin,
         link: "/CfcDashBoard"
     },
-   {
+    {
         name: "मार्केट विभाग",
         icon: BsCashStack,
         link: "/market"
@@ -66,21 +67,22 @@ const menuOptions = [
         name: "इस्टेट विभाग",
         icon: BsBuildingFill,
         link: "/Estate"
-    },{
+    }, {
         name: "फायर विभाग",
         icon: BsFire,
         link: "/Fire"
     },
-     {
+    {
         name: "RTS विभाग",
         icon: BsServer,
         link: "/Rts"
     },
-    //  {
-    //     name: "Accounts विभाग",
-    //     icon: BsCashCoin,
-    //     link: "/CfcDashBoard"
-    // },
+    ,
+    {
+        name: "Accounts विभाग",
+        icon: BsCurrencyRupee,
+        link: "/Accounts"
+    },
 ];
 const HeaderUserButton = ({ logOut }) => {
     const navigate = useNavigate();
