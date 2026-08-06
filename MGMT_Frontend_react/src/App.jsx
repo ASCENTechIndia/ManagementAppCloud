@@ -82,6 +82,7 @@ import ComplaintReportByPeriod from './Pages/Complaint/ComplaintReportByPeriod.j
 import ComplaintGrvRpt from './Pages/Complaint/ComplaintGrvRpt.jsx';
 import ReOpen from './Pages/Complaint/ReOpen.jsx';
 import "bootstrap/dist/css/bootstrap.min.css";
+import CrmDashBoardOut from './Pages/Complaint/CrmDashboard.jsx';
 
 function App() {
   return (
@@ -167,6 +168,7 @@ function App() {
             <Route path='/ComplaintReportByPeriod' element={<ComplaintReportByPeriod />} />
             <Route path='/ComplaintGrvRpt' element={<ComplaintGrvRpt />} />
             <Route path='/ReOpen' element={<ReOpen />} />
+            <Route path='/CrmDashBoardOut' element={<CrmDashBoardOut />} />
 
 
             {/* Fallback so direct hits don’t 404 */}
