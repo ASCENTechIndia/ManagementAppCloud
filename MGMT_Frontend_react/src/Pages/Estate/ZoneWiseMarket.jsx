@@ -67,7 +67,7 @@ const ZoneWiseMarket = () => {
           total: item.total || 0,
           shop: item.shop || 0,
           rent: item.rent || 0,
-          empty: item.empty || 0,
+          empty: item.empty || 0, 
           total_demand: item.total_demand || 0,
           total_collection: item.total_collection || 0,
           recovery_percentage: item.recovery_percentage || 0,
