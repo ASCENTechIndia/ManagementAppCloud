@@ -101,28 +101,49 @@ const ComplaintReportByPeriod = () => {
     setSelectedDept(values.deptId);
 
     const payload = {
-      orgId: ulbId,
+      complaintNo: null,
+      complaintSubType: null,
+      complaintType: null,
+      deptConfigList: [],
+      prabhagIdList: [],
+      source: null,
+      status: null,
+
+      orgId: Number(ulbId),
       fromDate: formatDate(values.from),
       toDate: formatDate(values.to),
-      deptId: values.deptId,
+      selectedDept: Number(values.deptId),
     };
 
     try {
       setLoading(true);
       const response = await axios.post(
-        `${import.meta.env.VITE_CRM_BASE_URL}/getAgingComplaintSummary`,
+        `${import.meta.env.VITE_CRM_BASE_URL}/fetchComplaintReport`,
         payload,
       );
 
-      if (response.data?.success && Array.isArray(response.data.data)) {
-        const rows = response.data.data.map((item) => ({
-          deptName: item.DEPTNAME || "",
-          total: item.TOTAL || 0,
-          pending: item.PENDING || 0,
-          closed: item.CLOSE1 || 0,
-          es: item.ES || 0,
-          demand: item.DEMAND || 0,
-        }));
+
+      if (response.data?.success && Array.isArray(response.data.data) && response.data.data.length > 0) {
+        const department = response.data.data[0]?.DEPTNM;
+        const totalComplaints = response.data.data.length;
+        const totalClosed = response.data.data.filter(item => item.CMPSTATUS === "Close").length;
+        const totalPending = response.data.data.filter(item => item.CMPSTATUS !== "Close").length; 
+        // const rows = response.data.data.map((item) => ({
+        //   deptName: item.DEPTNAME || "",
+        //   total: item.TOTAL || 0,
+        //   pending: item.PENDING || 0,
+        //   closed: item.CLOSE1 || 0,
+        //   es: item.ES || 0,
+        //   demand: item.DEMAND || 0,
+        // }));
+        const rows = [{
+          deptName: department,
+          total: totalComplaints,
+          pending: totalPending,
+          closed: totalClosed,
+          es: 0,
+          demand: 0
+        }];
         setTableData(rows);
         setTimeout(() => {
           tableRef.current.scrollIntoView({
@@ -213,7 +234,7 @@ const ComplaintReportByPeriod = () => {
           </Form>
         )}
       </Formik>
-
+        {console.log(tableData)}
       {tableData.length > 0 && (
         <>
           {/* <SubHeaderCard
