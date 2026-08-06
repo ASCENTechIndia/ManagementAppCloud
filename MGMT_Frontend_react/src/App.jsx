@@ -43,18 +43,8 @@ import SingleRecoveryBlock from './Pages/Water/SingleRecovery/SingleRecoveryBloc
 import WaterResidentCommercial from './Pages/Water/WaterResidentCommercial/WaterResidentCommercial';
 
 import CRMDashboard from './Pages/Dashboard/CRMDashboard';
-import CrmDashBoardOut from './Pages/CRM/Dashboard/CrmDashboard';
-import FeedbackSummary from './Pages/CRM/FeedbackSummary/FeedbackSummary';
-import FeedbackSummarybyDate from './Pages/CRM/FeedbackSummary/FeedbackSummarybyDate';
 import CRMInfoDashboard from './Pages/Dashboard/CRMInfoDashboard';
 import CRMMainDashboard from './Pages/Dashboard/CRMMainDashboard';
-import MahitiSodha from './Pages/CRM/SuggestionsResponses/MahitiSodha/MahitiSodha';
-import ComplaintTypetwo from "./Pages/CRM/ComplaintTypetwo/ComplaintType";
-import PendingReportOne from "./Pages/CRM/PendingReportOne/PendingReportOne";
-import PendingReportTwo from "./Pages/CRM/PendingReportTwo/PendingReportTwo";
-import DepartmentWiseComplaint from "./Pages/CRM/DepartmentWiseComplaint/DepartmentWiseComplaint";
-import ComplaintTypes from "./Pages/CRM/ComplaintTypes/ComplaintTypes";
-import ComplaintSummary from "./Pages/CRM/ComplaintSummary/ComplaintSummary";
 import ComplaintSummary2 from "./Pages/Complaint/ComplaintSummary.jsx"
 import FrontdoorLogin from './FrontdoorLogin.jsx';
 import CADDashboard from './Pages/Dashboard/CADDashboard.jsx';
@@ -118,7 +108,6 @@ function App() {
         <Route path="/*" element={<ProtectedRoute>
           <Routes>
             <Route path="/home" element={<HomeScreen />} />
-            <Route path="/CrmDashBoardOut" element={<CrmDashBoardOut />} />
             <Route path="/CADDashboard" element={<CADDashboard />} />
             <Route path="/Administrative" element={<Administrative />} />
             <Route path="/CfcDashBoard" element={<CFCDashboard />} />
@@ -181,18 +170,7 @@ function App() {
             <Route path='/SingleRecoveryPrabhag' element={<SingleRecoveryPrabhag />} />
             <Route path='/SingleRecoveryBlock' element={<SingleRecoveryBlock />} />
 
-            {/* CRM */}
-            <Route path='/feedbacksummary' element={<FeedbackSummary />} />
-            <Route path='/feedbacksummarybydate' element={<FeedbackSummarybyDate />} />
-            <Route path='/ComplaintSummary' element={<ComplaintSummary />} />
-            <Route path='/ComplaintTypes' element={<ComplaintTypes />} />
-            <Route path='/DepartmentWiseComplaint' element={<DepartmentWiseComplaint />} />
-            <Route path='/ComplaintTypetwo' element={<ComplaintTypetwo />} />
-            <Route path='/PendingReportOne' element={<PendingReportOne />} />
-            <Route path='/PendingReportTwo' element={<PendingReportTwo />} />
-            <Route path='/MahitiSodha' element={<MahitiSodha />} />
-
-            {/* Takrar */}
+            {/* Complaint and suggestions */}
             <Route path='/ComplaintSummary2' element={<ComplaintSummary2 />} />
             <Route path='/ComplaintType' element={<ComplaintType />} />
             <Route path='/ComplaintDepartmentWise' element={<ComplaintDepartmentWise />} />
