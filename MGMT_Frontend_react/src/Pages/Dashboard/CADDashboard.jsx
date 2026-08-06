@@ -29,13 +29,13 @@ const tilesData = [
     route: "ComplaintSummary2",
     iconBg: "bg-gradient-to-br from-emerald-500 to-green-400",
   },
-  {
-    id: 3,
-    title: "Complaint Type",
-    icon: FaExclamationCircle,
-    route: "ComplaintType",
-    iconBg: "bg-gradient-to-br from-purple-500 to-violet-400",
-  },
+  // {
+  //   id: 3,
+  //   title: "Complaint Type",
+  //   icon: FaExclamationCircle,
+  //   route: "ComplaintType",
+  //   iconBg: "bg-gradient-to-br from-purple-500 to-violet-400",
+  // },
   {
     id: 4,
     title: "Department wise Complaint",
