@@ -51,7 +51,7 @@ const TypeOfComplaint = () => {
       ) {
         const data = res.data.data.jsondata.map((item) => ({
           category: item.comptype || "",
-          registered: Number(item.totalcomp) || 0,
+          // registered: Number(item.totalcomp) || 0,
           resolved: Number(item.resolved) || 0,
           pending: Number(item.pending) || 0,
         }));
@@ -137,7 +137,7 @@ const TypeOfComplaint = () => {
               description="Registered, Resolved & Pending"
               yAxisTitle="Number of Complaints"
               seriesConfig={[
-                { name: "Registered", key: "registered", color: "#facc15" },
+                // { name: "Registered", key: "registered", color: "#facc15" },
                 { name: "Resolved", key: "resolved", color: "#22c55e" },
                 { name: "Pending", key: "pending", color: "#ef4444" },
               ]}
