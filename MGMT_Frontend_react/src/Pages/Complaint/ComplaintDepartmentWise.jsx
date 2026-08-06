@@ -53,7 +53,7 @@ const ComplaintDepartmentWise = () => {
       ) {
         const data = res.data.data.jsondata.map((item) => ({
           category: item.departmentName || "",
-          registered: Number(item.registration) || 0,
+          // registered: Number(item.registration) || 0,
           resolved: Number(item.resolved) || 0,
           pending: Number(item.pending) || 0,
         }));
@@ -145,10 +145,10 @@ const ComplaintDepartmentWise = () => {
             <StackedBarGraph
               data={barData}
               title="Department-wise Complaint Status"
-              description="Registered, Resolved & Pending"
+              description="Resolved & Pending"
               yAxisTitle="Number of Complaints"
               seriesConfig={[
-                { name: "Registered", key: "registered", color: "#facc15" },
+                // { name: "Registered", key: "registered", color: "#facc15" },
                 { name: "Resolved", key: "resolved", color: "#22c55e" },
                 { name: "Pending", key: "pending", color: "#ef4444" },
               ]}
