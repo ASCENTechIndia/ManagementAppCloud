@@ -45,7 +45,7 @@ const ComplaintGrvRpt = () => {
         `${import.meta.env.VITE_CRM_BASE_URL}/getComplaintDepartmentStats?ulbId=${ulbId}`,
       );
       let data = response.data;
-
+      console.log(data);
       if (data.length > 0) {
         const rows = data.map((item) => ({
           srNo: item.ROWNUM || "",
@@ -55,7 +55,19 @@ const ComplaintGrvRpt = () => {
           assigned: item.ASSIGNED || 0,
           closed: item.CLOSED || 0,
         }));
-        setTableData(rows);
+        const totalComplaints = rows.reduce((sum, item) => sum += item.total, 0);
+        const totalPending = rows.reduce((sum, item) => sum += item.pending, 0);
+        const totalAssigned = rows.reduce((sum, item) => sum += item.assigned, 0);
+        const totalClosed = rows.reduce((sum, item) => sum += item.closed, 0);
+        const TotalRow = {
+          srNo: "",
+          deptName: "Total",
+          total: totalComplaints,
+          pending: totalPending,
+          assigned: totalAssigned,
+          closed: totalClosed
+        }
+        setTableData([...rows, TotalRow]);
         setTimeout(() => {
           tableRef.current.scrollIntoView({
             behavior: "smooth",
@@ -63,7 +75,7 @@ const ComplaintGrvRpt = () => {
           });
         }, 100);
       } else {
-        alert("Record not available");
+        alert("No Data Found");
         setTableData([]);
       }
     } catch (error) {
