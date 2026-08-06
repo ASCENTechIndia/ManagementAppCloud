@@ -72,7 +72,6 @@ const ZoneWise = () => {
           total_collection: item.total_collection || 0,
           recovery_percentage: item.recovery_percentage || 0,
         }));
-        console.log(rows);
         const totalArrearsDemand = rows.reduce((sum, item) => sum += item.arrears_demand, 0);
         const totalCurrentDemand = rows.reduce((sum, item) => sum += item.current_demand, 0);
         const totalArrearsCollection = rows.reduce((sum, item) => sum += item.arrears_collection, 0);
