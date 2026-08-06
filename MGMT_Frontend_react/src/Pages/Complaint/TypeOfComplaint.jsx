@@ -35,7 +35,7 @@ const TypeOfComplaint = () => {
     try {
       setLoading(true);
       const payload = {
-        Request1: `${import.meta.env.VITE_FLAG}$Crm_Complaint$${userId}$${ulbid}~${formatDateForAPI(from)}~${formatDateForAPI(to)}~*~*`,
+        Request1: `${import.meta.env.VITE_FLAG}$Crm_ComplaintType$${userId}$${ulbid}~${formatDateForAPI(from)}~${formatDateForAPI(to)}~*~COMP`,
         Request2: "",
         Request3: "",
         Request4: "",
@@ -133,8 +133,8 @@ const TypeOfComplaint = () => {
           <div className="rounded-3xl bg-white p-4 sm:p-6 shadow-[0_12px_30px_rgba(0,0,0,0.12)]">
             <StackedBarGraph
               data={barData}
-              title="Department-wise Complaint Status"
-              description="Registered, Resolved & Pending"
+              title="Complaint Type-wise Status"
+              description="Resolved & Pending"
               yAxisTitle="Number of Complaints"
               seriesConfig={[
                 // { name: "Registered", key: "registered", color: "#facc15" },
