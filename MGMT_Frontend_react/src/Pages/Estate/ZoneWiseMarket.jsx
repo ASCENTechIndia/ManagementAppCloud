@@ -72,7 +72,24 @@ const ZoneWiseMarket = () => {
           total_collection: item.total_collection || 0,
           recovery_percentage: item.recovery_percentage || 0,
         }));
-        setTableData(rows);
+
+        const totalTotal = rows.reduce((sum, item) => sum += item.total, 0);
+        const totalShop = rows.reduce((sum, item) => sum += item.shop, 0);
+        const totalRent = rows.reduce((sum, item) => sum += item.rent, 0);
+        const totalEmpty = rows.reduce((sum, item) => sum += item.empty, 0);
+        const totalTotalDemand = rows.reduce((sum, item) => sum += item.total_demand, 0);
+        const totalTotalCollection = rows.reduce((sum, item) => sum += item.total_collection, 0);
+        const totalRow = {
+          zone_name: "Total",
+          total : totalTotal,
+          shop: totalShop,
+          rent: totalRent,
+          empty: totalEmpty,
+          total_demand: totalTotalDemand,
+          total_collection: totalTotalCollection,
+          recovery_percentage: ((totalTotalCollection / totalTotalDemand) * 100).toFixed(2) 
+        }
+        setTableData([...rows, totalRow]);
         setTimeout(() => {
           tableRef.current.scrollIntoView({
             behavior: "smooth",
