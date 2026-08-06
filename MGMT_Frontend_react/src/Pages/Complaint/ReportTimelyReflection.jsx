@@ -70,7 +70,12 @@ const ReportTimelyReflection = () => {
             pending,
           };
         });
-        setTableData(data);
+        const totalPending = data.reduce((sum, item) => sum += Number(item.pending), 0)
+        const totalRow = {
+          departmentName: "Total",
+          pending: totalPending
+        }
+        setTableData([...data, totalRow]);
         setCurrentView("summary");
         setTimeout(() => {
           tableRef.current.scrollIntoView({
