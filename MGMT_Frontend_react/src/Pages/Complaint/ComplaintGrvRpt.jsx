@@ -50,7 +50,7 @@ const ComplaintGrvRpt = () => {
           srNo: Number(index + 1) || "",
           deptName: item.TYPENAME || "",
           total: item.TOTAL_CNT || 0,
-          pending: item.PENDING_FOR_ASSIGN || 0,
+          pending: item.WIP || 0,
           assigned: item.ASSIGNED || 0,
           closed: item.CLOSED || 0,
         }));
