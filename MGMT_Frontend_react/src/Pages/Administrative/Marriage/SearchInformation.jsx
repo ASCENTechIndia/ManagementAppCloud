@@ -50,10 +50,10 @@ const SearchInformation = () => {
 
   const handleSubmit = async (values) => {
     const appNo = values.applicationNumber.trim();
-    if (!appNo) {
-      alert("Please enter application number");
-      return;
-    }
+    // if (!appNo) {
+    //   alert("Please enter application number");
+    //   return;
+    // }
 
     if (!userId || !ulbid) {
       alert("User ID or Ulb Id not found");
@@ -95,7 +95,7 @@ const SearchInformation = () => {
         }, 100);
       } else {
         setTableData([]);
-        alert("No data found for the selected date and application number");
+        alert("No data found");
       }
     } catch (error) {
       console.error("Error fetching search information:", error);
