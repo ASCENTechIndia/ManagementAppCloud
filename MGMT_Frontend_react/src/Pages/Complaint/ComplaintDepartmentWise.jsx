@@ -51,13 +51,14 @@ const ComplaintDepartmentWise = () => {
         Array.isArray(res?.data?.data?.jsondata) &&
         res.data.data.jsondata.length > 0
       ) {
+   
         const data = res.data.data.jsondata.map((item) => ({
-          category: item.departmentName || "",
+          category: item.dept || "",
           // registered: Number(item.registration) || 0,
           resolved: Number(item.resolved) || 0,
           pending: Number(item.pending) || 0,
         }));
-
+        
         const det = res.data.data.jsondata.map((item) => ({
           shortName: item.deptcode || "",
           fullName: item.dept || "",
