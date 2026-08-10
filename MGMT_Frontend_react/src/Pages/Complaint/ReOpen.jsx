@@ -6,11 +6,13 @@ import { useAuth } from "../../Context/AuthContext";
 import Table from "../../Components/Table/Table";
 import { PageHeader, SubHeaderCard } from "../../Components/NewLayout";
 import { ChevronLeft } from "lucide-react";
+import useAlert from "../../Components/CustomAlert/useAlert";
 
 const ReOpen = () => {
   const { setLoading } = useLoader();
   const { user } = useAuth();
   const navigate = useNavigate();
+  const { showAlert, Alert } = useAlert();
   const orgId = user?.data?.OrgId;
   const tableRef = useRef(null);
 
@@ -156,7 +158,7 @@ const ReOpen = () => {
 
   const fetchLevel1 = async () => {
     if (!orgId) {
-      alert("Organization ID not found");
+      showAlert("Organization ID not found", "warning");
       return;
     }
     try {
@@ -183,11 +185,12 @@ const ReOpen = () => {
         }, 100);
       } else {
         setLevel1Data([]);
+        showAlert("No Data Found", "error");
       }
     } catch (error) {
       console.error("Error fetching level 1 data:", error);
       setLevel1Data([]);
-      alert(error.message || "Failed to fetch department summary");
+      showAlert(error.message || "Failed to fetch department summary", "error");
     } finally {
       setLoading(false);
     }
@@ -218,11 +221,12 @@ const ReOpen = () => {
         }, 100);
       } else {
         setLevel2Data([]);
+        showAlert("No Data Found", "error");
       }
     } catch (error) {
       console.error("Error fetching level 2 data:", error);
       setLevel2Data([]);
-      alert(error.message || "Failed to fetch complaint types");
+      showAlert(error.message || "Failed to fetch complaint types", "error");
     } finally {
       setLoading(false);
     }
@@ -252,11 +256,12 @@ const ReOpen = () => {
         }, 100);
       } else {
         setLevel3Data([]);
+        showAlert("No Data Found", "error");
       }
     } catch (error) {
       console.error("Error fetching level 3 data:", error);
       setLevel3Data([]);
-      alert(error.message || "Failed to fetch complaint subtypes");
+      showAlert(error.message || "Failed to fetch complaint subtypes", "error");
     } finally {
       setLoading(false);
     }
@@ -311,7 +316,7 @@ const ReOpen = () => {
   return (
     <div className="min-h-screen bg-[#eef4ff] font-sans pb-6">
       <PageHeader title="Re‑Open" subtitle="CRM" onBack={handleGoBack} />
-
+      <Alert />
       <div className="container mx-auto mt-4 mb-5 px-4">
         <div className="rounded-3xl bg-white p-4 sm:p-6 shadow-[0_12px_30px_rgba(0,0,0,0.12)]">
           {level > 1 && (

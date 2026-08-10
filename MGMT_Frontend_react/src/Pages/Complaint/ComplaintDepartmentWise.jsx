@@ -31,7 +31,7 @@ const ComplaintDepartmentWise = () => {
   const { showAlert, Alert } = useAlert();
   const fetchData = async (from, to) => {
     if (!userId || !ulbId) {
-      alert("User ID not found");
+      showAlert("User ID not found", "warning");
       return;
     }
     try {
@@ -67,7 +67,7 @@ const ComplaintDepartmentWise = () => {
         setTableDet(det);
         setBarData(data);
         setTimeout(() => {
-          tableRef.current.scrollIntoView({
+          tableRef.current.scrollIntoView({ 
             behavior: "smooth",
             block: "start"
           });

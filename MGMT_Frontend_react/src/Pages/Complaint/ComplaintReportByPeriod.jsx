@@ -13,11 +13,13 @@ import {
   SubHeaderCard,
 } from "../../Components/NewLayout";
 import CalenderComponent from "../../Components/CalenderComponent";
+import useAlert from "../../Components/CustomAlert/useAlert";
 
 const ComplaintReportByPeriod = () => {
   const { setLoading } = useLoader();
   const { user } = useAuth();
   const navigate = useNavigate();
+  const { showAlert, Alert } = useAlert();
   const ulbId = user?.data?.OrgId;
   const tableRef = useRef(null);
   const [tableData, setTableData] = useState([]);
@@ -74,13 +76,13 @@ const ComplaintReportByPeriod = () => {
           setSelectedDept(options[0].value);
         }
       } else {
-        alert("No departments found");
+        showAlert("No departments found", "warning");
         setDeptOptions([]);
       }
     } catch (error) {
       setDeptOptions([]);
       console.error("Error fetching departments:", error);
-      alert(error.message || "Failed to fetch departments");
+      showAlert(error.message || "Failed to fetch departments", "error");
     } finally {
       setLoading(false);
     }
@@ -88,11 +90,11 @@ const ComplaintReportByPeriod = () => {
 
   const handleSubmit = async (values) => {
     if (!ulbId) {
-      alert("Ulb ID not found");
+      showAlert("Ulb ID not found", "warning");
       return;
     }
     if (!values.deptId) {
-      alert("Please select a department");
+      showAlert("Please select a department", "warning");
       return;
     }
 
@@ -153,12 +155,12 @@ const ComplaintReportByPeriod = () => {
         }, 100);
       } else {
         setTableData([]);
-        alert(response.data?.message || "No data found");
+        showAlert(response.data?.message || "No data found", "error");
       }
     } catch (error) {
       console.error("Error fetching complaint data:", error);
       setTableData([]);
-      alert(error.message || "Failed to fetch data");
+      showAlert(error.message || "Failed to fetch data", "error");
     } finally {
       setLoading(false);
     }
@@ -181,7 +183,7 @@ const ComplaintReportByPeriod = () => {
         subtitle="CRM"
         onBack={handleGoBack}
       />
-
+      <Alert />
       <Formik initialValues={initialValues} onSubmit={handleSubmit}>
         {({ setFieldValue, values, handleSubmit: formikSubmit }) => (
           <Form onSubmit={formikSubmit}>

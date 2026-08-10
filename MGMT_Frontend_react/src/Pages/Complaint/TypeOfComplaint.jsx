@@ -13,11 +13,13 @@ import {
   FormLayoutCard,
   CalendarInput,
 } from "../../Components/NewLayout";
+import useAlert from "../../Components/CustomAlert/useAlert";
 
 const TypeOfComplaint = () => {
   const { setLoading } = useLoader();
   const { user } = useAuth();
   const navigate = useNavigate();
+  const { showAlert, Alert } = useAlert(); 
   const userId = user?.userId;
   const ulbid = user?.data?.OrgId;
   const tableRef = useRef(null);
@@ -29,7 +31,7 @@ const TypeOfComplaint = () => {
 
   const fetchData = async (from, to) => {
     if (!userId || !ulbid) {
-      alert("Userid or ulbID is not set");
+      showAlert("Userid or ulbID is not set", "warning");
       return;
     }
     try {
@@ -44,6 +46,7 @@ const TypeOfComplaint = () => {
         Request7: "",
       };
       const res = await apiService.post("WTgeneric-call", payload);
+      console.log(res);
       if (
         res?.data?.Success &&
         Array.isArray(res?.data?.data?.jsondata) &&
@@ -63,13 +66,13 @@ const TypeOfComplaint = () => {
           });
         }, 100);
       } else {
-        alert("No record available");
+        showAlert("No record available", "error");
         setBarData([]);
       }
     } catch (error) {
       console.error("Error fetching complaint data:", error);
       setBarData([]);
-      alert(error.message || "Failed to fetch data");
+      showAlert(error.message || "Failed to fetch data", "error");
     } finally {
       setLoading(false);
     }
@@ -90,7 +93,7 @@ const TypeOfComplaint = () => {
         subtitle="CRM"
         onBack={handleGoBack}
       />
-
+      <Alert />
       <Formik initialValues={initialValues} onSubmit={handleSubmit}>
         {({ setFieldValue, values, handleSubmit: formikSubmit }) => (
           <Form onSubmit={formikSubmit}>

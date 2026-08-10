@@ -9,7 +9,7 @@ const useAlert = () => {
     });
 
     const showAlert = (message, type = "info") => {
-        console.log("SHOW ALERT:", message, type);
+        // console.log("SHOW ALERT:", message, type);
 
         setAlert({
             show: true,
