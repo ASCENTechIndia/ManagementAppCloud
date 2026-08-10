@@ -219,7 +219,7 @@ const Taxcollection = () => {
                   <SubHeaderCard
                     subtitle="Zone"
                     title="All Zones"
-                    infoText={`${formatDateForAPI(values.from)} - ${formatDateForAPI(values.to)} (All amounts in lakhs)`}
+                    infoText={`${formatDateForAPI(values.from)} - ${formatDateForAPI(values.to)}`}
                     className="mt-4"
                   />
 
