@@ -6,11 +6,13 @@ import TableComponent from "../../Components/Table/Table";
 import { useNavigate } from "react-router-dom";
 import { PageHeader } from "../../Components/NewLayout";
 import axios from "axios";
+import useAlert from "../../Components/CustomAlert/useAlert";
 
 const ComplaintGrvRpt = () => {
   const { setLoading } = useLoader();
   const { user } = useAuth();
   const navigate = useNavigate();
+  const { showAlert, Alert } = useAlert();
   const ulbId = user?.data?.OrgId;
   const tableRef = useRef(null);
   const [tableData, setTableData] = useState([]);
@@ -74,13 +76,13 @@ const ComplaintGrvRpt = () => {
           });
         }, 100);
       } else {
-        alert("No Data Found");
+        showAlert("No Data Found", "error");
         setTableData([]);
       }
     } catch (error) {
       console.error("Error fetching complaint report:", error);
       setTableData([]);
-      alert(error.message || "Failed to fetch data");
+      showAlert(error.message || "Failed to fetch data", "error");
     } finally {
       setLoading(false);
     }
@@ -97,7 +99,7 @@ const ComplaintGrvRpt = () => {
         subtitle="CRM"
         onBack={handleGoBack}
       />
-
+      <Alert />
       <section className="container mx-auto mt-4 mb-5 px-4" ref={tableRef}>
         <div className="rounded-3xl bg-white p-4 sm:p-6 shadow-[0_12px_30px_rgba(0,0,0,0.12)]">
           {tableData.length > 0 ? (

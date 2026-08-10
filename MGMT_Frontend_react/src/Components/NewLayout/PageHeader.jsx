@@ -41,7 +41,7 @@ const PageHeader = ({
                         </small>
                     )}
 
-                    <h2 className="text-xl sm:text-2xl font-bold truncate tracking-tight mt-0.5">
+                    <h2 className="text-xl sm:text-2xl font-bold tracking-tight mt-0.5">
                         {title}
                     </h2>
                 </div>

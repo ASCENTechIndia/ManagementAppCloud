@@ -14,11 +14,13 @@ import {
   CalendarInput,
 } from "../../Components/NewLayout";
 import { ChevronLeft } from "lucide-react";
+import useAlert from "../../Components/CustomAlert/useAlert";
 
 const ComplaintSummary = () => {
   const { setLoading } = useLoader();
   const { user } = useAuth();
   const navigate = useNavigate();
+  const { showAlert, Alert } = useAlert();
   const userId = user?.userId;
   const ulbid = user?.data?.OrgId;
   const tableRef = useRef(null);
@@ -60,24 +62,24 @@ const ComplaintSummary = () => {
   const customCellRenderer = {
     registration: (value, row) => (
       <span
-        className="text-blue-600 underline cursor-pointer"
-        onClick={() => handleCellClick(row.compcode, "R")}
+        // className="text-blue-600 underline cursor-pointer"
+        // onClick={() => handleCellClick(row.compcode, "R")}
       >
         {value}
       </span>
     ),
     resolved: (value, row) => (
       <span
-        className="text-blue-600 underline cursor-pointer"
-        onClick={() => handleCellClick(row.compcode, "S")}
+        // className="text-blue-600 underline cursor-pointer"
+        // onClick={() => handleCellClick(row.compcode, "S")}
       >
         {value}
       </span>
     ),
     pending: (value, row) => (
       <span
-        className="text-blue-600 underline cursor-pointer"
-        onClick={() => handleCellClick(row.compcode, "P")}
+        // className="text-blue-600 underline cursor-pointer"
+        // onClick={() => handleCellClick(row.compcode, "P")}
       >
         {value}
       </span>
@@ -86,7 +88,7 @@ const ComplaintSummary = () => {
 
   const fetchSummary = async (from, to) => {
     if (!userId || !ulbid) {
-      alert("UlbId or userId is not set");
+      showAlert("UlbId or userId is not set", "warning");
       return;
     }
     try {
@@ -144,12 +146,12 @@ const ComplaintSummary = () => {
         }, 100);
       } else {
         setSummaryData([]);
-        alert("Record not found");
+        showAlert("Record not found", "error");
       }
     } catch (error) {
       console.error("Error fetching summary:", error);
       setSummaryData([]);
-      alert(error.message);
+      showAlert(error.message, "error");
     } finally {
       setLoading(false);
     }
@@ -157,7 +159,7 @@ const ComplaintSummary = () => {
 
   const fetchDetails = async (compcode, type, from, to) => {
     if (!userId || !ulbid) {
-      alert("UlbId or userId is not set");
+      showAlert("UlbId or userId is not set", "warning");
       return;
     }
     try {
@@ -190,12 +192,12 @@ const ComplaintSummary = () => {
         }, 100);
       } else {
         setDetailsData([]);
-        alert("No details found");
+        showAlert("No details found", "error");
       }
     } catch (error) {
       console.error("Error fetching details:", error);
       setDetailsData([]);
-      alert(error.message);
+      showAlert(error.message, "error");
     } finally {
       setLoading(false);
     }
@@ -209,11 +211,11 @@ const ComplaintSummary = () => {
 
   const handleCellClick = (compcode, type) => {
     if (!selectedFrom || !selectedTo) {
-      alert("Please fetch summary data first");
+      showAlert("Please fetch summary data first", "warning");
       return;
     }
     if (!compcode) {
-      alert("No compcode found for this row");
+      showAlert("No compcode found for this row", "warning");
       return;
     }
     fetchDetails(compcode, type, selectedFrom, selectedTo);
@@ -245,6 +247,7 @@ const ComplaintSummary = () => {
         subtitle="CRM"
         onBack={handleGoBack}
       />
+      <Alert />
       {isSummaryView && (
         <Formik
           initialValues={{ from: new Date(), to: new Date() }}
