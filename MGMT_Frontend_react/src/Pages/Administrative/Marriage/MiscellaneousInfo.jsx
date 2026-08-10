@@ -14,12 +14,14 @@ import {
   CalendarInput,
   SubHeaderCard,
 } from "../../../Components/NewLayout";
+import useAlert from "../../../Components/CustomAlert/useAlert";
 
 const MiscellaneousInfo = () => {
   const { setLoading } = useLoader();
   const { user } = useAuth();
   const tableRef = useRef(null);
   const navigate = useNavigate();
+  const { showAlert, Alert } = useAlert();
   const userId = user?.userId;
   const ulbid = user?.data?.OrgId;
 
@@ -49,7 +51,7 @@ const MiscellaneousInfo = () => {
 
   const handleSubmit = async (values) => {
     if (!userId || !ulbid) {
-      alert("User ID or Ulb ID not found");
+      showAlert("User ID or Ulb ID not found", "warning");
       return;
     }
     setSelectedFrom(values.from);
@@ -103,12 +105,12 @@ const MiscellaneousInfo = () => {
         }, 100);
       } else {
         setTableData([]);
-        alert("No data found for the selected dates");
+        showAlert("No data found for the selected dates", "error");
       }
     } catch (error) {
       console.error("Error fetching miscellaneous info:", error);
       setTableData([]);
-      alert(error.message || "Failed to fetch data");
+      showAlert(error.message || "Failed to fetch data", "error");
     } finally {
       setLoading(false);
     }
@@ -125,7 +127,7 @@ const MiscellaneousInfo = () => {
         subtitle="Marriage"
         onBack={handleGoBack}
       />
-
+      <Alert />
       <Formik initialValues={initialValues} onSubmit={handleSubmit}>
         {({ setFieldValue, values, handleSubmit: formikSubmit }) => (
           <Form onSubmit={formikSubmit}>

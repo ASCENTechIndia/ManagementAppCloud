@@ -11,12 +11,14 @@ import {
   FormLayoutCard,
   SubHeaderCard,
 } from "../../Components/NewLayout";
+import useAlert from "../../Components/CustomAlert/useAlert";
 
 const RtsTrackApplication = () => {
   const { setLoading } = useLoader();
   const { user } = useAuth();
   const tableRef = useRef(null);
   const navigate = useNavigate();
+  const { showAlert, Alert } = useAlert();
   const userId = user?.userId;
   const ulbid = user?.data?.OrgId || "930";
 
@@ -37,12 +39,12 @@ const RtsTrackApplication = () => {
   const fetchTrackApplication = async (values) => {
     const appNo = values.appNumber.trim();
     if (!appNo) {
-      alert("Please enter application number");
+      showAlert("Please enter application number", "warning");
       return;
     }
 
     if (!ulbid || !userId) {
-      alert("User Id or Ulb Id is not set");
+      showAlert("User Id or Ulb Id is not set", "warning");
       return;
     }
 
@@ -81,12 +83,12 @@ const RtsTrackApplication = () => {
         }, 100);
       } else {
         setTableData([]);
-        alert("No data found for this application number");
+        showAlert("No data found for this application number", "error");
       }
     } catch (error) {
       console.error("Error fetching track application:", error);
       setTableData([]);
-      alert(error.message || "Failed to fetch data");
+      showAlert(error.message || "Failed to fetch data", "error");
     } finally {
       setLoading(false);
     }
@@ -103,7 +105,7 @@ const RtsTrackApplication = () => {
         subtitle="RTS Department"
         onBack={handleGoBack}
       />
-
+      <Alert />
       <Formik initialValues={initialValues} onSubmit={fetchTrackApplication}>
         {({ setFieldValue, values, handleSubmit: formikSubmit }) => (
           <Form onSubmit={formikSubmit}>

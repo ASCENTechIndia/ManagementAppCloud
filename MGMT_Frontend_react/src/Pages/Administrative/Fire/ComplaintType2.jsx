@@ -14,11 +14,13 @@ import {
   CalendarInput,
   SubHeaderCard,
 } from "../../../Components/NewLayout";
+import useAlert from "../../../Components/CustomAlert/useAlert";
 
 const ComplaintType2 = () => {
   const { setLoading } = useLoader();
   const { user } = useAuth();
   const navigate = useNavigate();
+  const { showAlert, Alert } = useAlert();
   const userId = user?.userId;
   const ulbid = user?.data?.OrgId;
 
@@ -77,7 +79,7 @@ const ComplaintType2 = () => {
 
   const handleSubmit = async (values) => {
     if (!userId || !ulbid) {
-      alert("User ID or Ulb ID not found");
+      showAlert("User ID or Ulb ID not found", "warning");
       return;
     }
     setSelectedFrom(values.from);
@@ -139,19 +141,19 @@ const ComplaintType2 = () => {
           setTableData(rows);
         } else {
           setTableData([]);
-          alert("No data found");
+          showAlert("No data found", "error");
         }
       }
 
 
       else {
         setTableData([]);
-        alert("No data found");
+        showAlert("No data found", "error");
       }
     } catch (error) {
       console.error("Error fetching complaint data:", error);
       setTableData([]);
-      alert(error.message || "Failed to fetch data");
+      showAlert(error.message || "Failed to fetch data", "error");
     } finally {
       setLoading(false);
     }
@@ -168,7 +170,7 @@ const ComplaintType2 = () => {
         subtitle="Fire Department"
         onBack={handleGoBack}
       />
-
+      <Alert />
       <Formik initialValues={initialValues} onSubmit={handleSubmit}>
         {({ setFieldValue, values, handleSubmit: formikSubmit }) => (
           <Form onSubmit={formikSubmit}>

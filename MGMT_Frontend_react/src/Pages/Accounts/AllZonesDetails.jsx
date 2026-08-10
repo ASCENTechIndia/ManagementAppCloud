@@ -13,16 +13,17 @@ import {
     SubHeaderCard,
     CustomButton,
 } from "../../Components/NewLayout";
+import useAlert from "../../Components/CustomAlert/useAlert";
 
 const AllZonesDetails = () => {
     const { setLoading } = useLoader();
     const navigate = useNavigate();
     const location = useLocation();
     const { user } = useAuth();
+    const { showAlert, Alert } = useAlert();
     const userid = user?.userId || "";
     const orgId = user?.data?.OrgId;
     const flag = import.meta.env.VITE_FLAG || "MobApp";
-
     const tableRef = useRef(null);
     const pieRef = useRef(null);
     const barRef = useRef(null);
@@ -130,9 +131,12 @@ const AllZonesDetails = () => {
                 };
 
                 let response = null;
+                // console.log(payload);
                 try {
+                    // console.log("WTgeneric-call")
                     response = await apiService.post("WTgeneric-call", payload);
                 } catch (e) {
+                    // console.log("generic-call")
                     response = await apiService.post("generic-call", payload);
                 }
 
@@ -240,9 +244,11 @@ const AllZonesDetails = () => {
                     setTableData([]);
                     setPieChartData([]);
                     setBarGraphData([]);
+                    showAlert("No Data Found", "error");
                 }
             } catch (error) {
                 console.error("Error fetching All Zones Collection data:", error);
+                showAlert("Error fetching data", "error");
             } finally {
                 setLoading(false);
             }
@@ -286,15 +292,20 @@ const AllZonesDetails = () => {
             };
 
             let response = null;
+            // console.log(payload);
             try {
+                // console.log("WTgeneric-call");
                 response = await apiService.post("WTgeneric-call", payload);
             } catch (e) {
+                // console.log("generic-call")
                 response = await apiService.post("generic-call", payload);
             }
 
+            // console.log(response);  
+
             const resData = response?.data?.data;
             let rawList = [];
-
+            console.log(resData);
             if (Array.isArray(resData?.jsondata) && resData.jsondata.length > 0) {
                 rawList = resData.jsondata;
             } else if (Array.isArray(resData) && resData.length > 0) {
@@ -328,6 +339,46 @@ const AllZonesDetails = () => {
                         }
                     }
                 }
+            } else if (typeof resData === "string" && response.data.errorcode === 9999 && resData !== "") {
+                // const fixedString = resData.replace(/\r?\n/g, "\\n");
+                const cleanedData = resData
+                    // Fix escaped quotes
+                    .replace(/\\"/g, '"')
+
+                    // Fix escaped colon
+                    .replace(/\\:/g, ":")
+
+                    // Add quotes around unquoted string values
+                    .replace(
+                        /"([^"]+)"\s*:\s*([^",}\]]+)(?=\s*[,}])/g,
+                        (_, key, value) => {
+                            const trimmedValue = value.trim();
+
+                            // Keep numbers
+                            if (/^-?\d+(\.\d+)?$/.test(trimmedValue)) {
+                                return `"${key}":${trimmedValue}`;
+                            }
+
+                            // Keep boolean
+                            if (trimmedValue === "true" || trimmedValue === "false") {
+                                return `"${key}":${trimmedValue}`;
+                            }
+
+                            // Keep null
+                            if (trimmedValue === "null") {
+                                return `"${key}":null`;
+                            }
+
+                            // Otherwise it's a string
+                            return `"${key}":"${trimmedValue}"`;
+                        }
+                    );
+
+                const parsed = JSON.parse(cleanedData);
+
+                const jsonData = parsed.jsondata;
+
+                rawList = jsonData;
             }
 
             const formatted = rawList.map((item) => ({
@@ -339,7 +390,7 @@ const AllZonesDetails = () => {
                 accname: item.accname || "",
                 amount: typeof item.amount !== "undefined" ? item.amount : typeof item.Amount !== "undefined" ? item.Amount : 0,
             }));
-
+            console.log(formatted.length);
             if (formatted.length > 0) {
                 const totalAmount = formatted.reduce((acc, cur) => acc + (Number(cur.amount) || 0), 0);
                 const totalRow = {
@@ -384,6 +435,7 @@ const AllZonesDetails = () => {
                 setDetailTableData([]);
                 setDetailPieChartData([]);
                 setDetailBarGraphData([]);
+                showAlert("No Data Found", "error");
             }
 
             setIsDetailsView(true);
@@ -393,6 +445,7 @@ const AllZonesDetails = () => {
             setDetailPieChartData([]);
             setDetailBarGraphData([]);
             setIsDetailsView(true);
+            showAlert("Error fetching data", "error");
         } finally {
             setLoading(false);
         }
@@ -438,7 +491,7 @@ const AllZonesDetails = () => {
                 subtitle="Accounts"
                 onBack={handleGoBack}
             />
-
+            <Alert />
             <SubHeaderCard
                 subtitle="Zone"
                 title={
@@ -446,7 +499,12 @@ const AllZonesDetails = () => {
                         <>
                             <span
                                 className="cursor-pointer hover:underline"
-                                onClick={() => navigate("/ZonewiseReceiptDetails")}
+                                onClick={() => navigate("/ZonewiseReceiptDetails", {
+                                    state: {
+                                        from: location.state.from,
+                                        to: location.state.to
+                                    }
+                                })}
                             >
                                 All Zones
                             </span> / Zonewise details
@@ -455,7 +513,12 @@ const AllZonesDetails = () => {
                         <>
                             <span
                                 className="cursor-pointer hover:underline"
-                                onClick={() => navigate("/ZonewiseReceiptDetails")}
+                                onClick={() => navigate("/ZonewiseReceiptDetails", {
+                                    state: {
+                                        from: location.state.from,
+                                        to: location.state.to
+                                    }
+                                })}
                             >
                                 All Zones
                             </span> /{" "}

@@ -14,11 +14,13 @@ import {
   CalendarInput,
   SubHeaderCard,
 } from "../../../Components/NewLayout";
+import useAlert from "../../../Components/CustomAlert/useAlert";
 
 const SearchInformation = () => {
   const { setLoading } = useLoader();
   const { user } = useAuth();
   const navigate = useNavigate();
+  const { showAlert, Alert } = useAlert();
   const tableRef = useRef(null);
 
   const userId = user?.userId;
@@ -51,12 +53,12 @@ const SearchInformation = () => {
   const handleSubmit = async (values) => {
     const appNo = values.applicationNumber.trim();
     // if (!appNo) {
-    //   alert("Please enter application number");
+    //   showAlert("Please enter application number", "warning");
     //   return;
     // }
 
     if (!userId || !ulbid) {
-      alert("User ID or Ulb Id not found");
+      showAlert("User ID or Ulb Id not found", "warning");
       return;
     }
 
@@ -95,12 +97,12 @@ const SearchInformation = () => {
         }, 100);
       } else {
         setTableData([]);
-        alert("No data found");
+        showAlert("No data found", "error");
       }
     } catch (error) {
       console.error("Error fetching search information:", error);
       setTableData([]);
-      alert(error.message || "Failed to fetch data");
+      showAlert(error.message || "Failed to fetch data", "error");
     } finally {
       setLoading(false);
     }
@@ -117,7 +119,7 @@ const SearchInformation = () => {
         subtitle="Marriage"
         onBack={handleGoBack}
       />
-
+      <Alert />
       <Formik initialValues={initialValues} onSubmit={handleSubmit}>
         {({ setFieldValue, values, handleSubmit: formikSubmit }) => (
           <Form onSubmit={formikSubmit}>

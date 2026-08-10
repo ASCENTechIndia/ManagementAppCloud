@@ -14,11 +14,13 @@ import {
   CalendarInput,
   SubHeaderCard,
 } from "../../../Components/NewLayout";
+import useAlert from "../../../Components/CustomAlert/useAlert";
 
 const WardWiseMrgRegistration = () => {
   const { setLoading } = useLoader();
   const { user } = useAuth();
   const navigate = useNavigate();
+  const { showAlert, Alert } = useAlert();
   const userId = user?.userId;
   const ulbid = user?.data?.OrgId;
   const tableRef = useRef(null);
@@ -48,7 +50,7 @@ const WardWiseMrgRegistration = () => {
 
   const handleSubmit = async (values) => {
     if (!userId || !ulbid) {
-      alert("User ID or Ulb Id not found");
+      showAlert("User ID or Ulb Id not found", "warning");
       return;
     }
     setSelectedFrom(values.from);
@@ -102,12 +104,12 @@ const WardWiseMrgRegistration = () => {
         }, 100);
       } else {
         setTableData([]);
-        alert("No data found for the selected dates");
+        showAlert("No data found for the selected dates", "error");
       }
     } catch (error) {
       console.error("Error fetching ward-wise registration data:", error);
       setTableData([]);
-      alert(error.message || "Failed to fetch data");
+      showAlert(error.message || "Failed to fetch data", "error");
     } finally {
       setLoading(false);
     }
@@ -124,7 +126,7 @@ const WardWiseMrgRegistration = () => {
         subtitle="Marriage"
         onBack={handleGoBack}
       />
-
+      <Alert />
       <Formik initialValues={initialValues} onSubmit={handleSubmit}>
         {({ setFieldValue, values, handleSubmit: formikSubmit }) => (
           <Form onSubmit={formikSubmit}>
