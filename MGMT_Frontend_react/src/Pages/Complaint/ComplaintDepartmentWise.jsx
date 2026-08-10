@@ -13,6 +13,7 @@ import {
   FormLayoutCard,
   CalendarInput,
 } from "../../Components/NewLayout";
+import useAlert from "../../Components/CustomAlert/useAlert";
 
 const ComplaintDepartmentWise = () => {
   const { setLoading } = useLoader();
@@ -27,7 +28,7 @@ const ComplaintDepartmentWise = () => {
     from: new Date(),
     to: new Date(),
   });
-
+  const { showAlert, Alert } = useAlert();
   const fetchData = async (from, to) => {
     if (!userId || !ulbId) {
       alert("User ID not found");
@@ -45,20 +46,20 @@ const ComplaintDepartmentWise = () => {
         Request7: "",
       };
       const res = await apiService.post("WTgeneric-call", payload);
-      console.log("department wise :", res);
+      // console.log("department wise :", res);
       if (
         res?.data?.Success &&
         Array.isArray(res?.data?.data?.jsondata) &&
         res.data.data.jsondata.length > 0
       ) {
-   
+
         const data = res.data.data.jsondata.map((item) => ({
           category: item.dept || "",
           // registered: Number(item.registration) || 0,
           resolved: Number(item.resolved) || 0,
           pending: Number(item.pending) || 0,
         }));
-        
+
         const det = res.data.data.jsondata.map((item) => ({
           shortName: item.deptcode || "",
           fullName: item.dept || "",
@@ -72,7 +73,7 @@ const ComplaintDepartmentWise = () => {
           });
         }, 100);
       } else {
-        alert("No record available");
+        showAlert("No Data Found", "error");
         setBarData([]);
         setTableDet([]);
       }
@@ -80,7 +81,8 @@ const ComplaintDepartmentWise = () => {
       console.error("Error fetching complaint data:", error);
       setBarData([]);
       setTableDet([]);
-      alert(error.message || "Failed to fetch data");
+      // alert(error.message || "Failed to fetch data");
+      showAlert(error.message || "Failed to fetch data", "error");
     } finally {
       setLoading(false);
     }
@@ -101,7 +103,7 @@ const ComplaintDepartmentWise = () => {
         subtitle="CRM"
         onBack={handleGoBack}
       />
-
+      <Alert />
       <Formik initialValues={initialValues} onSubmit={handleSubmit}>
         {({ setFieldValue, values, handleSubmit: formikSubmit }) => (
           <Form onSubmit={formikSubmit}>
@@ -189,6 +191,7 @@ const ComplaintDepartmentWise = () => {
               </div>
             )}
           </div>
+
         </section>
       )}
     </div>
