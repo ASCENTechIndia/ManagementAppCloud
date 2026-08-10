@@ -13,12 +13,14 @@ import {
     SubHeaderCard,
     CustomButton,
 } from "../../Components/NewLayout";
+import useAlert from "../../Components/CustomAlert/useAlert";
 
 const AllZonesDetails = () => {
     const { setLoading } = useLoader();
     const navigate = useNavigate();
     const location = useLocation();
     const { user } = useAuth();
+    const { showAlert, Alert } = useAlert();
     const userid = user?.userId || "";
     const orgId = user?.data?.OrgId;
     const flag = import.meta.env.VITE_FLAG || "MobApp";
@@ -240,9 +242,11 @@ const AllZonesDetails = () => {
                     setTableData([]);
                     setPieChartData([]);
                     setBarGraphData([]);
+                    showAlert("No Data Found", "error");
                 }
             } catch (error) {
                 console.error("Error fetching All Zones Collection data:", error);
+                showAlert("Error fetching data", "error");
             } finally {
                 setLoading(false);
             }
@@ -384,6 +388,7 @@ const AllZonesDetails = () => {
                 setDetailTableData([]);
                 setDetailPieChartData([]);
                 setDetailBarGraphData([]);
+                showAlert("No Data Found", "error");
             }
 
             setIsDetailsView(true);
@@ -393,6 +398,7 @@ const AllZonesDetails = () => {
             setDetailPieChartData([]);
             setDetailBarGraphData([]);
             setIsDetailsView(true);
+            showAlert("Error fetching data", "error");
         } finally {
             setLoading(false);
         }
@@ -438,7 +444,7 @@ const AllZonesDetails = () => {
                 subtitle="Accounts"
                 onBack={handleGoBack}
             />
-
+            <Alert />
             <SubHeaderCard
                 subtitle="Zone"
                 title={
