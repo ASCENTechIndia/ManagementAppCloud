@@ -109,7 +109,7 @@ const getResolutionSummary = async (req, res) => {
 
     const query = `
       SELECT 
-        sum(total_application) AS total_complnt,
+        NVL(SUM(Pending)+sum(work_assign) + SUM(Close), 0) AS total_complnt,
         sum(close) AS resolved,
         ROUND(AVG((closedate - dt) * 24), 2) AS avg_resolution_time_hrs
       FROM crm.view_analysismmcdtls_web
