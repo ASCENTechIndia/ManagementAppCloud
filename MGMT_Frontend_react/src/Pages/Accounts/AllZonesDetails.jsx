@@ -305,7 +305,7 @@ const AllZonesDetails = () => {
 
             const resData = response?.data?.data;
             let rawList = [];
-            console.log(resData);
+
             if (Array.isArray(resData?.jsondata) && resData.jsondata.length > 0) {
                 rawList = resData.jsondata;
             } else if (Array.isArray(resData) && resData.length > 0) {
