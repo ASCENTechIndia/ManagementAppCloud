@@ -275,10 +275,10 @@ const ZonewiseReceiptDetails = () => {
   useEffect(() => {
     // if (formValues.from === "" || formValues.to === "") return;
 
-    if (formValues.from !== "" && formValues.to !== "") {
+    if (formValues.from !== "" && formValues.to !== "" && userId) {
       handleSubmit(formValues);
     }
-  }, [formValues]);
+  }, [formValues, userId]);
 
   return (
     <div className="min-h-screen bg-[#eef4ff] font-sans pb-8">
