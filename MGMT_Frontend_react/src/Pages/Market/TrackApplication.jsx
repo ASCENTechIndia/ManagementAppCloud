@@ -11,12 +11,14 @@ import {
   FormLayoutCard,
   SubHeaderCard,
 } from "../../Components/NewLayout";
+import useAlert from "../../Components/CustomAlert/useAlert";
 
 const TrackApplication = () => {
   const { setLoading } = useLoader();
   const { user } = useAuth();
   const tableRef = useRef(null);
   const navigate = useNavigate();
+  const { showAlert, Alert } = useAlert();
   const userId = user?.userId;
   const ulbid = user?.data?.OrgId;
 
@@ -37,7 +39,7 @@ const TrackApplication = () => {
   const fetchTrackApplication = async (values) => {
     const appNo = values.appNumber.trim();
     if (!appNo) {
-      alert("कृपया अर्ज क्रमांक प्रविष्ट करा");
+      showAlert("कृपया अर्ज क्रमांक प्रविष्ट करा", "warning");
       return;
     }
 
@@ -76,12 +78,12 @@ const TrackApplication = () => {
         }, 100);
       } else {
         setTableData([]);
-        alert("No data found for this application number");
+        showAlert("No data found for this application number", "error");
       }
     } catch (error) {
       console.error("Error fetching track application:", error);
       setTableData([]);
-      alert(error.message || "Failed to fetch data");
+      showAlert(error.message || "Failed to fetch data", "error");
     } finally {
       setLoading(false);
     }
@@ -98,7 +100,7 @@ const TrackApplication = () => {
         subtitle="Market Department"
         onBack={handleGoBack}
       />
-
+      <Alert />
       <Formik initialValues={initialValues} onSubmit={fetchTrackApplication}>
         {({ setFieldValue, values, handleSubmit: formikSubmit }) => (
           <Form onSubmit={formikSubmit}>
