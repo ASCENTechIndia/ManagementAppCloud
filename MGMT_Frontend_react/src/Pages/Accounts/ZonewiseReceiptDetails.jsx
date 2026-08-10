@@ -26,10 +26,12 @@ import {
   SubHeaderCard,
   CustomButton,
 } from "../../Components/NewLayout";
+import useAlert from "../../Components/CustomAlert/useAlert";
 
 const ZonewiseReceiptDetails = () => {
   const { setLoading } = useLoader();
   const { user } = useAuth();
+  const { showAlert, Alert } = useAlert(); 
   const userId = user?.userId || "";
   const orgId = user?.data?.OrgId || "";
   const flag = import.meta.env.VITE_FLAG || "MobApp";
@@ -81,7 +83,7 @@ const ZonewiseReceiptDetails = () => {
 
   const handleSubmit = async (values) => {
     if (!userId) {
-      alert("UserId is not set");
+      showAlert("UserId is not set", "warning");
       return;
     }
 
@@ -235,11 +237,11 @@ const ZonewiseReceiptDetails = () => {
         setTableData([]);
         setChartData([]);
         setBarGraphData([]);
-        alert("No data found");
+        showAlert("No data found", "error");
       }
     } catch (error) {
       console.error("Error fetching Zonewise Receipt Details:", error);
-      alert(error.message || "Failed to fetch data");
+      showAlert(error.message || "Failed to fetch data", "error");
     } finally {
       setLoading(false);
     }
@@ -273,7 +275,7 @@ const ZonewiseReceiptDetails = () => {
         subtitle="Accounts"
         onBack={handleGoBack}
       />
-
+      <Alert />
       {/* From Date - To Date Form Layout Card */}
       <Formik initialValues={initialValues} onSubmit={handleSubmit}>
         {({ setFieldValue, values, handleSubmit: formikSubmit }) => {
