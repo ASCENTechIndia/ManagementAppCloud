@@ -24,7 +24,6 @@ const AllZonesDetails = () => {
     const userid = user?.userId || "";
     const orgId = user?.data?.OrgId;
     const flag = import.meta.env.VITE_FLAG || "MobApp";
-
     const tableRef = useRef(null);
     const pieRef = useRef(null);
     const barRef = useRef(null);
@@ -452,7 +451,12 @@ const AllZonesDetails = () => {
                         <>
                             <span
                                 className="cursor-pointer hover:underline"
-                                onClick={() => navigate("/ZonewiseReceiptDetails")}
+                                onClick={() => navigate("/ZonewiseReceiptDetails", {
+                                    state: {
+                                        from: location.state.from,
+                                        to: location.state.to
+                                    }
+                                })}
                             >
                                 All Zones
                             </span> / Zonewise details
@@ -461,7 +465,12 @@ const AllZonesDetails = () => {
                         <>
                             <span
                                 className="cursor-pointer hover:underline"
-                                onClick={() => navigate("/ZonewiseReceiptDetails")}
+                                onClick={() => navigate("/ZonewiseReceiptDetails", {
+                                    state: {
+                                        from: location.state.from,
+                                        to: location.state.to
+                                    }
+                                })}
                             >
                                 All Zones
                             </span> /{" "}

@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { Form, Formik } from "formik";
 import Table from "../../Components/Table/Table";
 import {
@@ -16,7 +16,7 @@ import { formatDateForAPI } from "../../utils/dateUtils";
 import PieChartComponent from "../Property/Tax/PieChartComponent";
 import StackedBarGraph from "../../Components/StackedBarGraph";
 import apiService from "../../../apiService";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useLoader } from "../../Context/LoaderContext";
 import { useAuth } from "../../Context/AuthContext";
 import {
@@ -31,11 +31,16 @@ import useAlert from "../../Components/CustomAlert/useAlert";
 const ZonewiseReceiptDetails = () => {
   const { setLoading } = useLoader();
   const { user } = useAuth();
+  const location = useLocation();
   const { showAlert, Alert } = useAlert(); 
   const userId = user?.userId || "";
   const orgId = user?.data?.OrgId || "";
   const flag = import.meta.env.VITE_FLAG || "MobApp";
   const navigate = useNavigate();
+  const [formValues, setFormValues] = useState(location.state || {
+    from: "",
+    to: ""
+  })
 
   const handleGoBack = () => {
     navigate("/Accounts");
@@ -53,8 +58,8 @@ const ZonewiseReceiptDetails = () => {
   const [activeView, setActiveView] = useState("table");
 
   const [initialValues] = useState({
-    from: new Date(),
-    to: new Date(),
+    from: formValues?.from || new Date(),
+    to: formValues?.to || new Date(),
   });
 
   const [dateRangeText, setDateRangeText] = useState("");
@@ -266,6 +271,14 @@ const ZonewiseReceiptDetails = () => {
       setIsModalOpen(true);
     }
   };
+
+  useEffect(() => {
+    // if (formValues.from === "" || formValues.to === "") return;
+
+    if (formValues.from !== "" && formValues.to !== "") {
+      handleSubmit(formValues);
+    }
+  }, [formValues]);
 
   return (
     <div className="min-h-screen bg-[#eef4ff] font-sans pb-8">
