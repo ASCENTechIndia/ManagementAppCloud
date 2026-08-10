@@ -62,24 +62,24 @@ const ComplaintSummary = () => {
   const customCellRenderer = {
     registration: (value, row) => (
       <span
-        className="text-blue-600 underline cursor-pointer"
-        onClick={() => handleCellClick(row.compcode, "R")}
+        // className="text-blue-600 underline cursor-pointer"
+        // onClick={() => handleCellClick(row.compcode, "R")}
       >
         {value}
       </span>
     ),
     resolved: (value, row) => (
       <span
-        className="text-blue-600 underline cursor-pointer"
-        onClick={() => handleCellClick(row.compcode, "S")}
+        // className="text-blue-600 underline cursor-pointer"
+        // onClick={() => handleCellClick(row.compcode, "S")}
       >
         {value}
       </span>
     ),
     pending: (value, row) => (
       <span
-        className="text-blue-600 underline cursor-pointer"
-        onClick={() => handleCellClick(row.compcode, "P")}
+        // className="text-blue-600 underline cursor-pointer"
+        // onClick={() => handleCellClick(row.compcode, "P")}
       >
         {value}
       </span>
