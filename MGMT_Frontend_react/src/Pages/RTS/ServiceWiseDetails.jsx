@@ -14,12 +14,14 @@ import {
   CalendarInput,
   SubHeaderCard,
 } from "../../Components/NewLayout";
+import useAlert from "../../Components/CustomAlert/useAlert";
 
 const ServiceWiseDetails = () => {
   const { setLoading } = useLoader();
   const { user } = useAuth();
   const navigate = useNavigate();
   const tableRef = useRef(null);
+  const { showAlert, Alert } = useAlert();
   const userId = user?.userId;
   const ulbid = user?.data?.OrgId;
 
@@ -29,39 +31,46 @@ const ServiceWiseDetails = () => {
 
   const tableHeaders = [
     "Service Name",
-    "New",
-    "Approved",
-    "Delivered",
-    "Application Received",
-    "Auth Pending",
-    "Auth Reject",
-    "Auth Accept Pending",
-    "Payment Pending",
-    "Total",
-    "Certificate Upload",
-    "Certificate Pending",
-    "ULB Pending",
-    "Citizen Payment Receipt",
-    "Payment Generate",
-    "Auth Accepted",
+    "Completed",
+    "Pending",
+    "Rejected",
+    "Total"
+    // "New",
+    // "Approved",
+    // "Delivered",
+    // "Application Received",
+    // "Auth Pending",
+    // "Auth Reject",
+    // "Auth Accept Pending",
+    // "Payment Pending",
+      // "Certificate Upload",
+      // "Certificate Pending",
+      // "ULB Pending",
+      // "Citizen Payment Receipt",
+      // "Payment Generate",
+      // "Auth Accepted",
   ];
   const tableKeyMapping = {
     "Service Name": "service_name",
-    New: "new",
-    Approved: "approved",
-    Delivered: "delivered",
-    "Application Received": "application_received",
-    "Auth Pending": "authorisation_pending",
-    "Auth Reject": "authorisation_reject",
-    "Auth Accept Pending": "authorisation_accpt_pending",
-    "Payment Pending": "payment_pending",
-    Total: "total",
-    "Certificate Upload": "certificate_iss_upload",
-    "Certificate Pending": "certificate_iss_pending",
-    "ULB Pending": "ulb_pending",
-    "Citizen Payment Receipt": "citizen_payment_reciept",
-    "Payment Generate": "payment_generate",
-    "Auth Accepted": "authorisation_accpt",
+    "Completed": "completed",
+    "Pending": "pending",
+    "Rejected": "rejected",
+    "Total": "total"
+    // New: "new",
+    // Approved: "approved",
+    // Delivered: "delivered",
+    // "Application Received": "application_received",
+    // "Auth Pending": "authorisation_pending",
+    // "Auth Reject": "authorisation_reject",
+    // "Auth Accept Pending": "authorisation_accpt_pending",
+    // "Payment Pending": "payment_pending",
+    // Total: "total",
+    // "Certificate Upload": "certificate_iss_upload",
+    // "Certificate Pending": "certificate_iss_pending",
+    // "ULB Pending": "ulb_pending",
+    // "Citizen Payment Receipt": "citizen_payment_reciept",
+    // "Payment Generate": "payment_generate",
+    // "Auth Accepted": "authorisation_accpt",
   };
 
   const initialValues = {
@@ -79,7 +88,7 @@ const ServiceWiseDetails = () => {
 
   const handleSubmit = async (values) => {
     if (!userId || !ulbid) {
-      alert("User ID or Ulb ID not found");
+      showALert("User ID or Ulb ID not found", "warning");
       return;
     }
     setSelectedFrom(values.from);
@@ -97,50 +106,30 @@ const ServiceWiseDetails = () => {
         Request7: "",
       };
       const res = await apiService.post("WTgeneric-call", payload);
-
+      // console.log(res);
+      // return;
       if (
         res?.data?.Success &&
         res?.data?.data?.jsondata &&
         Array.isArray(res.data.data.jsondata) &&
         res.data.data.jsondata.length > 0
       ) {
+        // console.log(res.data.data.jsondata);
         const rows = res.data.data.jsondata.map((item) => ({
           service_name: item.service_name || "",
-          new: Number(item.new) || 0,
-          approved: Number(item.approved) || 0,
-          delivered: Number(item.delivered) || 0,
-          application_received: Number(item.application_received) || 0,
-          authorisation_pending: Number(item.authorisation_pending) || 0,
-          authorisation_reject: Number(item.authorisation_reject) || 0,
-          authorisation_accpt_pending: Number(item.authorisation_accpt_pending) || 0,
-          payment_pending: Number(item.payment_pending) || 0,
-          total: Number(item.total) || 0,
-          certificate_iss_upload: Number(item.certificate_iss_upload) || 0,
-          certificate_iss_pending: Number(item.certificate_iss_pending) || 0,
-          ulb_pending: Number(item.ulb_pending) || 0,
-          citizen_payment_reciept: Number(item.citizen_payment_reciept) || 0,
-          payment_generate: Number(item.payment_generate) || 0,
-          authorisation_accpt: Number(item.authorisation_accpt) || 0,
+          completed: Number(item.completed) || 0,
+          pending: Number(item.pending) || 0,
+          rejected: Number(item.reject) || 0,
+          total: Number(item.total) || 0
         }));
 
         // Calculate Totals Row
         const totalRow = {
           service_name: "एकूण",
-          new: rows.reduce((acc, cur) => acc + cur.new, 0),
-          approved: rows.reduce((acc, cur) => acc + cur.approved, 0),
-          delivered: rows.reduce((acc, cur) => acc + cur.delivered, 0),
-          application_received: rows.reduce((acc, cur) => acc + cur.application_received, 0),
-          authorisation_pending: rows.reduce((acc, cur) => acc + cur.authorisation_pending, 0),
-          authorisation_reject: rows.reduce((acc, cur) => acc + cur.authorisation_reject, 0),
-          authorisation_accpt_pending: rows.reduce((acc, cur) => acc + cur.authorisation_accpt_pending, 0),
-          payment_pending: rows.reduce((acc, cur) => acc + cur.payment_pending, 0),
-          total: rows.reduce((acc, cur) => acc + cur.total, 0),
-          certificate_iss_upload: rows.reduce((acc, cur) => acc + cur.certificate_iss_upload, 0),
-          certificate_iss_pending: rows.reduce((acc, cur) => acc + cur.certificate_iss_pending, 0),
-          ulb_pending: rows.reduce((acc, cur) => acc + cur.ulb_pending, 0),
-          citizen_payment_reciept: rows.reduce((acc, cur) => acc + cur.citizen_payment_reciept, 0),
-          payment_generate: rows.reduce((acc, cur) => acc + cur.payment_generate, 0),
-          authorisation_accpt: rows.reduce((acc, cur) => acc + cur.authorisation_accpt, 0),
+          completed: rows.reduce((sum, arr) => sum += arr.completed, 0),
+          pending: rows.reduce((sum, arr) => sum += arr.pending, 0),
+          rejected: rows.reduce((sum, arr) => sum += arr.rejected, 0),
+          total: rows.reduce((sum, arr) => sum += arr.total, 0),
         };
 
         setTableData([...rows, totalRow]);
@@ -153,12 +142,12 @@ const ServiceWiseDetails = () => {
         }, 100);
       } else {
         setTableData([]);
-        alert("No data found for the selected dates");
+        showAlert("No data found for the selected dates", "error");
       }
     } catch (error) {
       console.error("Error fetching service-wise data:", error);
       setTableData([]);
-      alert(error.message || "Failed to fetch data");
+      showAlert(error.message || "Failed to fetch data", "error");
     } finally {
       setLoading(false);
     }
@@ -184,7 +173,7 @@ const ServiceWiseDetails = () => {
         subtitle="RTS Department"
         onBack={handleGoBack}
       />
-
+      <Alert />
       <Formik initialValues={initialValues} onSubmit={handleSubmit}>
         {({ setFieldValue, values, handleSubmit: formikSubmit }) => (
           <Form onSubmit={formikSubmit}>

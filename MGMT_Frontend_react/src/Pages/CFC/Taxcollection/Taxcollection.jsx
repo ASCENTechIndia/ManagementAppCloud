@@ -17,6 +17,7 @@ import {
   SubHeaderCard,
   CustomButton,
 } from "../../../Components/NewLayout";
+import useAlert from "../../../Components/CustomAlert/useAlert";
 
 const Taxcollection = () => {
   const { user } = useAuth();
@@ -24,6 +25,7 @@ const Taxcollection = () => {
   const orgId = user?.data?.OrgId;
   const flag = import.meta.env.VITE_FLAG;
   const { setLoading } = useLoader();
+  const { showAlert, Alert } = useAlert();
   const [initialView, setInitialView] = useState(false);
   const [tableHeader] = useState(["Zone", "Total"]);
   const [tableKeyMapping] = useState({
@@ -45,7 +47,7 @@ const Taxcollection = () => {
 
   const handleSubmit = async (values) => {
     if (!userId) {
-      alert("UserId is not set");
+      showAlert("UserId is not set", "warning");
       return;
     }
     try {
@@ -109,13 +111,13 @@ const Taxcollection = () => {
             setTableData([]);
             setBarGraphData([]);
             setChartData([]);
-            alert("No data found");
+            showAlert("No data found", "error");
           }
         } else {
           setTableData([]);
           setBarGraphData([]);
           setChartData([]);
-          alert("No data found");
+          showAlert("No data found", "error");
         }
       } else if (
         Array.isArray(resData?.jsondata) &&
@@ -156,11 +158,11 @@ const Taxcollection = () => {
         setTableData([]);
         setBarGraphData([]);
         setChartData([]);
-        alert("No data found");
+        showAlert("No data found", "error");
       }
     } catch (error) {
       console.error(error);
-      alert(error.message);
+      showAlert(error.message, "error");
     } finally {
       setLoading(false);
     }
@@ -177,7 +179,7 @@ const Taxcollection = () => {
         subtitle="CFC Tax"
         onBack={handleGoBack}
       />
-
+      <Alert />
       <Formik initialValues={initialValues} onSubmit={handleSubmit}>
         {({ setFieldValue, values, handleSubmit: formikSubmit }) => {
           return (
@@ -217,7 +219,7 @@ const Taxcollection = () => {
                   <SubHeaderCard
                     subtitle="Zone"
                     title="All Zones"
-                    infoText={`${formatDateForAPI(values.from)} - ${formatDateForAPI(values.to)} (All amounts in lakhs)`}
+                    infoText={`${formatDateForAPI(values.from)} - ${formatDateForAPI(values.to)}`}
                     className="mt-4"
                   />
 

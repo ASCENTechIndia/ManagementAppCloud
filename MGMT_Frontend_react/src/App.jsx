@@ -43,18 +43,8 @@ import SingleRecoveryBlock from './Pages/Water/SingleRecovery/SingleRecoveryBloc
 import WaterResidentCommercial from './Pages/Water/WaterResidentCommercial/WaterResidentCommercial';
 
 import CRMDashboard from './Pages/Dashboard/CRMDashboard';
-import CrmDashBoardOut from './Pages/CRM/Dashboard/CrmDashboard';
-import FeedbackSummary from './Pages/CRM/FeedbackSummary/FeedbackSummary';
-import FeedbackSummarybyDate from './Pages/CRM/FeedbackSummary/FeedbackSummarybyDate';
 import CRMInfoDashboard from './Pages/Dashboard/CRMInfoDashboard';
 import CRMMainDashboard from './Pages/Dashboard/CRMMainDashboard';
-import MahitiSodha from './Pages/CRM/SuggestionsResponses/MahitiSodha/MahitiSodha';
-import ComplaintTypetwo from "./Pages/CRM/ComplaintTypetwo/ComplaintType";
-import PendingReportOne from "./Pages/CRM/PendingReportOne/PendingReportOne";
-import PendingReportTwo from "./Pages/CRM/PendingReportTwo/PendingReportTwo";
-import DepartmentWiseComplaint from "./Pages/CRM/DepartmentWiseComplaint/DepartmentWiseComplaint";
-import ComplaintTypes from "./Pages/CRM/ComplaintTypes/ComplaintTypes";
-import ComplaintSummary from "./Pages/CRM/ComplaintSummary/ComplaintSummary";
 import ComplaintSummary2 from "./Pages/Complaint/ComplaintSummary.jsx"
 import FrontdoorLogin from './FrontdoorLogin.jsx';
 import CADDashboard from './Pages/Dashboard/CADDashboard.jsx';
@@ -105,6 +95,8 @@ import RtsTrackApplication from './Pages/RTS/RtsTrackApplication.jsx';
 import Accounts from './Pages/Accounts/Accounts.jsx';
 import ZonewiseReceiptDetails from './Pages/Accounts/ZonewiseReceiptDetails.jsx';
 import AllZonesDetails from './Pages/Accounts/AllZonesDetails.jsx';
+import "bootstrap/dist/css/bootstrap.min.css";
+import CrmDashBoardOut from './Pages/Complaint/CrmDashboard.jsx';
 
 function App() {
   return (
@@ -118,7 +110,6 @@ function App() {
         <Route path="/*" element={<ProtectedRoute>
           <Routes>
             <Route path="/home" element={<HomeScreen />} />
-            <Route path="/CrmDashBoardOut" element={<CrmDashBoardOut />} />
             <Route path="/CADDashboard" element={<CADDashboard />} />
             <Route path="/Administrative" element={<Administrative />} />
             <Route path="/CfcDashBoard" element={<CFCDashboard />} />
@@ -182,16 +173,6 @@ function App() {
             <Route path='/SingleRecoveryBlock' element={<SingleRecoveryBlock />} />
 
             {/* CRM */}
-            <Route path='/feedbacksummary' element={<FeedbackSummary />} />
-            <Route path='/feedbacksummarybydate' element={<FeedbackSummarybyDate />} />
-            <Route path='/ComplaintSummary' element={<ComplaintSummary />} />
-            <Route path='/ComplaintTypes' element={<ComplaintTypes />} />
-            <Route path='/DepartmentWiseComplaint' element={<DepartmentWiseComplaint />} />
-            <Route path='/ComplaintTypetwo' element={<ComplaintTypetwo />} />
-            <Route path='/PendingReportOne' element={<PendingReportOne />} />
-            <Route path='/PendingReportTwo' element={<PendingReportTwo />} />
-            <Route path='/MahitiSodha' element={<MahitiSodha />} />
-
             {/* Takrar */}
             <Route path='/ComplaintSummary2' element={<ComplaintSummary2 />} />
             <Route path='/ComplaintType' element={<ComplaintType />} />
@@ -201,6 +182,7 @@ function App() {
             <Route path='/ComplaintReportByPeriod' element={<ComplaintReportByPeriod />} />
             <Route path='/ComplaintGrvRpt' element={<ComplaintGrvRpt />} />
             <Route path='/ReOpen' element={<ReOpen />} />
+            <Route path='/CrmDashBoardOut' element={<CrmDashBoardOut />} />
 
 
             {/* Fallback so direct hits don’t 404 */}
@@ -212,13 +194,14 @@ function App() {
             <Route path="/TotalCollPercent" element={<TotalCollPercent />} />
             <Route path="/ZoneWiseTaxColl" element={<ZoneWiseTaxColl />} />
 
-            {/* Marriage */}
+            {/* Administrative */}
             <Route path="/Marriage" element={<Marriage />} />
             <Route path="/MiscellaneousInfo" element={<MiscellaneousInfo />} />
             <Route path="/WardWiseMrgRegistration" element={<WardWiseMrgRegistration />} />
             <Route path="/SearchInformation" element={<SearchInformation />} />
-
-            {/* Birth & Death */}
+            <Route path="/IncomeOutgoing" element={<IncomeOutgoing />} />
+            <Route path="/MiscellaneousInformation" element={<MiscellaneousInformation />} />
+            <Route path="/OutwardInformation" element={<OutwardInformation />} />
             <Route path="/BirthAndDeath" element={<BirthAndDeath />} />
             <Route path="/Birth" element={<Birth />} />
             <Route path="/BirthRegistrationByDate" element={<BirthRegistrationByDate />} />
@@ -228,14 +211,10 @@ function App() {
             <Route path="/DeathRegistrationByDate" element={<DeathRegistrationByDate />} />
             <Route path="/DeathRegistrationByWard" element={<DeathRegistrationByWard />} />
             <Route path="/DeathSearchInfo" element={<DeathSearchInfo />} />
-
-            {/* Administrative */}
-            <Route path="/IncomeOutgoing" element={<IncomeOutgoing />} />
-            <Route path="/MiscellaneousInformation" element={<MiscellaneousInformation />} />
-            <Route path="/OutwardInformation" element={<OutwardInformation />} />
             <Route path="/Fire" element={<Fire />} />
             <Route path="/TypesOfComplaint" element={<TypesOfComplaint />} />
             <Route path="/ComplaintType2" element={<ComplaintType2 />} />
+
 
             {/* Market */}
             <Route path="/Market" element={<Market />} />

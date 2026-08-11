@@ -12,11 +12,13 @@ import {
   SubHeaderCard,
   CustomButton,
 } from "../../../Components/NewLayout";
+import useAlert from "../../../Components/CustomAlert/useAlert";
 
 const ZoneWiseTaxColl = () => {
   const { setLoading } = useLoader();
   const navigate = useNavigate();
   const { user } = useAuth();
+  const { showAlert, Alert } = useAlert();
   const userid = user?.userId || "";
   const orgId = user?.data?.OrgId;
   const flag = import.meta.env.VITE_FLAG;
@@ -106,11 +108,13 @@ const ZoneWiseTaxColl = () => {
               setTableData([]);
               setPieChartData([]);
               setBarGraphData([]);
+              showAlert("No Data Found", "error");
             }
           } else {
             setTableData([]);
             setPieChartData([]);
             setBarGraphData([]);
+            showAlert("No Data Found", "error");
           }
         } else if (Array.isArray(resData.jsondata) && resData.jsondata.length > 0) {
           const data = resData.jsondata.map((data) => ({
@@ -161,9 +165,11 @@ const ZoneWiseTaxColl = () => {
           setTableData([]);
           setPieChartData([]);
           setBarGraphData([]);
+          showAlert("No Data Found", "error");
         }
       } catch (error) {
         console.error("Error fetching daily collection data:", error);
+        showAlert("Error fetching data", "error");
       } finally {
         setLoading(false);
       }
@@ -179,7 +185,7 @@ const ZoneWiseTaxColl = () => {
         subtitle="CFC Tax"
         onBack={handleGoBack}
       />
-
+      <Alert />
       <SubHeaderCard
         subtitle="Zone"
         title="All Zones"

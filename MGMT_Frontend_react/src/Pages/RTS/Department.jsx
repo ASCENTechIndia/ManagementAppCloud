@@ -10,6 +10,7 @@ import { PageHeader,  FormLayoutCard,
   CalendarInput, } from "../../Components/NewLayout";
 import { Formik, Form } from "formik";
 import { Repeat } from "lucide-react";
+import useAlert from "../../Components/CustomAlert/useAlert";
 
 
 const Department = () => {
@@ -17,6 +18,7 @@ const Department = () => {
   const { user } = useAuth();
   const tableRef = useRef(null);
   const navigate = useNavigate();
+  const { showAlert, Alert } = useAlert();
   const userId = user?.userId;
   const ulbid = user?.data?.OrgId;
 
@@ -44,7 +46,7 @@ const Department = () => {
 
   const handleSubmit = async (values) => {
     if (!userId || !ulbid) {
-      alert("User ID or Ulb ID not found");
+      showAlert("User ID or Ulb ID not found", "warning");
       return;
     }
     setSelectedFrom(values.from);
@@ -99,11 +101,12 @@ const Department = () => {
         }, 100);
       } else {
         setTableData([]);
+        showAlert("No Data Found", "error");
       }
     } catch (error) {
       console.error("Error fetching department data:", error);
       setTableData([]);
-      alert(error.message || "Failed to fetch data");
+      showALert(error.message || "Failed to fetch data", "error");
     } finally {
       setLoading(false);
     }
@@ -135,7 +138,7 @@ const Department = () => {
         subtitle="RTS Department"
         onBack={handleGoBack}
       />
-
+      <Alert />
  <Formik initialValues={initialValues} onSubmit={handleSubmit}>
         {({ setFieldValue, values, handleSubmit: formikSubmit }) => (
           <Form onSubmit={formikSubmit}>

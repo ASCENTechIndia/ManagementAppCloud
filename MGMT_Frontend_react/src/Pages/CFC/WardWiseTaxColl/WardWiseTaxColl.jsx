@@ -12,11 +12,13 @@ import {
   SubHeaderCard,
   CustomButton,
 } from "../../../Components/NewLayout";
+import useAlert from "../../../Components/CustomAlert/useAlert";
 
 const WardWiseTaxColl = () => {
   const { setLoading } = useLoader();
   const navigate = useNavigate();
   const { user } = useAuth();
+  const { showAlert, Alert } = useAlert();
   const userid = user?.userId || "";
   const orgId = user?.data?.OrgId;
   const flag = import.meta.env.VITE_FLAG;
@@ -115,6 +117,7 @@ const WardWiseTaxColl = () => {
             setTableData([]);
             setPieChartData([]);
             setBarGraphData([]);
+            showAlert("No Data Found", "error");
           }
         } else if (Array.isArray(resData.jsondata) && resData.jsondata.length > 0) {
           const data = selectedZone === null ? resData.jsondata.map((data) => ({
@@ -162,9 +165,11 @@ const WardWiseTaxColl = () => {
           setTableData([]);
           setPieChartData([]);
           setBarGraphData([]);
+          showAlert("No Data Found", "error");
         }
       } catch (error) {
         console.error("Error fetching collection data:", error);
+        showAlert("Failed to fetch data", "error");
       } finally {
         setLoading(false);
       }
@@ -180,7 +185,7 @@ const WardWiseTaxColl = () => {
         subtitle="CFC Tax"
         onBack={handleGoBack}
       />
-
+      <Alert />
       <SubHeaderCard
         subtitle="Zone"
         title={

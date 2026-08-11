@@ -1,7 +1,7 @@
 import React, { useMemo, useState, useEffect, useCallback } from "react";
-import Header from "../../../HOC/Header/Header";
-import Navbar from "../../../HOC/Navbar/Navbar";
-import Table from "../../../Components/Table/Table";
+import Header from "../../HOC/Header/Header";
+import Navbar from "../../HOC/Navbar/Navbar";
+import Table from "../../Components/Table/Table";
 import { Button, Form, Row, Col, Card } from "react-bootstrap";
 import {
   RefreshCw,
@@ -32,10 +32,10 @@ import {
   Bar,
 } from "recharts";
 import { jwtDecode } from "jwt-decode"; // Import jwt-decode
-import "./CrmDashBoard.css";
-import { useLanguage } from "../../../Context/LanguageProvider";
-import apiService from "../../../../apiService";
-import { useAuth } from "../../../Context/AuthContext";
+// import "./CrmDashBoard.css";
+import { useLanguage } from "../../Context/LanguageProvider";
+import apiService from "../../../apiService";
+import { useAuth } from "../../Context/AuthContext";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { useNavigate } from "react-router-dom";
 

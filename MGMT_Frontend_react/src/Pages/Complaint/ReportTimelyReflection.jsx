@@ -6,10 +6,12 @@ import TableComponent from "../../Components/Table/Table";
 import { useNavigate } from "react-router-dom";
 import { PageHeader } from "../../Components/NewLayout";
 import { ChevronLeft } from "lucide-react";
+import useAlert from "../../Components/CustomAlert/useAlert";
 
 const ReportTimelyReflection = () => {
   const { setLoading } = useLoader();
   const { user } = useAuth();
+  const { showAlert, Alert } = useAlert();
   const userId = user?.userId;
   const ulbid = user?.data?.OrgId;
   const navigate = useNavigate();
@@ -38,7 +40,7 @@ const ReportTimelyReflection = () => {
 
   const fetchSummary = async () => {
     if (!userId || !ulbid) {
-      alert("User Id or ulbid is not set");
+      showAlert("User Id or ulbid is not set", "warning");
       return;
     }
     try {
@@ -86,11 +88,12 @@ const ReportTimelyReflection = () => {
       } else {
         setTableData([]);
         setCurrentView("summary");
+        showAlert("No Data Found", "error");
       }
     } catch (error) {
       console.error("Error fetching summary data:", error);
       setTableData([]);
-      alert(error.message || "Failed to fetch data");
+      showAlert(error.message || "Failed to fetch data", "error");
     } finally {
       setLoading(false);
     }
@@ -98,7 +101,7 @@ const ReportTimelyReflection = () => {
 
   const fetchDetails = async (deptId) => {
     if (!userId || !ulbid) {
-      alert("User Id or ulbid is not set");
+      showAlert("User Id or ulbid is not set", "warning");
       return;
     }
     try {
@@ -134,12 +137,12 @@ const ReportTimelyReflection = () => {
         }, 100);
       } else {
         setTableData([]);
-        alert("No details found");
+        showAlert("No details found", "error");
       }
     } catch (error) {
       console.error("Error fetching details:", error);
       setTableData([]);
-      alert(error.message || "Failed to fetch details");
+      showAlert(error.message || "Failed to fetch details", "error");
     } finally {
       setLoading(false);
     }
@@ -171,6 +174,7 @@ const ReportTimelyReflection = () => {
         subtitle="CRM"
         onBack={handleGoBack}
       />
+      <Alert />
       <section className="container mx-auto mt-4 mb-5 px-4" ref={tableRef}>
         <div className="rounded-3xl bg-white p-4 sm:p-6 shadow-[0_12px_30px_rgba(0,0,0,0.12)]">
           {tableData.length > 0 ? (

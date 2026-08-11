@@ -109,12 +109,12 @@ const getResolutionSummary = async (req, res) => {
 
     const query = `
       SELECT 
-        COUNT(var_complnt_cmplno) AS total_complnt,
-        COUNT(CASE WHEN UPPER(var_complnt_currentstatus) = 'CL' THEN 1 END) AS resolved,
-        ROUND(AVG((date_complnt_closedate - dat_complnt_cmplregdate) * 24), 2) AS avg_resolution_time_hrs
-      FROM crm.aomcm_complaintmast_def
-      WHERE num_complaintmast_ulbid = :ulbid
-        AND dat_complnt_cmplregdate BETWEEN TO_DATE(:startDate,'yyyy-mm-dd') 
+        NVL(SUM(Pending)+sum(work_assign) + SUM(Close), 0) AS total_complnt,
+        sum(close) AS resolved,
+        ROUND(AVG((closedate - dt) * 24), 2) AS avg_resolution_time_hrs
+      FROM crm.view_analysismmcdtls_web
+      WHERE ulbid = :ulbid
+        AND TRUNC(dt) BETWEEN TO_DATE(:startDate,'yyyy-mm-dd') 
                                         AND TO_DATE(:endDate,'yyyy-mm-dd')
     `;
 

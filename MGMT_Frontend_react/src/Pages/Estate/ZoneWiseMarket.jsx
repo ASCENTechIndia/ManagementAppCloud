@@ -5,12 +5,14 @@ import { useAuth } from "../../Context/AuthContext";
 import apiService from "../../../apiService";
 import Table from "../../Components/Table/Table";
 import { PageHeader, SubHeaderCard } from "../../Components/NewLayout";
+import useAlert from "../../Components/CustomAlert/useAlert";
 
 const ZoneWiseMarket = () => {
   const { setLoading } = useLoader();
   const { user } = useAuth();
   const tableRef = useRef(null);
   const navigate = useNavigate();
+  const { showAlert, Alert } = useAlert();
   const userId = user?.userId;
   const ulbid = user?.data?.OrgId;
 
@@ -39,7 +41,7 @@ const ZoneWiseMarket = () => {
 
   const fetchData = async () => {
     if (!userId || !ulbid) {
-      alert("User ID or Ulb ID not found");
+      showAlert("User ID or Ulb ID not found", "warning");
       return;
     }
 
@@ -67,7 +69,7 @@ const ZoneWiseMarket = () => {
           total: item.total || 0,
           shop: item.shop || 0,
           rent: item.rent || 0,
-          empty: item.empty || 0,
+          empty: item.empty || 0, 
           total_demand: item.total_demand || 0,
           total_collection: item.total_collection || 0,
           recovery_percentage: item.recovery_percentage || 0,
@@ -98,11 +100,12 @@ const ZoneWiseMarket = () => {
         }, 100);
       } else {
         setTableData([]);
+        showAlert("No Data Found", "error");
       }
     } catch (error) {
       console.error("Error fetching zone-wise market data:", error);
       setTableData([]);
-      alert(error.message || "Failed to fetch data");
+      showAlert(error.message || "Failed to fetch data", "error");
     } finally {
       setLoading(false);
     }
@@ -125,7 +128,7 @@ const ZoneWiseMarket = () => {
         subtitle="Estate Department"
         onBack={handleGoBack}
       />
-
+      <Alert />
       {tableData.length > 0 && (
         <>
           {/* <SubHeaderCard

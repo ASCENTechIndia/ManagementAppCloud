@@ -13,11 +13,13 @@ import {
   SubHeaderCard,
 } from "../../Components/NewLayout";
 import CalenderComponent from "../../Components/CalenderComponent";
+import useAlert from "../../Components/CustomAlert/useAlert";
 
 const ComplaintReportByPeriod = () => {
   const { setLoading } = useLoader();
   const { user } = useAuth();
   const navigate = useNavigate();
+  const { showAlert, Alert } = useAlert();
   const ulbId = user?.data?.OrgId;
   const tableRef = useRef(null);
   const [tableData, setTableData] = useState([]);
@@ -74,13 +76,13 @@ const ComplaintReportByPeriod = () => {
           setSelectedDept(options[0].value);
         }
       } else {
-        alert("No departments found");
+        showAlert("No departments found", "warning");
         setDeptOptions([]);
       }
     } catch (error) {
       setDeptOptions([]);
       console.error("Error fetching departments:", error);
-      alert(error.message || "Failed to fetch departments");
+      showAlert(error.message || "Failed to fetch departments", "error");
     } finally {
       setLoading(false);
     }
@@ -88,11 +90,11 @@ const ComplaintReportByPeriod = () => {
 
   const handleSubmit = async (values) => {
     if (!ulbId) {
-      alert("Ulb ID not found");
+      showAlert("Ulb ID not found", "warning");
       return;
     }
     if (!values.deptId) {
-      alert("Please select a department");
+      showAlert("Please select a department", "warning");
       return;
     }
 
@@ -101,28 +103,49 @@ const ComplaintReportByPeriod = () => {
     setSelectedDept(values.deptId);
 
     const payload = {
-      orgId: ulbId,
+      complaintNo: null,
+      complaintSubType: null,
+      complaintType: null,
+      deptConfigList: [],
+      prabhagIdList: [],
+      source: null,
+      status: null,
+
+      orgId: Number(ulbId),
       fromDate: formatDate(values.from),
       toDate: formatDate(values.to),
-      deptId: values.deptId,
+      selectedDept: Number(values.deptId),
     };
 
     try {
       setLoading(true);
       const response = await axios.post(
-        `${import.meta.env.VITE_CRM_BASE_URL}/getAgingComplaintSummary`,
+        `${import.meta.env.VITE_CRM_BASE_URL}/fetchComplaintReport`,
         payload,
       );
 
-      if (response.data?.success && Array.isArray(response.data.data)) {
-        const rows = response.data.data.map((item) => ({
-          deptName: item.DEPTNAME || "",
-          total: item.TOTAL || 0,
-          pending: item.PENDING || 0,
-          closed: item.CLOSE1 || 0,
-          es: item.ES || 0,
-          demand: item.DEMAND || 0,
-        }));
+
+      if (response.data?.success && Array.isArray(response.data.data) && response.data.data.length > 0) {
+        const department = response.data.data[0]?.DEPTNM;
+        const totalComplaints = response.data.data.length;
+        const totalClosed = response.data.data.filter(item => item.CMPSTATUS === "Close").length;
+        const totalPending = response.data.data.filter(item => item.CMPSTATUS !== "Close").length; 
+        // const rows = response.data.data.map((item) => ({
+        //   deptName: item.DEPTNAME || "",
+        //   total: item.TOTAL || 0,
+        //   pending: item.PENDING || 0,
+        //   closed: item.CLOSE1 || 0,
+        //   es: item.ES || 0,
+        //   demand: item.DEMAND || 0,
+        // }));
+        const rows = [{
+          deptName: department,
+          total: totalComplaints,
+          pending: totalPending,
+          closed: totalClosed,
+          es: 0,
+          demand: 0
+        }];
         setTableData(rows);
         setTimeout(() => {
           tableRef.current.scrollIntoView({
@@ -132,12 +155,12 @@ const ComplaintReportByPeriod = () => {
         }, 100);
       } else {
         setTableData([]);
-        alert(response.data?.message || "No data found");
+        showAlert(response.data?.message || "No data found", "error");
       }
     } catch (error) {
       console.error("Error fetching complaint data:", error);
       setTableData([]);
-      alert(error.message || "Failed to fetch data");
+      showAlert(error.message || "Failed to fetch data", "error");
     } finally {
       setLoading(false);
     }
@@ -160,7 +183,7 @@ const ComplaintReportByPeriod = () => {
         subtitle="CRM"
         onBack={handleGoBack}
       />
-
+      <Alert />
       <Formik initialValues={initialValues} onSubmit={handleSubmit}>
         {({ setFieldValue, values, handleSubmit: formikSubmit }) => (
           <Form onSubmit={formikSubmit}>
@@ -213,7 +236,7 @@ const ComplaintReportByPeriod = () => {
           </Form>
         )}
       </Formik>
-
+        {console.log(tableData)}
       {tableData.length > 0 && (
         <>
           {/* <SubHeaderCard

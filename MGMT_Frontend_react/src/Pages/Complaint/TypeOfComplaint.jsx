@@ -13,11 +13,13 @@ import {
   FormLayoutCard,
   CalendarInput,
 } from "../../Components/NewLayout";
+import useAlert from "../../Components/CustomAlert/useAlert";
 
 const TypeOfComplaint = () => {
   const { setLoading } = useLoader();
   const { user } = useAuth();
   const navigate = useNavigate();
+  const { showAlert, Alert } = useAlert(); 
   const userId = user?.userId;
   const ulbid = user?.data?.OrgId;
   const tableRef = useRef(null);
@@ -29,13 +31,13 @@ const TypeOfComplaint = () => {
 
   const fetchData = async (from, to) => {
     if (!userId || !ulbid) {
-      alert("Userid or ulbID is not set");
+      showAlert("Userid or ulbID is not set", "warning");
       return;
     }
     try {
       setLoading(true);
       const payload = {
-        Request1: `${import.meta.env.VITE_FLAG}$Crm_Complaint$${userId}$${ulbid}~${formatDateForAPI(from)}~${formatDateForAPI(to)}~*~*`,
+        Request1: `${import.meta.env.VITE_FLAG}$Crm_ComplaintType$${userId}$${ulbid}~${formatDateForAPI(from)}~${formatDateForAPI(to)}~*~COMP`,
         Request2: "",
         Request3: "",
         Request4: "",
@@ -44,6 +46,7 @@ const TypeOfComplaint = () => {
         Request7: "",
       };
       const res = await apiService.post("WTgeneric-call", payload);
+      console.log(res);
       if (
         res?.data?.Success &&
         Array.isArray(res?.data?.data?.jsondata) &&
@@ -51,7 +54,7 @@ const TypeOfComplaint = () => {
       ) {
         const data = res.data.data.jsondata.map((item) => ({
           category: item.comptype || "",
-          registered: Number(item.totalcomp) || 0,
+          // registered: Number(item.totalcomp) || 0,
           resolved: Number(item.resolved) || 0,
           pending: Number(item.pending) || 0,
         }));
@@ -63,13 +66,13 @@ const TypeOfComplaint = () => {
           });
         }, 100);
       } else {
-        alert("No record available");
+        showAlert("No record available", "error");
         setBarData([]);
       }
     } catch (error) {
       console.error("Error fetching complaint data:", error);
       setBarData([]);
-      alert(error.message || "Failed to fetch data");
+      showAlert(error.message || "Failed to fetch data", "error");
     } finally {
       setLoading(false);
     }
@@ -90,7 +93,7 @@ const TypeOfComplaint = () => {
         subtitle="CRM"
         onBack={handleGoBack}
       />
-
+      <Alert />
       <Formik initialValues={initialValues} onSubmit={handleSubmit}>
         {({ setFieldValue, values, handleSubmit: formikSubmit }) => (
           <Form onSubmit={formikSubmit}>
@@ -133,11 +136,11 @@ const TypeOfComplaint = () => {
           <div className="rounded-3xl bg-white p-4 sm:p-6 shadow-[0_12px_30px_rgba(0,0,0,0.12)]">
             <StackedBarGraph
               data={barData}
-              title="Department-wise Complaint Status"
-              description="Registered, Resolved & Pending"
+              title="Complaint Type-wise Status"
+              description="Resolved & Pending"
               yAxisTitle="Number of Complaints"
               seriesConfig={[
-                { name: "Registered", key: "registered", color: "#facc15" },
+                // { name: "Registered", key: "registered", color: "#facc15" },
                 { name: "Resolved", key: "resolved", color: "#22c55e" },
                 { name: "Pending", key: "pending", color: "#ef4444" },
               ]}
