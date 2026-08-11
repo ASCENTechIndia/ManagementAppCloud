@@ -117,7 +117,9 @@ const CrmDashBoardOut = () => {
   const fetchAllData = useCallback(async () => {
     try {
       const { startDate, endDate } = getDatesForPeriod(period);
-
+      if (!ulbId) {
+        return;
+      }
       const payload = { ulbid: ulbId, startDate, endDate };
 
       const categoryRes = await apiService.post(
