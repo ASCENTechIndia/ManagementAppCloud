@@ -1,5 +1,4 @@
-
-import React from "react";
+import React, { useEffect } from "react";
 import {
     BsCheckCircleFill,
     BsXCircleFill,
@@ -8,7 +7,17 @@ import {
     BsX,
 } from "react-icons/bs";
 
-const CustomAlert = ({ message, type = "info", onClose }) => {
+const CustomAlert = ({ message, type = "info", onClose, duration = 3000 }) => {
+    useEffect(() => {
+        if (!duration) return;
+
+        const timer = setTimeout(() => {
+            if (onClose) onClose();
+        }, duration);
+
+        return () => clearTimeout(timer);
+    }, [message, type, duration, onClose]);
+
     const alertConfig = {
         success: {
             borderColor: "border-green-500",
