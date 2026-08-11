@@ -207,7 +207,9 @@ const CrmDashBoardOut = () => {
             handled: item.HANDLED || 0,
             avgResolution: item.AVG_RESOLUTION_TIME_HRS || 0,
             fcr:
-              item.CLOSE_ && item.HANDLED > 0 ? item.CLOSE_ / item.HANDLED : 0,
+              item.CLOSE_ && item.HANDLED > 0
+                ? (item.CLOSE_ / item.HANDLED).toFixed(2)
+                : 0,
             csat: item.CSAT || 0,
             sla: item.SLA ? item.SLA : null,
           }))
@@ -306,13 +308,13 @@ const CrmDashBoardOut = () => {
             >
               <RefreshCw size={16} className="me-1" /> Refresh
             </Button>
-            <Button
+            {/* <Button
               variant="dark"
               className="border text-white d-flex align-items-center shadow-lg rounded"
               onClick={exportCSV}
             >
               <Download size={16} className="me-1" /> Export CSV
-            </Button>
+            </Button> */}
           </div>
         </div>
 
