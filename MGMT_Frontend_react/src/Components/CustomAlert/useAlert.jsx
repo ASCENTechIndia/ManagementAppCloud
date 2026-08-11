@@ -6,15 +6,17 @@ const useAlert = () => {
         show: false,
         message: "",
         type: "info",
+        duration: 3000,
     });
 
-    const showAlert = (message, type = "info") => {
+    const showAlert = (message, type = "info", duration = 3000) => {
         // console.log("SHOW ALERT:", message, type);
 
         setAlert({
             show: true,
             message,
             type,
+            duration,
         });
     };
 
@@ -23,6 +25,7 @@ const useAlert = () => {
             show: false,
             message: "",
             type: "info",
+            duration: 3000,
         });
     };
 
@@ -35,6 +38,7 @@ const useAlert = () => {
             <CustomAlert
                 message={alert.message}
                 type={alert.type}
+                duration={alert.duration}
                 onClose={hideAlert}
             />
         );
@@ -47,4 +51,4 @@ const useAlert = () => {
     };
 };
 
-export default useAlert;
+export default useAlert;
