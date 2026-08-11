@@ -40,7 +40,7 @@ const CustomButton = ({
             break;
 
         case "icon-glass":
-            variantStyles = "h-[42px] w-[42px] border-0 bg-white/20 text-[20px] text-white backdrop-blur-[10px] hover:bg-white/30 active:scale-95 disabled:opacity-50";
+            variantStyles = "h-[42px] w-[42px] border-0 bg-white text-[20px] text-white backdrop-blur-[10px] hover:bg-blue/60 active:scale-95 disabled:opacity-50";
             inlineStyles.borderRadius = inlineStyles.borderRadius || "50%";
             break;
 

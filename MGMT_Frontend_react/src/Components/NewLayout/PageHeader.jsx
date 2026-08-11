@@ -57,7 +57,7 @@ const PageHeader = ({
                                     onClick={onBack || (() => window.history.back())}
                                     title="Go back"
                                 >
-                                    <BsArrowLeft size={20} />
+                                    <BsArrowLeft color="blue" size={20} />
                                 </CustomButton>
                             )}
 
