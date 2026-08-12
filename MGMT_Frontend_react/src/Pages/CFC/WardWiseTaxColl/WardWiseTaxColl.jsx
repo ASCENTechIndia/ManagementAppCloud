@@ -61,7 +61,7 @@ const WardWiseTaxColl = () => {
           Request6: "",
           Request7: "",
         };
-        
+
         const response = await apiService.post("WTgeneric-call", payload);
         const resData = response.data?.data;
 
@@ -126,11 +126,11 @@ const WardWiseTaxColl = () => {
           const data = selectedZone === null ? resData.jsondata.map((data) => ({
             id: data.prabhag,
             zone: data.prabhagname,
-            total: (Number(data.rec_amount)/100000).toFixed(2),
+            total: data.rec_amount,
           })) : resData.jsondata.map((data) => ({
             id: data.zoneid,
             wardName: data.zone,
-            total: (Number(data.collec)/100000).toFixed(2)
+            total: (Number(data.collec) / 100000).toFixed(2)
           }))
           const totalSum = data.reduce((acc, item) => acc + Number(item.total || 0), 0);
           const tableDataWithTotal = selectedZone === null ? [
@@ -147,7 +147,7 @@ const WardWiseTaxColl = () => {
             }
           ];
           setTableData(tableDataWithTotal);
-          const pieData =  data.map((data) => ({
+          const pieData = data.map((data) => ({
             y: Number(data.total),
             name: data.zone || data.wardName,
           }));

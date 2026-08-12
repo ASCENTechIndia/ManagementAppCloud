@@ -122,7 +122,7 @@ const ZoneWiseTaxColl = () => {
           hideAlert();
           const data = resData.jsondata.map((data) => ({
             id: data.prabhag,
-            zone: data.prabhagname,
+            zone: data.prabhagname || data.prabhag_name,
             total: data.coll
           }))
 
