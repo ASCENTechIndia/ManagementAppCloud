@@ -25,7 +25,7 @@ const Taxcollection = () => {
   const orgId = user?.data?.OrgId;
   const flag = import.meta.env.VITE_FLAG;
   const { setLoading } = useLoader();
-  const { showAlert, Alert } = useAlert();
+  const { showAlert, hideAlert, Alert } = useAlert();
   const [initialView, setInitialView] = useState(false);
   const [tableHeader] = useState(["Zone", "Total"]);
   const [tableKeyMapping] = useState({
@@ -46,6 +46,7 @@ const Taxcollection = () => {
   const [activeView, setActiveView] = useState("table");
 
   const handleSubmit = async (values) => {
+    hideAlert();
     if (!userId) {
       showAlert("UserId is not set", "warning");
       return;
@@ -68,6 +69,7 @@ const Taxcollection = () => {
       const resData = res?.data?.data;
 
       if (typeof resData === "string" && resData.includes("#SUCCESS#")) {
+        hideAlert();
         setInitialView(true);
         const responseStr = resData.replace(/^respon:/, "");
         const parts = responseStr.split("#SUCCESS#");
@@ -123,6 +125,7 @@ const Taxcollection = () => {
         Array.isArray(resData?.jsondata) &&
         resData?.jsondata?.length > 0
       ) {
+        hideAlert();
         setInitialView(true);
         const data = resData.jsondata.map((data) => ({
           zone: data.ward_name || data.zone || data.prabhag || "",

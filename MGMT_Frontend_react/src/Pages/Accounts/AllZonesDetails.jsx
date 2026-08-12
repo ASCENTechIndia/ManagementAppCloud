@@ -20,7 +20,7 @@ const AllZonesDetails = () => {
     const navigate = useNavigate();
     const location = useLocation();
     const { user } = useAuth();
-    const { showAlert, Alert } = useAlert();
+    const { showAlert, hideAlert, Alert } = useAlert();
     const userid = user?.userId || "";
     const orgId = user?.data?.OrgId;
     const flag = import.meta.env.VITE_FLAG || "MobApp";
@@ -73,6 +73,7 @@ const AllZonesDetails = () => {
         "Rec No",
         "Trans No",
         "GL Name",
+        "Reference No",
         "Account Name",
         "Amount",
     ];
@@ -83,6 +84,7 @@ const AllZonesDetails = () => {
         "Rec No": "recno",
         "Trans No": "transno",
         "GL Name": "glname",
+        "Reference No": "refno",
         "Account Name": "accname",
         "Amount": "amount",
     };
@@ -100,6 +102,7 @@ const AllZonesDetails = () => {
         if (!userid) return;
 
         const fetchData = async () => {
+            hideAlert();
             try {
                 setLoading(true);
 
@@ -171,6 +174,7 @@ const AllZonesDetails = () => {
                 }
 
                 if (rawList.length > 0) {
+                    hideAlert();
                     // Sort in 1 2 3 sequential format by zone / prabhag number
                     rawList.sort((a, b) => {
                         const numA = extractZoneNumber(a.prabhagname);
@@ -258,6 +262,7 @@ const AllZonesDetails = () => {
     }, [userid]);
 
     const handlePrabhagClick = async (row) => {
+        hideAlert();
         if (row.prabhagname === "Total" || row.prabhagname === "एकूण") return;
 
         const prabhagId = row.zoneid || row.prabhagid || row.id || "";
@@ -341,63 +346,54 @@ const AllZonesDetails = () => {
                 }
             } else if (typeof resData === "string" && response.data.errorcode === 9999 && resData !== "") {
                 // const fixedString = resData.replace(/\r?\n/g, "\\n");
-                const cleanedData = resData
-                    // Fix escaped quotes
+                let cleanedData = resData
+                    // Escaped quotes
                     .replace(/\\"/g, '"')
 
-                    // Fix escaped colon
+                    // Escaped colon
                     .replace(/\\:/g, ":")
 
-                    // Add quotes around unquoted string values
+                    // Remove trailing commas before } or ]
+                    .replace(/,\s*([}\]])/g, "$1")
+
+                    // Fix prabhagname
                     .replace(
-                        /"([^"]+)"\s*:\s*([^",}\]]+)(?=\s*[,}])/g,
-                        (_, key, value) => {
-                            const trimmedValue = value.trim();
+                        /"prabhagname"\s*:\s*([^,}]+)/g,
+                        (_, value) => `"prabhagname":"${value.trim()}"`
+                    )
 
-                            // Keep numbers
-                            if (/^-?\d+(\.\d+)?$/.test(trimmedValue)) {
-                                return `"${key}":${trimmedValue}`;
-                            }
-
-                            // Keep boolean
-                            if (trimmedValue === "true" || trimmedValue === "false") {
-                                return `"${key}":${trimmedValue}`;
-                            }
-
-                            // Keep null
-                            if (trimmedValue === "null") {
-                                return `"${key}":null`;
-                            }
-
-                            // Otherwise it's a string
-                            return `"${key}":"${trimmedValue}"`;
-                        }
+                    // Fix manual_refno
+                    .replace(
+                        /"manual_refno"\s*:\s*([^,}]+)/g,
+                        (_, value) => `"manual_refno":"${value.trim()}"`
                     );
 
                 const parsed = JSON.parse(cleanedData);
 
                 const jsonData = parsed.jsondata;
-
                 rawList = jsonData;
             }
 
             const formatted = rawList.map((item) => ({
-                prabhagname: item.prabhagname || "",
-                vibhagname: item.vibhagname || "",
-                recno: item.recno || "",
-                transno: item.transno || "",
-                glname: item.glname || "",
-                accname: item.accname || "",
+                prabhagname: item.prabhagname || "-",
+                vibhagname: item.vibhagname || "-",
+                recno: item.recno || "-",
+                transno: item.transno || "-",
+                refno: item.manual_refno || "-",
+                glname: item.glname || "-",
+                accname: item.accname || "-",
                 amount: typeof item.amount !== "undefined" ? item.amount : typeof item.Amount !== "undefined" ? item.Amount : 0,
             }));
-            console.log(formatted.length);
+
             if (formatted.length > 0) {
+                hideAlert();
                 const totalAmount = formatted.reduce((acc, cur) => acc + (Number(cur.amount) || 0), 0);
                 const totalRow = {
                     prabhagname: "Total",
                     vibhagname: "",
                     recno: "",
                     transno: "",
+                    refno: "",
                     glname: "",
                     accname: "",
                     amount: totalAmount,

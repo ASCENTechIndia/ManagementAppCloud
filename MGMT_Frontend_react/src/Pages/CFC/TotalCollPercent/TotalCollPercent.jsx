@@ -19,7 +19,7 @@ const TotalCollPercent = () => {
   const { setLoading } = useLoader();
   const navigate = useNavigate();
   const { user } = useAuth();
-  const { showAlert, Alert } = useAlert();
+  const { showAlert, hideAlert, Alert } = useAlert();
   const userid = user?.userId || "";
   const orgId = user?.data?.OrgId;
   const tableRef = useRef(null);
@@ -62,6 +62,7 @@ const TotalCollPercent = () => {
   useEffect(() => {
     if (!userid) return;
     const fetchData = async () => {
+      hideAlert();
       try {
         setLoading(true);
         const payload = {
@@ -113,6 +114,7 @@ const TotalCollPercent = () => {
           }
 
           if (data.length > 0) {
+            hideAlert();
             const hasTotalRow = data.some(
               (item) => item.zone === "Total" || item.wardName === "Total"
             );
@@ -172,6 +174,7 @@ const TotalCollPercent = () => {
             showAlert("No Data Found", "error");
           }
         } else if (Array.isArray(resData.jsondata) && resData.jsondata.length > 0) {
+          hideAlert();
           const data = selectedZone === null ? resData.jsondata.map((data) => ({
             id: data.prabhagid,
             zone: data.prabhag,

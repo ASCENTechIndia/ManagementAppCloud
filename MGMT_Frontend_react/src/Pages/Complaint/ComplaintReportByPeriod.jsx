@@ -19,7 +19,7 @@ const ComplaintReportByPeriod = () => {
   const { setLoading } = useLoader();
   const { user } = useAuth();
   const navigate = useNavigate();
-  const { showAlert, Alert } = useAlert();
+  const { showAlert, hideAlert, Alert } = useAlert();
   const ulbId = user?.data?.OrgId;
   const tableRef = useRef(null);
   const [tableData, setTableData] = useState([]);
@@ -67,6 +67,7 @@ const ComplaintReportByPeriod = () => {
       );
       
       if (Array.isArray(response.data) && response.data.length > 0) {
+        hideAlert();
         const options = response.data.map((item) => ({
           label: item.DEPTNAME,
           value: String(item.DEPTID),
@@ -89,6 +90,7 @@ const ComplaintReportByPeriod = () => {
   };
 
   const handleSubmit = async (values) => {
+    hideAlert();
     if (!ulbId) {
       showAlert("Ulb ID not found", "warning");
       return;
@@ -126,6 +128,7 @@ const ComplaintReportByPeriod = () => {
 
 
       if (response.data?.success && Array.isArray(response.data.data) && response.data.data.length > 0) {
+        hideAlert();
         const department = response.data.data[0]?.DEPTNM;
         const totalComplaints = response.data.data.length;
         const totalClosed = response.data.data.filter(item => item.CMPSTATUS === "Close").length;

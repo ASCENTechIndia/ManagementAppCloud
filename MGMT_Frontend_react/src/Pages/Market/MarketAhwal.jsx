@@ -21,7 +21,7 @@ const MarketAhwal = () => {
   const { user } = useAuth();
   const tableRef = useRef(null);
   const navigate = useNavigate();
-  const { showAlert, Alert } = useAlert(); 
+  const { showAlert, hideAlert, Alert } = useAlert(); 
   const userId = user?.userId;
   const ulbid = user?.data?.OrgId;
 
@@ -62,6 +62,7 @@ const MarketAhwal = () => {
   };
 
   const handleSubmit = async (values) => {
+    hideAlert();
     if (!userId || !ulbid) {
       showAlert("User ID or Ulb ID not found", "warning");
       return;
@@ -88,6 +89,7 @@ const MarketAhwal = () => {
         Array.isArray(res.data.data.jsondata) &&
         res.data.data.jsondata.length > 0
       ) {
+        hideAlert();
         const item = res.data.data.jsondata.map((item) => ({
           total_application: item.total_application || 0,
           approve: item.approve || 0,

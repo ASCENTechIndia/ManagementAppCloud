@@ -20,7 +20,7 @@ const TypesOfComplaint = () => {
   const { setLoading } = useLoader();
   const { user } = useAuth();
   const navigate = useNavigate();
-  const { showAlert, Alert } = useAlert();
+  const { showAlert, hideAlert, Alert } = useAlert();
   const userId = user?.userId;
   const ulbid = user?.data?.OrgId;
 
@@ -51,6 +51,7 @@ const TypesOfComplaint = () => {
   };
 
   const handleSubmit = async (values) => {
+    hideAlert();
     if (!userId || !ulbid) {
       showAlert("User ID or Ulb ID not found", "warning");
       return;
@@ -77,6 +78,7 @@ const TypesOfComplaint = () => {
         Array.isArray(res.data.data.jsondata) &&
         res.data.data.jsondata.length > 0
       ) {
+        hideAlert();
         const rawData = res.data.data.jsondata;
 
         const rows = rawData.map((item) => ({

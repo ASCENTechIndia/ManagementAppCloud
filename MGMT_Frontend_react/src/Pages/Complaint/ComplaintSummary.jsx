@@ -20,7 +20,7 @@ const ComplaintSummary = () => {
   const { setLoading } = useLoader();
   const { user } = useAuth();
   const navigate = useNavigate();
-  const { showAlert, Alert } = useAlert();
+  const { showAlert, hideAlert, Alert } = useAlert();
   const userId = user?.userId;
   const ulbid = user?.data?.OrgId;
   const tableRef = useRef(null);
@@ -87,6 +87,7 @@ const ComplaintSummary = () => {
   };
 
   const fetchSummary = async (from, to) => {
+    hideAlert();
     if (!userId || !ulbid) {
       showAlert("UlbId or userId is not set", "warning");
       return;
@@ -105,6 +106,7 @@ const ComplaintSummary = () => {
       const res = await apiService.post("WTgeneric-call", payload);
 
       if (res?.data?.Success && res?.data?.data?.jsondata?.length > 0) {
+        hideAlert();
         const rows = res.data.data.jsondata.map((item) => ({
           departmentName: item.comptype || "",
           compcode: item.compcode || "",
@@ -158,6 +160,7 @@ const ComplaintSummary = () => {
   };
 
   const fetchDetails = async (compcode, type, from, to) => {
+    hideAlert();
     if (!userId || !ulbid) {
       showAlert("UlbId or userId is not set", "warning");
       return;
@@ -176,6 +179,7 @@ const ComplaintSummary = () => {
       const res = await apiService.post("WTgeneric-call", payload);
 
       if (res?.data?.Success && res?.data?.data?.jsondata?.length > 0) {
+        hideAlert();
         const rows = res.data.data.jsondata.map((item) => ({
           compdt: item.compdt || "",
           custno: item.custno || "",

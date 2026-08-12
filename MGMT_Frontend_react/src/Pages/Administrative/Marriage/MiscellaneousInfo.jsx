@@ -21,7 +21,7 @@ const MiscellaneousInfo = () => {
   const { user } = useAuth();
   const tableRef = useRef(null);
   const navigate = useNavigate();
-  const { showAlert, Alert } = useAlert();
+  const { showAlert, hideAlert, Alert } = useAlert();
   const userId = user?.userId;
   const ulbid = user?.data?.OrgId;
 
@@ -50,6 +50,7 @@ const MiscellaneousInfo = () => {
   };
 
   const handleSubmit = async (values) => {
+    hideAlert();
     if (!userId || !ulbid) {
       showAlert("User ID or Ulb ID not found", "warning");
       return;
@@ -75,6 +76,7 @@ const MiscellaneousInfo = () => {
         Array.isArray(res?.data?.data?.jsondata) &&
         res.data.data.jsondata.length > 0
       ) {
+        hideAlert();
         const rows = res.data.data.jsondata.map((item) => ({
           date: item.applictndt?.split(" ")[0] || "",
           application: Number(item.mrgappcount || 0),

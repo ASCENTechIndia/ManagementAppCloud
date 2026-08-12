@@ -18,7 +18,7 @@ const WardWiseTaxColl = () => {
   const { setLoading } = useLoader();
   const navigate = useNavigate();
   const { user } = useAuth();
-  const { showAlert, Alert } = useAlert();
+  const { showAlert, hideAlert, Alert } = useAlert();
   const userid = user?.userId || "";
   const orgId = user?.data?.OrgId;
   const flag = import.meta.env.VITE_FLAG;
@@ -47,6 +47,7 @@ const WardWiseTaxColl = () => {
   useEffect(() => {
     if (!userid) return;
     const fetchData = async () => {
+      hideAlert();
       try {
         setLoading(true);
         const payload = {
@@ -60,7 +61,7 @@ const WardWiseTaxColl = () => {
           Request6: "",
           Request7: "",
         };
-        
+
         const response = await apiService.post("WTgeneric-call", payload);
         const resData = response.data?.data;
 
@@ -92,6 +93,7 @@ const WardWiseTaxColl = () => {
           }
 
           if (data.length > 0) {
+            hideAlert();
             const totalSum = data.reduce((acc, item) => acc + Number(item.total || 0), 0);
 
             const totalRow = selectedZone === null
@@ -120,14 +122,15 @@ const WardWiseTaxColl = () => {
             showAlert("No Data Found", "error");
           }
         } else if (Array.isArray(resData.jsondata) && resData.jsondata.length > 0) {
+          hideAlert();
           const data = selectedZone === null ? resData.jsondata.map((data) => ({
             id: data.prabhag,
             zone: data.prabhagname,
-            total: (Number(data.rec_amount)/100000).toFixed(2),
+            total: data.rec_amount,
           })) : resData.jsondata.map((data) => ({
             id: data.zoneid,
             wardName: data.zone,
-            total: (Number(data.collec)/100000).toFixed(2)
+            total: (Number(data.collec) / 100000).toFixed(2)
           }))
           const totalSum = data.reduce((acc, item) => acc + Number(item.total || 0), 0);
           const tableDataWithTotal = selectedZone === null ? [
@@ -144,7 +147,7 @@ const WardWiseTaxColl = () => {
             }
           ];
           setTableData(tableDataWithTotal);
-          const pieData =  data.map((data) => ({
+          const pieData = data.map((data) => ({
             y: Number(data.total),
             name: data.zone || data.wardName,
           }));

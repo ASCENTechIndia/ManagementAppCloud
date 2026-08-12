@@ -32,7 +32,7 @@ const ZonewiseReceiptDetails = () => {
   const { setLoading } = useLoader();
   const { user } = useAuth();
   const location = useLocation();
-  const { showAlert, Alert } = useAlert(); 
+  const { showAlert, hideAlert, Alert } = useAlert(); 
   const userId = user?.userId || "";
   const orgId = user?.data?.OrgId || "";
   const flag = import.meta.env.VITE_FLAG || "MobApp";
@@ -87,6 +87,7 @@ const ZonewiseReceiptDetails = () => {
   });
 
   const handleSubmit = async (values) => {
+    hideAlert();
     if (!userId) {
       showAlert("UserId is not set", "warning");
       return;
@@ -147,6 +148,7 @@ const ZonewiseReceiptDetails = () => {
       }
 
       if (rawList.length > 0) {
+        hideAlert();
         setInitialView(true);
 
         const processed = rawList.map((item) => {
