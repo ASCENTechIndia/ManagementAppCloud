@@ -20,7 +20,7 @@ const ComplaintType2 = () => {
   const { setLoading } = useLoader();
   const { user } = useAuth();
   const navigate = useNavigate();
-  const { showAlert, Alert } = useAlert();
+  const { showAlert, hideAlert, Alert } = useAlert();
   const userId = user?.userId;
   const ulbid = user?.data?.OrgId;
 
@@ -78,6 +78,7 @@ const ComplaintType2 = () => {
   };
 
   const handleSubmit = async (values) => {
+    hideAlert();
     if (!userId || !ulbid) {
       showAlert("User ID or Ulb ID not found", "warning");
       return;
@@ -104,6 +105,7 @@ const ComplaintType2 = () => {
         Array.isArray(res.data.data.jsondata) &&
         res.data.data.jsondata.length > 0
       ) {
+        hideAlert();
         const rawData = res.data.data.jsondata;
 
         const rows = rawData.map((item) => ({
@@ -130,6 +132,7 @@ const ComplaintType2 = () => {
         const jsonData = parsed.jsondata;
 
         if (jsonData.length > 0) {
+          hideAlert();
           const rows = jsonData.map((item) => ({
             appno: item.appno || "",
             appdate: item.insdate || "",

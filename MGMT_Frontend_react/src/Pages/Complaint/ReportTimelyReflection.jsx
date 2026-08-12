@@ -11,7 +11,7 @@ import useAlert from "../../Components/CustomAlert/useAlert";
 const ReportTimelyReflection = () => {
   const { setLoading } = useLoader();
   const { user } = useAuth();
-  const { showAlert, Alert } = useAlert();
+  const { showAlert, hideAlert, Alert } = useAlert();
   const userId = user?.userId;
   const ulbid = user?.data?.OrgId;
   const navigate = useNavigate();
@@ -39,6 +39,7 @@ const ReportTimelyReflection = () => {
   };
 
   const fetchSummary = async () => {
+    hideAlert();
     if (!userId || !ulbid) {
       showAlert("User Id or ulbid is not set", "warning");
       return;
@@ -57,6 +58,7 @@ const ReportTimelyReflection = () => {
       const res = await apiService.post("WTgeneric-call", payload);
       console.log("res ", res);
       if (res?.data?.Success && res?.data?.data?.length > 0) {
+        hideAlert();
         const strArr = res.data.data.split("|");
         const data = strArr.map((item) => {
           const [id, deptName, pending] = item.split("$");
@@ -100,6 +102,7 @@ const ReportTimelyReflection = () => {
   };
 
   const fetchDetails = async (deptId) => {
+    hideAlert();
     if (!userId || !ulbid) {
       showAlert("User Id or ulbid is not set", "warning");
       return;
@@ -117,6 +120,7 @@ const ReportTimelyReflection = () => {
       };
       const res = await apiService.post("WTgeneric-call", payload);
       if (res?.data?.Success && res?.data?.data?.length > 0) {
+        hideAlert();
         const strArr = res.data.data.split("|");
         const data = strArr.map((item) => {
           const [id, compNum, custName, date, time, tat] = item.split("$");

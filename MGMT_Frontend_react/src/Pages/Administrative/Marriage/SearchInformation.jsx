@@ -20,7 +20,7 @@ const SearchInformation = () => {
   const { setLoading } = useLoader();
   const { user } = useAuth();
   const navigate = useNavigate();
-  const { showAlert, Alert } = useAlert();
+  const { showAlert, hideAlert, Alert } = useAlert();
   const tableRef = useRef(null);
 
   const userId = user?.userId;
@@ -51,6 +51,7 @@ const SearchInformation = () => {
   };
 
   const handleSubmit = async (values) => {
+    hideAlert();
     const appNo = values.applicationNumber.trim();
     // if (!appNo) {
     //   showAlert("Please enter application number", "warning");
@@ -83,6 +84,7 @@ const SearchInformation = () => {
         Array.isArray(res.data.data.jsondata) &&
         res.data.data.jsondata.length > 0
       ) {
+        hideAlert();
         const rows = res.data.data.jsondata.map((item) => ({
           appdate: item.appdate || "",
           husbwifename: item.husbwifename || "",

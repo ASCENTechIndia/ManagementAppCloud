@@ -12,7 +12,7 @@ const ComplaintGrvRpt = () => {
   const { setLoading } = useLoader();
   const { user } = useAuth();
   const navigate = useNavigate();
-  const { showAlert, Alert } = useAlert();
+  const { showAlert, hideAlert, Alert } = useAlert();
   const ulbId = user?.data?.OrgId;
   const tableRef = useRef(null);
   const [tableData, setTableData] = useState([]);
@@ -41,6 +41,7 @@ const ComplaintGrvRpt = () => {
   }, [ulbId]);
 
   const fetchData = async () => {
+    hideAlert();
     try {
       setLoading(true);
       const response = await axios.get(
@@ -48,6 +49,7 @@ const ComplaintGrvRpt = () => {
       );
       let data = response.data;
       if (data.length > 0) {
+        hideAlert();
         const rows = data.map((item, index) => ({
           srNo: Number(index + 1) || "",
           deptName: item.TYPENAME || "",

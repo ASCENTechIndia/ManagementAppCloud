@@ -21,7 +21,7 @@ const ServiceWiseDetails = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
   const tableRef = useRef(null);
-  const { showAlert, Alert } = useAlert();
+  const { showAlert, hideAlert, Alert } = useAlert();
   const userId = user?.userId;
   const ulbid = user?.data?.OrgId;
 
@@ -87,8 +87,9 @@ const ServiceWiseDetails = () => {
   };
 
   const handleSubmit = async (values) => {
+    hideAlert();
     if (!userId || !ulbid) {
-      showALert("User ID or Ulb ID not found", "warning");
+      showAlert("User ID or Ulb ID not found", "warning");
       return;
     }
     setSelectedFrom(values.from);
@@ -114,6 +115,7 @@ const ServiceWiseDetails = () => {
         Array.isArray(res.data.data.jsondata) &&
         res.data.data.jsondata.length > 0
       ) {
+        hideAlert();
         // console.log(res.data.data.jsondata);
         const rows = res.data.data.jsondata.map((item) => ({
           service_name: item.service_name || "",

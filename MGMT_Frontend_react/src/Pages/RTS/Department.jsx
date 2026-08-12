@@ -18,7 +18,7 @@ const Department = () => {
   const { user } = useAuth();
   const tableRef = useRef(null);
   const navigate = useNavigate();
-  const { showAlert, Alert } = useAlert();
+  const { showAlert, hideAlert, Alert } = useAlert();
   const userId = user?.userId;
   const ulbid = user?.data?.OrgId;
 
@@ -45,6 +45,7 @@ const Department = () => {
   };
 
   const handleSubmit = async (values) => {
+    hideAlert();
     if (!userId || !ulbid) {
       showAlert("User ID or Ulb ID not found", "warning");
       return;
@@ -70,6 +71,7 @@ const Department = () => {
         Array.isArray(res.data.data.jsondata) &&
         res.data.data.jsondata.length > 0
       ) {
+        hideAlert();
         const rows = res.data.data.jsondata.map((item) => ({
           department_name: item.department_name || "",
           completed: Number(item.completed) || 0,
@@ -106,7 +108,7 @@ const Department = () => {
     } catch (error) {
       console.error("Error fetching department data:", error);
       setTableData([]);
-      showALert(error.message || "Failed to fetch data", "error");
+      showAlert(error.message || "Failed to fetch data", "error");
     } finally {
       setLoading(false);
     }

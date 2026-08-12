@@ -18,7 +18,7 @@ const ZoneWiseTaxColl = () => {
   const { setLoading } = useLoader();
   const navigate = useNavigate();
   const { user } = useAuth();
-  const { showAlert, Alert } = useAlert();
+  const { showAlert, hideAlert, Alert } = useAlert();
   const userid = user?.userId || "";
   const orgId = user?.data?.OrgId;
   const flag = import.meta.env.VITE_FLAG;
@@ -42,6 +42,7 @@ const ZoneWiseTaxColl = () => {
   useEffect(() => {
     if (!userid) return;
     const fetchData = async () => {
+      hideAlert();
       try {
         setLoading(true);
         const payload = {
@@ -82,6 +83,7 @@ const ZoneWiseTaxColl = () => {
             }
 
             if (data.length > 0) {
+              hideAlert();
               const totalSum = data.reduce((acc, item) => acc + Number(item.total || 0), 0);
 
               const totalRow = {
@@ -117,6 +119,7 @@ const ZoneWiseTaxColl = () => {
             showAlert("No Data Found", "error");
           }
         } else if (Array.isArray(resData.jsondata) && resData.jsondata.length > 0) {
+          hideAlert();
           const data = resData.jsondata.map((data) => ({
             id: data.prabhag,
             zone: data.prabhagname,

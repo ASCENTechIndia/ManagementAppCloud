@@ -20,7 +20,7 @@ const AllZonesDetails = () => {
     const navigate = useNavigate();
     const location = useLocation();
     const { user } = useAuth();
-    const { showAlert, Alert } = useAlert();
+    const { showAlert, hideAlert, Alert } = useAlert();
     const userid = user?.userId || "";
     const orgId = user?.data?.OrgId;
     const flag = import.meta.env.VITE_FLAG || "MobApp";
@@ -102,6 +102,7 @@ const AllZonesDetails = () => {
         if (!userid) return;
 
         const fetchData = async () => {
+            hideAlert();
             try {
                 setLoading(true);
 
@@ -173,6 +174,7 @@ const AllZonesDetails = () => {
                 }
 
                 if (rawList.length > 0) {
+                    hideAlert();
                     // Sort in 1 2 3 sequential format by zone / prabhag number
                     rawList.sort((a, b) => {
                         const numA = extractZoneNumber(a.prabhagname);
@@ -260,6 +262,7 @@ const AllZonesDetails = () => {
     }, [userid]);
 
     const handlePrabhagClick = async (row) => {
+        hideAlert();
         if (row.prabhagname === "Total" || row.prabhagname === "एकूण") return;
 
         const prabhagId = row.zoneid || row.prabhagid || row.id || "";
@@ -383,6 +386,7 @@ const AllZonesDetails = () => {
             }));
 
             if (formatted.length > 0) {
+                hideAlert();
                 const totalAmount = formatted.reduce((acc, cur) => acc + (Number(cur.amount) || 0), 0);
                 const totalRow = {
                     prabhagname: "Total",

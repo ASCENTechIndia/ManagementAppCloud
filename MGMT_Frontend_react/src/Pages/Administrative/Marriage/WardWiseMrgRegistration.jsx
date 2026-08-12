@@ -20,7 +20,7 @@ const WardWiseMrgRegistration = () => {
   const { setLoading } = useLoader();
   const { user } = useAuth();
   const navigate = useNavigate();
-  const { showAlert, Alert } = useAlert();
+  const { showAlert, hideAlert, Alert } = useAlert();
   const userId = user?.userId;
   const ulbid = user?.data?.OrgId;
   const tableRef = useRef(null);
@@ -49,6 +49,7 @@ const WardWiseMrgRegistration = () => {
   };
 
   const handleSubmit = async (values) => {
+    hideAlert();
     if (!userId || !ulbid) {
       showAlert("User ID or Ulb Id not found", "warning");
       return;
@@ -74,6 +75,7 @@ const WardWiseMrgRegistration = () => {
         Array.isArray(res?.data?.data?.jsondata) &&
         res.data.data.jsondata.length > 0
       ) {
+        hideAlert();
         const rows = res.data.data.jsondata.map((item) => ({
           zoneName: item.zonename || "",
           application: Number(item.app_count || 0),

@@ -12,7 +12,7 @@ const ReOpen = () => {
   const { setLoading } = useLoader();
   const { user } = useAuth();
   const navigate = useNavigate();
-  const { showAlert, Alert } = useAlert();
+  const { showAlert, hideAlert, Alert } = useAlert();
   const orgId = user?.data?.OrgId;
   const tableRef = useRef(null);
 
@@ -157,6 +157,7 @@ const ReOpen = () => {
   };
 
   const fetchLevel1 = async () => {
+    hideAlert();
     if (!orgId) {
       showAlert("Organization ID not found", "warning");
       return;
@@ -166,6 +167,7 @@ const ReOpen = () => {
       const url = `${import.meta.env.VITE_CRM_BASE_URL}/fetchComplaintStatusSummary?userDepId=&orgId=${orgId}&dptConfig=`;
       const response = await axios.get(url);
       if (Array.isArray(response.data) && response.data.length > 0) {
+        hideAlert();
         const rows = response.data.map((item) => ({
           deptId: item.DEPTID,
           deptName: item.DEPTENAME || item.DEPTMNAME,
@@ -197,11 +199,13 @@ const ReOpen = () => {
   };
 
   const fetchLevel2 = async (deptId) => {
+    hideAlert();
     try {
       setLoading(true);
       const url = `${import.meta.env.VITE_CRM_BASE_URL}/fetchComplaintTypeStatusSummary?deptId=${deptId}&orgId=${orgId}&dptConfig=null`;
       const response = await axios.get(url);
       if (Array.isArray(response.data) && response.data.length > 0) {
+        hideAlert();
         const rows = response.data.map((item) => ({
           complaintTypeId: item.CMPLTTYPEID,
           complaintType: item.COMPLAINT_TYPE,
@@ -233,11 +237,13 @@ const ReOpen = () => {
   };
 
   const fetchLevel3 = async (deptId, complaintTypeId) => {
+    hideAlert();
     try {
       setLoading(true);
       const url = `${import.meta.env.VITE_CRM_BASE_URL}/fetchComplaintSubTypeStatusSummary?deptId=${deptId}&deptComplaintTypeId=${complaintTypeId}&orgId=${orgId}`;
       const response = await axios.get(url);
       if (Array.isArray(response.data) && response.data.length > 0) {
+        hideAlert();
         const rows = response.data.map((item) => ({
           subtype: item.COMPLAINT_SUBTYPE,
           pending: item.PENDINGFORAUTHORI || 0,

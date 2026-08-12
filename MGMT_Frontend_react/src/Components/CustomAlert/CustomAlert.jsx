@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import {
     BsCheckCircleFill,
     BsXCircleFill,
@@ -7,92 +7,60 @@ import {
     BsX,
 } from "react-icons/bs";
 
-const CustomAlert = ({ message, type = "info", onClose, duration = 3000 }) => {
-    useEffect(() => {
-        if (!duration) return;
-
-        const timer = setTimeout(() => {
-            if (onClose) onClose();
-        }, duration);
-
-        return () => clearTimeout(timer);
-    }, [message, type, duration, onClose]);
-
+const CustomAlert = ({ message, type = "info", onClose }) => {
     const alertConfig = {
         success: {
-            borderColor: "border-green-500",
-            bgColor: "bg-green-50",
-            textColor: "text-green-800",
+            border: "border-emerald-200",
+            iconBg: "bg-emerald-100 text-emerald-600",
+            icon: <BsCheckCircleFill className="w-4 h-4" />,
         },
         error: {
-            borderColor: "border-red-500",
-            bgColor: "bg-red-50",
-            textColor: "text-red-800",
+            border: "border-rose-200",
+            iconBg: "bg-rose-100 text-rose-600",
+            icon: <BsXCircleFill className="w-4 h-4" />,
         },
         warning: {
-            borderColor: "border-yellow-500",
-            bgColor: "bg-yellow-50",
-            textColor: "text-yellow-800",
+            border: "border-amber-200",
+            iconBg: "bg-amber-100 text-amber-600",
+            icon: <BsExclamationTriangleFill className="w-4 h-4" />,
         },
         info: {
-            borderColor: "border-blue-500",
-            bgColor: "bg-blue-50",
-            textColor: "text-blue-800",
+            border: "border-blue-200",
+            iconBg: "bg-blue-100 text-blue-600",
+            icon: <BsInfoCircleFill className="w-4 h-4" />,
         },
     };
 
     const config = alertConfig[type] || alertConfig.info;
 
     return (
-        <div className="fixed bottom-5 left-1/2 z-[9999] w-full max-w-md -translate-x-1/2 px-4">
+        <div className="fixed bottom-6 left-1/2 z-[9999] -translate-x-1/2 px-4 pointer-events-none w-full max-w-sm sm:max-w-md flex justify-center">
             <div
                 className={`
-          ${config.bgColor}
-          ${config.borderColor}
-          relative
-          w-full
-          rounded-lg
-          border
-          border-l-4
-          px-10
-          py-4
-          shadow-lg
+          pointer-events-auto
+          flex items-center gap-3
+          bg-white/95 backdrop-blur-md
+          border ${config.border}
+          rounded-2xl sm:rounded-full
+          px-4 py-2.5
+          shadow-[0_10px_25px_-5px_rgba(0,0,0,0.12),0_8px_10px_-6px_rgba(0,0,0,0.08)]
+          transition-all duration-300
+          animate-in fade-in slide-in-from-bottom-5
         `}
             >
-                {/* Message */}
-                <div
-                    className={`
-            ${config.textColor}
-            text-sm
-            font-medium
-            leading-relaxed
-            text-center
-            break-words
-          `}
-                >
-                    {message}
+                <div className={`p-1.5 rounded-full ${config.iconBg} flex items-center justify-center shrink-0`}>
+                    {config.icon}
                 </div>
-
-                {/* Cross - Right End */}
+                <span className="text-xs sm:text-sm font-semibold text-gray-800 leading-tight pr-1 break-words">
+                    {message}
+                </span>
                 <button
                     type="button"
                     onClick={onClose}
                     aria-label="Close"
-                    className={`
-            absolute
-            right-2
-            top-1/2
-            -translate-y-1/2
-            rounded-full
-            p-1
-            ${config.textColor}
-            opacity-60
-            transition
-            hover:bg-white/60
-            hover:opacity-100
-          `}
+                    className="ml-auto p-1 text-gray-400 hover:text-gray-700 hover:bg-gray-100 rounded-full transition-colors shrink-0"
                 >
-                    <BsX size={20} />
+                    <BsX className="w-4 h-4" />
                 </button>
             </div>
         </div>

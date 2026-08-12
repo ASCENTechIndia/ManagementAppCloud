@@ -12,7 +12,7 @@ const ZoneWise = () => {
   const { user } = useAuth();
   const tableRef = useRef(null);
   const navigate = useNavigate();
-  const { showAlert, Alert } = useAlert();
+  const { showAlert, hideAlert, Alert } = useAlert();
   const userId = user?.userId;
   const ulbid = user?.data?.OrgId;
 
@@ -40,6 +40,7 @@ const ZoneWise = () => {
   };
 
   const fetchZoneWiseData = async () => {
+    hideAlert();
     if (!userId || !ulbid) {
       showAlert("User ID or Ulb ID not found", "warning");
       return;
@@ -64,6 +65,7 @@ const ZoneWise = () => {
         Array.isArray(res.data.data.jsondata) &&
         res.data.data.jsondata.length > 0
       ) {
+        hideAlert();
         const rows = res.data.data.jsondata.map((item) => ({
           zone_name: item.zone_name || "",
           arrears_demand: item.arrears_demand || 0,

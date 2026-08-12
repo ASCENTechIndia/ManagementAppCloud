@@ -18,7 +18,7 @@ const RtsTrackApplication = () => {
   const { user } = useAuth();
   const tableRef = useRef(null);
   const navigate = useNavigate();
-  const { showAlert, Alert } = useAlert();
+  const { showAlert, hideAlert, Alert } = useAlert();
   const userId = user?.userId;
   const ulbid = user?.data?.OrgId || "930";
 
@@ -37,6 +37,7 @@ const RtsTrackApplication = () => {
   };
 
   const fetchTrackApplication = async (values) => {
+    hideAlert();
     const appNo = values.appNumber.trim();
     if (!appNo) {
       showAlert("Please enter application number", "warning");
@@ -67,6 +68,7 @@ const RtsTrackApplication = () => {
         Array.isArray(res.data.data.jsondata) &&
         res.data.data.jsondata.length > 0
       ) {
+        hideAlert();
         const rows = res.data.data.jsondata.map((item) => ({
           application_no: item.application_no || "",
           application_date: item.application_date || "",

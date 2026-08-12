@@ -18,7 +18,7 @@ const TrackApplication = () => {
   const { user } = useAuth();
   const tableRef = useRef(null);
   const navigate = useNavigate();
-  const { showAlert, Alert } = useAlert();
+  const { showAlert, hideAlert, Alert } = useAlert();
   const userId = user?.userId;
   const ulbid = user?.data?.OrgId;
 
@@ -37,6 +37,7 @@ const TrackApplication = () => {
   };
 
   const fetchTrackApplication = async (values) => {
+    hideAlert();
     const appNo = values.appNumber.trim();
     if (!appNo) {
       showAlert("कृपया अर्ज क्रमांक प्रविष्ट करा", "warning");
@@ -61,6 +62,7 @@ const TrackApplication = () => {
         Array.isArray(res?.data?.data?.jsondata) &&
         res.data.data.jsondata.length > 0
       ) {
+        hideAlert();
         const rows = res.data.data.jsondata.map((item) => ({
           applino: item.applino || "",
           applidt: item.applidt || "",

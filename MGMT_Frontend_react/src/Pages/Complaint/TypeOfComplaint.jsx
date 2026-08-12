@@ -19,7 +19,7 @@ const TypeOfComplaint = () => {
   const { setLoading } = useLoader();
   const { user } = useAuth();
   const navigate = useNavigate();
-  const { showAlert, Alert } = useAlert(); 
+  const { showAlert, hideAlert, Alert } = useAlert(); 
   const userId = user?.userId;
   const ulbid = user?.data?.OrgId;
   const tableRef = useRef(null);
@@ -30,6 +30,7 @@ const TypeOfComplaint = () => {
   });
 
   const fetchData = async (from, to) => {
+    hideAlert();
     if (!userId || !ulbid) {
       showAlert("Userid or ulbID is not set", "warning");
       return;
@@ -52,6 +53,7 @@ const TypeOfComplaint = () => {
         Array.isArray(res?.data?.data?.jsondata) &&
         res.data.data.jsondata.length > 0
       ) {
+        hideAlert();
         const data = res.data.data.jsondata.map((item) => ({
           category: item.comptype || "",
           // registered: Number(item.totalcomp) || 0,
