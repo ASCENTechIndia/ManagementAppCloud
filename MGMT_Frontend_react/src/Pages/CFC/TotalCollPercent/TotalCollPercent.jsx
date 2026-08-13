@@ -364,38 +364,38 @@ const TotalCollPercent = () => {
             keyMapping={keyMapping}
             pagination={true}
             rowsPerPage={10}
-            customCellRenderer={
-              selectedZone === null
-                ? {
-                  zone: (value, row) => {
-                    if (value === "Total") {
-                      return <span style={{ fontWeight: "bold" }}>{value}</span>;
-                    }
-                    return (
-                      <span
-                        style={{
-                          color: "#007bff",
-                          cursor: "pointer",
-                          textDecoration: "underline",
-                        }}
-                        onClick={() => {
-                          setSelectedZone({ id: row.id, name: value });
-                        }}
-                      >
-                        {value}
-                      </span>
-                    );
-                  },
-                }
-                : {
-                  wardName: (value) => {
-                    if (value === "Total") {
-                      return <span style={{ fontWeight: "bold" }}>{value}</span>;
-                    }
-                    return <span>{value}</span>;
-                  },
-                }
-            }
+            // customCellRenderer={
+            //   selectedZone === null
+            //     ? {
+            //       zone: (value, row) => {
+            //         if (value === "Total") {
+            //           return <span style={{ fontWeight: "bold" }}>{value}</span>;
+            //         }
+            //         return (
+            //           <span
+            //             style={{
+            //               color: "#007bff",
+            //               cursor: "pointer",
+            //               textDecoration: "underline",
+            //             }}
+            //             onClick={() => {
+            //               setSelectedZone({ id: row.id, name: value });
+            //             }}
+            //           >
+            //             {value}
+            //           </span>
+            //         );
+            //       },
+            //     }
+            //     : {
+            //       wardName: (value) => {
+            //         if (value === "Total") {
+            //           return <span style={{ fontWeight: "bold" }}>{value}</span>;
+            //         }
+            //         return <span>{value}</span>;
+            //       },
+            //     }
+            // }
           />
           {/* )} */}
         </div>
