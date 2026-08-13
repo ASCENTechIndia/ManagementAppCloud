@@ -179,12 +179,12 @@ const ReOpen = () => {
         }));
         const withTotal = addTotalRow(rows, "deptName");
         setLevel1Data(withTotal);
-        // setTimeout(() => {
-        //   tableRef.current.scrollIntoView({
-        //     behavior: "smooth",
-        //     block: "center"
-        //   });
-        // }, 100);
+        setTimeout(() => {
+          tableRef.current.scrollIntoView({
+            behavior: "smooth",
+            block: "center"
+          });
+        }, 100);
       } else {
         setLevel1Data([]);
         showAlert("No Data Found", "error");
@@ -217,12 +217,12 @@ const ReOpen = () => {
         }));
         const withTotal = addTotalRow(rows, "complaintType");
         setLevel2Data(withTotal);
-        // setTimeout(() => {
-        //   tableRef.current.scrollIntoView({
-        //     behavior: "smooth",
-        //     block: "center"
-        //   });
-        // }, 100);
+        setTimeout(() => {
+          tableRef.current.scrollIntoView({
+            behavior: "smooth",
+            block: "center"
+          });
+        }, 100);
       } else {
         setLevel2Data([]);
         showAlert("No Data Found", "error");
@@ -254,12 +254,12 @@ const ReOpen = () => {
         }));
         const withTotal = addTotalRow(rows, "subtype");
         setLevel3Data(withTotal);
-        // setTimeout(() => {
-        //   tableRef.current.scrollIntoView({
-        //     behavior: "smooth",
-        //     block: "center"
-        //   });
-        // }, 100);
+        setTimeout(() => {
+          tableRef.current.scrollIntoView({
+            behavior: "smooth",
+            block: "center"
+          });
+        }, 100);
       } else {
         setLevel3Data([]);
         showAlert("No Data Found", "error");
@@ -348,21 +348,21 @@ const ReOpen = () => {
           )}
 
           {currentData.length > 0 ? (
-            // <div
-            //   ref={tableRef}
-            // >
+            <div
+              ref={tableRef}
+            >
 
 
-            //   <Table
-            //     data={currentData}
-            //     headers={headers}
-            //     keyMapping={keyMapping}
-            //     customCellRenderer={customCellRenderer}
-            //     pagination={true}
-            //     rowsPerPage={10}
-            //   />
-            // </div>
-            <></>
+              <Table
+                data={currentData}
+                headers={headers}
+                keyMapping={keyMapping}
+                customCellRenderer={customCellRenderer}
+                pagination={true}
+                rowsPerPage={10}
+              />
+            </div>
+
           ) : (
             <div className="text-center py-8 text-gray-500">
               No Re-Open Cases
