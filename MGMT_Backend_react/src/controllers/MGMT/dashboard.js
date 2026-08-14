@@ -134,7 +134,6 @@ const getResolutionSummary = async (req, res) => {
 };
 
 
-
 const getMonthlyCSAT = async (req, res) => {
   let connection;
   try {
@@ -155,12 +154,16 @@ const getMonthlyCSAT = async (req, res) => {
     const result = await connection.execute(query, {}, { outFormat: oracledb.OUT_FORMAT_OBJECT });
 
     res.json({ success: true, data: result.rows });
-  } catch (error) {
-    console.error("Error fetching Monthly CSAT:", error);
-    res.status(500).json({ success: false, message: "Error fetching Monthly CSAT" });
-  } finally {
-    if (connection) await connection.close();
-  }
+  }catch (error) {
+  console.error("FULL ERROR:", error);
+
+  res.status(500).json({
+    success: false,
+    message: error.message,
+    errorNum: error.errorNum,
+    code: error.code
+  });
+}
 };
 
 
