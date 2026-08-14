@@ -38,6 +38,7 @@ import apiService from "../../../apiService";
 import { useAuth } from "../../Context/AuthContext";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { useNavigate } from "react-router-dom";
+import { useLoader } from "../../Context/LoaderContext";
 
 const CHANNEL_COLORS = ["#ef4444", "#16a34a", "#8b5cf6", "#f59e0b", "#2563eb"];
 const STATUS_COLORS = ["#8b5cf6", "#2563eb", "#f59e0b", "#16a34a"];
@@ -57,6 +58,7 @@ const CrmDashBoardOut = () => {
   const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
   const { translate } = useLanguage();
   const navigate = useNavigate();
+    const { setLoading } = useLoader();
   const { user } = useAuth();
   const ulbId = user?.data?.OrgId;
   const [q, setQ] = useState("");
@@ -116,6 +118,7 @@ const CrmDashBoardOut = () => {
 
   const fetchAllData = useCallback(async () => {
     try {
+        setLoading(true);
       const { startDate, endDate } = getDatesForPeriod(period);
       if (!ulbId) {
         return;
@@ -231,11 +234,16 @@ const CrmDashBoardOut = () => {
       }
     } catch (error) {
       console.error("Error fetching dashboard data:", error);
+    } finally {
+      setLoading(false);
     }
   }, [period, ulbId]);
 
   // Effect now depends on memoized fetchAllData
   useEffect(() => {
+      console.log("useEffect triggered");
+  console.log("ulbId:", ulbId);
+  console.log("period:", period);
     fetchAllData();
   }, [fetchAllData]);
 
