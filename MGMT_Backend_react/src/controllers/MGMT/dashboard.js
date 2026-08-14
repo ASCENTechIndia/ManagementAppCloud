@@ -112,7 +112,7 @@ const getResolutionSummary = async (req, res) => {
         NVL(SUM(Pending)+sum(work_assign) + SUM(Close), 0) AS total_complnt,
         sum(close) AS resolved,
         ROUND(AVG((closedate - dt) * 24), 2) AS avg_resolution_time_hrs
-      FROM crm.view_analysismmcdtls_web
+      FROM crm.view_analysismmcdtls_mgmt
       WHERE ulbid = :ulbid
         AND TRUNC(dt) BETWEEN TO_DATE(:startDate,'yyyy-mm-dd') 
                                         AND TO_DATE(:endDate,'yyyy-mm-dd')
@@ -132,6 +132,7 @@ const getResolutionSummary = async (req, res) => {
     if (connection) await connection.close();
   }
 };
+
 
 
 const getMonthlyCSAT = async (req, res) => {
