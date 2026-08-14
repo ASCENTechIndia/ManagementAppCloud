@@ -275,7 +275,7 @@ const ReOpen = () => {
 
   useEffect(() => {
     if (orgId) {
-      fetchLevel1();
+      // fetchLevel1();
     }
   }, [orgId]);
 
@@ -362,9 +362,10 @@ const ReOpen = () => {
                 rowsPerPage={10}
               />
             </div>
+
           ) : (
             <div className="text-center py-8 text-gray-500">
-              No record available
+              No Re-Open Cases
             </div>
           )}
         </div>
