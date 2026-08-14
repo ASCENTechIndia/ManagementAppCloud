@@ -105,34 +105,40 @@ const ComplaintReportByPeriod = () => {
     setSelectedDept(values.deptId);
 
     const payload = {
-      complaintNo: null,
-      complaintSubType: null,
-      complaintType: null,
-      deptConfigList: [],
-      prabhagIdList: [],
-      source: null,
-      status: null,
+      // complaintNo: null,
+      // complaintSubType: null,
+      // complaintType: null,
+      // deptConfigList: [],
+      // prabhagIdList: [],
+      // source: null,
+      // status: null,
+      // selectedDept: Number(values.deptId),
 
-      orgId: Number(ulbId),
+      ulbid: Number(ulbId),
+      categoryFilter: "btndept",
+    timeFilter: "btndatefilter",
       fromDate: formatDate(values.from),
       toDate: formatDate(values.to),
-      selectedDept: Number(values.deptId),
+      status: "Rc",
+      performance: "A",
     };
 
     try {
       setLoading(true);
-      const response = await axios.post(
-        `${import.meta.env.VITE_CRM_BASE_URL}/fetchComplaintReport`,
-        payload,
+      const response = await axios.get(
+        `${import.meta.env.VITE_CRM_BASE_URL}/fetchComplaintSummary?fromDate=${formatDate(values.from)}&toDate=${formatDate(values.to)}&deptConfig=[${values.deptId}]&orgId=${ulbId}`,
       );
-
-
-      if (response.data?.success && Array.isArray(response.data.data) && response.data.data.length > 0) {
+console.log("REsponse", response)
+   
+     if (
+  Array.isArray(response.data) &&
+  response.data.length > 0
+) {
         hideAlert();
-        const department = response.data.data[0]?.DEPTNM;
-        const totalComplaints = response.data.data.length;
-        const totalClosed = response.data.data.filter(item => item.CMPSTATUS === "Close").length;
-        const totalPending = response.data.data.filter(item => item.CMPSTATUS !== "Close").length; 
+     const department = response.data[0].DEPTNAME;
+  const totalComplaints = response.data[0].TOTALRECEIVED;
+  const totalClosed = response.data[0].CLOSE_COMP;
+  const totalPending = response.data[0].PENDING;
         // const rows = response.data.data.map((item) => ({
         //   deptName: item.DEPTNAME || "",
         //   total: item.TOTAL || 0,
@@ -141,14 +147,18 @@ const ComplaintReportByPeriod = () => {
         //   es: item.ES || 0,
         //   demand: item.DEMAND || 0,
         // }));
-        const rows = [{
-          deptName: department,
-          total: totalComplaints,
-          pending: totalPending,
-          closed: totalClosed,
-          es: 0,
-          demand: 0
-        }];
+         const rows = response.data.map((item) => ({
+    deptName: item.DEPTNAME || "",
+    total: item.TOTALRECEIVED || 0,
+    pending: item.PENDING || 0,
+    closed: item.CLOSE_COMP || 0,
+    es: 0,
+    demand: 0,
+  }));
+
+           console.log("API RESPONSE:", response.data);
+console.log("API DATA:", response.data.data);
+console.log("TABLE ROWS:", rows);
         setTableData(rows);
         setTimeout(() => {
           tableRef.current.scrollIntoView({
