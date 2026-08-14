@@ -315,63 +315,119 @@ const AllZonesDetails = () => {
                 rawList = resData.jsondata;
             } else if (Array.isArray(resData) && resData.length > 0) {
                 rawList = resData;
-            } else if (typeof resData === "string" && resData.includes("SUCCESS")) {
-                const responseStr = resData.replace(/^respon:/, "");
-                const parts = responseStr.split("#SUCCESS#");
-                if (parts.length > 1) {
-                    const dataPart = parts[1];
-                    try {
-                        const parsed = JSON.parse(dataPart);
-                        if (Array.isArray(parsed)) rawList = parsed;
-                    } catch {
-                        const tildeParts = dataPart.split("~");
-                        if (tildeParts.length > 1) {
-                            const itemsStr = tildeParts[1];
-                            const itemsList = itemsStr.split("$");
-                            for (let i = 0; i < itemsList.length; i += 7) {
-                                if (itemsList[i]) {
-                                    rawList.push({
-                                        prabhagname: itemsList[i] || row.prabhagname,
-                                        vibhagname: itemsList[i + 1] || "",
-                                        recno: itemsList[i + 2] || "",
-                                        transno: itemsList[i + 3] || "",
-                                        glname: itemsList[i + 4] || "",
-                                        accname: itemsList[i + 5] || "",
-                                        amount: Number(itemsList[i + 6]) || 0,
-                                    });
+            } else if (typeof resData === "string" && resData !== "") {
+                if (resData.includes("SUCCESS")) {
+                    const responseStr = resData.replace(/^respon:/, "");
+                    const parts = responseStr.split("#SUCCESS#");
+                    if (parts.length > 1) {
+                        const dataPart = parts[1];
+                        try {
+                            const parsed = JSON.parse(dataPart);
+                            if (Array.isArray(parsed)) rawList = parsed;
+                            else if (Array.isArray(parsed?.jsondata)) rawList = parsed.jsondata;
+                        } catch {
+                            const tildeParts = dataPart.split("~");
+                            if (tildeParts.length > 1) {
+                                const itemsStr = tildeParts[1];
+                                const itemsList = itemsStr.split("$");
+                                for (let i = 0; i < itemsList.length; i += 7) {
+                                    if (itemsList[i]) {
+                                        rawList.push({
+                                            prabhagname: itemsList[i] || row.prabhagname,
+                                            vibhagname: itemsList[i + 1] || "",
+                                            recno: itemsList[i + 2] || "",
+                                            transno: itemsList[i + 3] || "",
+                                            glname: itemsList[i + 4] || "",
+                                            accname: itemsList[i + 5] || "",
+                                            amount: Number(itemsList[i + 6]) || 0,
+                                        });
+                                    }
                                 }
                             }
                         }
                     }
                 }
-            } else if (typeof resData === "string" && response.data.errorcode === 9999 && resData !== "") {
-                // const fixedString = resData.replace(/\r?\n/g, "\\n");
-                let cleanedData = resData
-                    // Escaped quotes
-                    .replace(/\\"/g, '"')
 
-                    // Escaped colon
-                    .replace(/\\:/g, ":")
+                if (rawList.length === 0) {
+                    try {
+                        let s = resData.trim();
+                        // Try direct JSON.parse first
+                        try {
+                            const directParsed = JSON.parse(s);
+                            if (Array.isArray(directParsed?.jsondata)) {
+                                rawList = directParsed.jsondata;
+                            } else if (Array.isArray(directParsed)) {
+                                rawList = directParsed;
+                            }
+                        } catch {}
 
-                    // Remove trailing commas before } or ]
-                    .replace(/,\s*([}\]])/g, "$1")
+                        if (rawList.length === 0) {
+                            // Normalize unescaped quotes/escapes
+                            let cleanedData = s
+                                .replace(/\r?\n/g, " ")
+                                .replace(/\t/g, " ")
+                                .replace(/\\"/g, '"')
+                                .replace(/\\:/g, ":")
+                                .replace(/,\s*([}\]])/g, "$1")
+                                // Safely quote unquoted prabhagname up to next key (,"vibhagname" or any key)
+                                .replace(
+                                    /"prabhagname"\s*:\s*(.*?)(?=,\s*"[a-zA-Z0-9_]+"\s*:|\s*})/g,
+                                    (_, value) => {
+                                        const v = value.trim().replace(/^"+|"+$/g, "");
+                                        return `"prabhagname":"${v}"`;
+                                    }
+                                )
+                                // Safely quote unquoted manual_refno up to next key or end brace
+                                .replace(
+                                    /"manual_refno"\s*:\s*(.*?)(?=,\s*"[a-zA-Z0-9_]+"\s*:|\s*})/g,
+                                    (_, value) => {
+                                        const v = value.trim().replace(/^"+|"+$/g, "");
+                                        return `"manual_refno":"${v}"`;
+                                    }
+                                );
 
-                    // Fix prabhagname
-                    .replace(
-                        /"prabhagname"\s*:\s*([^,}]+)/g,
-                        (_, value) => `"prabhagname":"${value.trim()}"`
-                    )
+                            let parsed = null;
+                            try {
+                                parsed = JSON.parse(cleanedData);
+                            } catch (e1) {
+                                // Fallback parser: extract items directly using regex if JSON contains invalid syntax
+                                const extracted = [];
+                                const itemRegex = /\{[^{}]*"prabhagname"\s*:\s*([^,}]+)[^{}]*\}/g;
+                                const fieldRegex = /"([^"]+)"\s*:\s*("([^"]*)"|([0-9.-]+)|([^,}]+))/g;
+                                
+                                let objMatch;
+                                const itemPattern = /\{([^{}]+)\}/g;
+                                while ((objMatch = itemPattern.exec(s)) !== null) {
+                                    const body = objMatch[1];
+                                    const obj = {};
+                                    let fieldMatch;
+                                    fieldRegex.lastIndex = 0;
+                                    while ((fieldMatch = fieldRegex.exec(body)) !== null) {
+                                        const k = fieldMatch[1];
+                                        const val = fieldMatch[3] !== undefined ? fieldMatch[3] : (fieldMatch[4] !== undefined ? fieldMatch[4] : fieldMatch[5]);
+                                        obj[k] = val !== undefined ? val.trim().replace(/^"+|"+$/g, "") : "";
+                                    }
+                                    if (obj.prabhagname || obj.recno || obj.amount) {
+                                        extracted.push(obj);
+                                    }
+                                }
+                                if (extracted.length > 0) {
+                                    rawList = extracted;
+                                }
+                            }
 
-                    // Fix manual_refno
-                    .replace(
-                        /"manual_refno"\s*:\s*([^,}]+)/g,
-                        (_, value) => `"manual_refno":"${value.trim()}"`
-                    );
-
-                const parsed = JSON.parse(cleanedData);
-
-                const jsonData = parsed.jsondata;
-                rawList = jsonData;
+                            if (parsed) {
+                                if (Array.isArray(parsed?.jsondata)) {
+                                    rawList = parsed.jsondata;
+                                } else if (Array.isArray(parsed)) {
+                                    rawList = parsed;
+                                }
+                            }
+                        }
+                    } catch (err) {
+                        console.error("Failed to parse Prabhag details response:", err);
+                    }
+                }
             }
 
             const formatted = rawList.map((item) => ({
